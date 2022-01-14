@@ -2,7 +2,6 @@ import { Pressable, StyleSheet, View,Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const SplashScreen = () => {
   const colors = ["#F9D7D5", "#FF9B7B", "#FF4E8C"];
