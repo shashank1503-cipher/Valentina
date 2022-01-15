@@ -2,19 +2,19 @@ import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 
-import StyledButton from '../components/Buttons/StyledButton'
 
-const HomeScreen = () => {
+const Identities = () => {
     const navigation = useNavigation();
     return (
         <View>
-            <Text>Home Screen</Text>
+            <Text>how do you identify?</Text>
              {/*<StyledButton onPress={() => navigation.navigate("CollegeID")}/> */}
-             <Pressable onPress={() => navigation.navigate("CollegeID")} style={styles.button} >
+             <Pressable onPress={() => navigation.navigate("IdentityConfirmation")} style={styles.button} >
                 <Text style={styles.text}>
-                    Get Started
+                    Next
                 </Text>
         </Pressable>
+        
         </View>
     )
 }
@@ -44,4 +44,4 @@ text:{
   }
 });
 
-export default HomeScreen
+export default Identities
