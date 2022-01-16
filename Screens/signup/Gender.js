@@ -1,24 +1,29 @@
 import React from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity, Pressable } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
+import StyledButton from '../../components/Buttons/StyledButton'
+
 
 import styles from './Style/Styles'
 const Gender = () => {
     const navigation = useNavigation();
+
     return (
-        <View style={styles.container, {alignItems: 'center'}}>
+        <View style={styles.container}>
             <Text style={styles.heading}>How do you identify?</Text>
-             {/*<StyledButton onPress={() => navigation.navigate("CollegeID")}/> */}
-             <Pressable onPress={() => navigation.navigate("IdentityConfirmation")} style={styles.button} >
-                <Text style={styles.text}>
-                    Next
-                </Text>
+            <Text style={styles.Welcometext}>Everyone's welcome here!</Text>
+            
+
+            <Text style={styles.option}>Woman</Text>
+            <Text style={styles.option}>Man</Text>
+            <Text style={styles.option}>Non-binary</Text>
+
+            <Pressable style={styles.Moretext} onPress={() => navigation.navigate("Identities")}>
+                <Text>More gender options ˅</Text>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate("Identities")} style={styles.button} >
-                <Text style={styles.text}>
-                    More gender options
-                </Text>
-            </Pressable>
+            
+            <StyledButton page="IdentityConfirmation" text="Next"/>
+    
         </View>
     )
 }

@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import HomeScreen from "./Screens/HomeScreen";
 import SplashScreen from "./Screens/SplashScreen";
-import CollegeID from './Screens/signup/Login_CollegeID';
 import Names from './Screens/signup/Names';
 import Dob from './Screens/signup/Dob';
 import Gender from './Screens/signup/Gender';

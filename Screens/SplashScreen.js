@@ -11,7 +11,7 @@ const SplashScreen = () => {
       <LinearGradient
         colors={colors}
         style={styles.background}
-        end={{ x: 0.75, y: 0.25 }}
+        end={{ x: 0.90, y: 0.10 }}
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />
         <TouchableOpacity onPress={() => navigation.navigate("Main")}  style={styles.button}>
