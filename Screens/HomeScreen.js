@@ -1,47 +1,48 @@
-import React from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
-
-import StyledButton from '../components/Buttons/StyledButton'
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+import Post from "../components/Post/Post";
+import { Dimensions, FlatList } from "react-native";
+const data = [
+  {
+    id: "1",
+    name: "Gal",
+    age: "27",
+    batch: "2020",
+  },
+  {
+    id: "2",
+    name: "Gal Gadot",
+    age: "28",
+    batch: "2019",
+  },
+  {
+    id: "3",
+    name: "Wonder Woman",
+    age: "104",
+    batch: "2018",
+  },
+];
 
 const HomeScreen = () => {
-    const navigation = useNavigation();
-    return (
-        <View>
-            <Text>Home Screen</Text>
-             {/*<StyledButton onPress={() => navigation.navigate("CollegeID")}/> */}
-             <Pressable onPress={() => navigation.navigate("CollegeID")} style={styles.button} >
-                <Text style={styles.text}>
-                    Get Started
-                </Text>
-        </Pressable>
-        </View>
-    )
-}
+//   const navigation = useNavigation();
+  return (
+    <SafeAreaView>
+      <Header />
+      <FlatList
+        data={data}
+        renderItem={({item}) => <Post name={item.name} age={item.age} batch={item.batch} />}
+        showsVerticalScrollIndicator={false}
+        snapToInterval={Dimensions.get('window').height}
+        snapToAlignment={'start'}
+        decelerationRate={'fast'}
+      />
+      {/* <Post /> */}
+      <Footer />
+    </SafeAreaView>
+  );
+};
 
-const styles = StyleSheet.create({
-    button: {
-  "position": "absolute",
-  "width": 330,
-  "height": 50,
-  "left": 35,
-  "top": 500,
-  "backgroundColor": "#FFFFFF",
-  "borderTopLeftRadius": 30,
-  "borderTopRightRadius": 30,
-  "borderBottomRightRadius": 30,
-  "borderBottomLeftRadius": 30,
-  elevation: 3,
-},
-text:{
-    "fontWeight": "500",
-    "fontSize": 15,
-    "lineHeight": 18,
-    "textAlign": "center",
-    "textTransform": "uppercase",
-    "color": "#373737",
-    "marginTop":"5%"
-  }
-});
-
-export default HomeScreen
+export default HomeScreen;
