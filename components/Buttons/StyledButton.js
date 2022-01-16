@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
       "borderBottomRightRadius": 30,
       "borderBottomLeftRadius": 30,
       elevation: 3,
+      zIndex:3
     },
     
   });

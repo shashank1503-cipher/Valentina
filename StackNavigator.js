@@ -10,14 +10,16 @@ import Identities from './Screens/signup/Identities';
 import IdentityConfirmation from './Screens/signup/IdentityConfirmation';
 import Sexuality from './Screens/signup/Sexuality';
 import GenderInterest from "./Screens/signup/GenderInterest";
+import homeNavigatorTab from "./navigation/homeNavigatorTab";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator  
+    >
       <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />
       <Stack.Screen name="CollegeID" component={CollegeID} />
       <Stack.Screen name="Names" component={Names}/>
       <Stack.Screen name="Dob" component={Dob}/>
