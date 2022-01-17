@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View,Text } from "react-native";
+import { TouchableOpacity, StyleSheet, View,Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -11,20 +11,14 @@ const SplashScreen = () => {
       <LinearGradient
         colors={colors}
         style={styles.background}
-        end={{ x: 0.75, y: 0.25 }}
+        end={{ x: 0.90, y: 0.10 }}
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />
-        <Pressable onPress={() => navigation.navigate("Home")}  style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}  style={styles.button}>
             <Text style={styles.text}>
                 Get Started
             </Text>
-        </Pressable>    
-        <Pressable onPress={() => navigation.navigate("Profile")}  style={styles.button}>
-            <Text style={styles.text}>
-                Profile
-            </Text>
-        </Pressable>    
-      
+        </TouchableOpacity>
       </LinearGradient>
     </View>
   );
