@@ -10,6 +10,7 @@ import Identities from './Screens/signup/Identities';
 import IdentityConfirmation from './Screens/signup/IdentityConfirmation';
 import Sexuality from './Screens/signup/Sexuality';
 import GenderInterest from "./Screens/signup/GenderInterest";
+import ProfilePage from "./Screens/ProfilePage"
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const StackNavigator = () => {
       <Stack.Screen name="IdentityConfirmation" component={IdentityConfirmation}/>
       <Stack.Screen name="Sexuality" component={Sexuality}/>
       <Stack.Screen name="GenderInterest" component={GenderInterest}/>
+      <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
     </Stack.Navigator>
   );
 };

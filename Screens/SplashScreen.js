@@ -18,7 +18,13 @@ const SplashScreen = () => {
             <Text style={styles.text}>
                 Get Started
             </Text>
-        </Pressable>
+        </Pressable>    
+        <Pressable onPress={() => navigation.navigate("Profile")}  style={styles.button}>
+            <Text style={styles.text}>
+                Profile
+            </Text>
+        </Pressable>    
+      
       </LinearGradient>
     </View>
   );
