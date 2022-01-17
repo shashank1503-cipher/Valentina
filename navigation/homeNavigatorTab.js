@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import HomeScreen from "../Screens/HomeScreen";
-import ProfileScreen from "../Screens/Profile/ProfileScreen";
 import ChatScreen from "../Screens/ChatScreen/ChatScreen";
 import LikeScreen from "../Screens/LikeScreen/LikeScreen";
+import ProfilePage from "../Screens/Profile/ProfilePage";
 const Tab = createBottomTabNavigator();
   
 const homeNavigatorTab = () => {
@@ -42,7 +42,7 @@ const homeNavigatorTab = () => {
       />
        <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfilePage}
         options={{
           tabBarIcon: ({ color,focused }) => (
             <Ionicons name={focused ? "person" : "person-outline"} size={25} color={color} />
