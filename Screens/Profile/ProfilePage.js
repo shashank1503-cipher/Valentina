@@ -13,12 +13,13 @@ import {
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Height from './profilePageModals/Height';
-import Interests from './profilePageModals/Interests';
-import Languages from './profilePageModals/Languages';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Languages from './profilePageModals/Languages'
+import Height from './profilePageModals/Height'
+import Interests from './profilePageModals/Interests'
+import StarSign from './profilePageModals/StarSign'
 import LookingFor from './profilePageModals/LookingFor'
-import StarSign from './profilePageModals/StarSign';
+
 
 
 const ProfilePage = () => {
@@ -97,7 +98,7 @@ const ProfilePage = () => {
                 <View style={styles.picCont}>
 
                     <View style={styles.mainPicCont}>
-                        <Image source={require("../assets/test-pic.jpg")} style={styles.profilePic} />
+                        <Image source={require("../../assets/test-pic.jpg")} style={styles.profilePic} />
                     </View>
 
                 </View>

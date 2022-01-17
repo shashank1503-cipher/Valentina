@@ -16,31 +16,31 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
         switch(title)
         {
             case 'leo':
-                s = require('../../assets/starSigns/leo.png')
+                s = require('../../../assets/starSigns/leo.png')
                 break;
             case 'virgo':
-                s = require('../../assets/starSigns/virgo.png')
+                s = require('../../../assets/starSigns/virgo.png')
                 break;
             case 'aries':
-                s = require('../../assets/starSigns/aries.png')
+                s = require('../../../assets/starSigns/aries.png')
                 break;
             case 'libra':
-                s = require('../../assets/starSigns/libra.png')
+                s = require('../../../assets/starSigns/libra.png')
                 break;
             case 'scorpio':
-                s = require('../../assets/starSigns/scorpio.png')
+                s = require('../../../assets/starSigns/scorpio.png')
                 break;
             case 'taurus':
-                s = require('../../assets/starSigns/taurus.png')
+                s = require('../../../assets/starSigns/taurus.png')
                 break;
             case 'cancer':
-                s = require('../../assets/starSigns/cancer.png')
+                s = require('../../../assets/starSigns/cancer.png')
                 break;
             case 'capricorn':
-                s = require('../../assets/starSigns/capricorn.png')
+                s = require('../../../assets/starSigns/capricorn.png')
                 break;
             case 'aquarius':
-                s = require('../../assets/starSigns/aquarius.png')
+                s = require('../../../assets/starSigns/aquarius.png')
                 break;
         }
 

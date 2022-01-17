@@ -189,13 +189,13 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                             >
                             {
                                 interest.map(interest => (
-                                    <Item title={interest} id={interest}/>
+                                    <Item title={interest} key={interest}/>
                                 ))
                             }
 
                             {
                                 interests.new.map(interest => (
-                                    <Item title={interest} id={interest}/>
+                                    <Item title={interest} key={interest}/>
                                 ))
                             }
                             </View>
