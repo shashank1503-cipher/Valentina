@@ -1,20 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import StackNavigator from "./StackNavigator";
-import {StyleSheet} from 'react-native';
-
-
+import { StyleSheet } from "react-native";
+import { AppProvider } from "./context/AppContext";
 export default function App() {
   return (
     <NavigationContainer style={styles.root}>
-      <StackNavigator />     
+      <AppProvider>
+        <StackNavigator />
+      </AppProvider>
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  root:{
+  root: {
     flex: 1,
-    backgroundColor:'#ffffff',
-  }
-})
+    backgroundColor: "#ffffff",
+  },
+});
