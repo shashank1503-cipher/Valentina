@@ -1,4 +1,4 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState, useEffect } from 'react'
 import { 
     View, 
@@ -19,15 +19,16 @@ import Height from './profilePageModals/Height'
 import Interests from './profilePageModals/Interests'
 import StarSign from './profilePageModals/StarSign'
 import LookingFor from './profilePageModals/LookingFor'
-
-
+import * as ImagePicker from 'expo-image-picker'
+import ImageUpload from './profilePageModals/ImageUpload'
 
 const ProfilePage = () => {
 
-    const [name, setName] = useState("fnifn ejfenf");
-    const [mnumber, setmnumber] = useState("783xxxxx58");
-    const [edit, setEdit] = useState(false);
-    const [textField, setTextField] = useState();
+    const [name, setName] = useState("fnifn ejfenf")
+    const [mnumber, setmnumber] = useState("783xxxxx58")
+    const [edit, setEdit] = useState(false)
+    const [textField, setTextField] = useState()
+    const [image, setImage] = useState(null)
     const [textHeight, setTextHeight] = useState(0)
     const [interests, setInterests] = useState({
         main:[],
@@ -50,8 +51,6 @@ const ProfilePage = () => {
     const [open, setOpen] = useState(false);
     const [prompt, setPrompt] = useState("")
     const [promptValue, setPromptValue] = useState("")
-
-    const [data, setData] = useState();
         
     const [items, setItems] = useState([
         {label: "If you laugh at this, we'll get along...", value: "If you laugh at this, we'll get along..."},
@@ -61,8 +60,43 @@ const ProfilePage = () => {
         {label: "When no one's watching I...", value: "When no one's watching I..."}
     ]);
 
+    const addImageMedia = async () => {
+        let _image = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4,3],
+            quality: 1,
+        });
+
+        if(!_image.cancelled)
+            setImage(_image.uri)
+
+    }
+
+    const addImageCamera = async () => {
+
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("You've refused to allow this appp to access your camera!");
+            return;
+        }      
+
+
+        let _image = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4,3],
+            quality:1, 
+        })
+
+
+        if(!_image.cancelled)
+            setImage(_image.uri)
+    }
+
 
     const exportData = () => {
+        
         const data = {
             bio: textField,
             profilePrompt: prompt,
@@ -71,11 +105,43 @@ const ProfilePage = () => {
             lookingFor: look,
             languages: lang,
             height: height,
-            starSign: starSign
+            starSign: starSign,
+            image: image
         }
 
         console.log(JSON.stringify(data))
-        
+
+    }
+
+    const formImage = () => {
+
+        if(image)
+        {
+            let filename = image.split('/').pop()
+            
+            let match = /\.(\w+)$/.exec(filename)
+            let type = match ? `image/${match[1]}` : `image`
+
+            let formData = new FormData()
+
+            formData.append('photo', {
+                uri: image,
+                name: filename,
+                type
+            })
+
+            //console.log(formData)
+
+            // await fetch(YOUR_SERVER_URL, {
+            //     method: 'POST',
+            //     body: formData,
+            //     headers: {
+            //       'content-type': 'multipart/form-data',
+            //     },
+            // });
+
+        }
+
     }
 
 
@@ -91,35 +157,21 @@ const ProfilePage = () => {
                     flexGrow: 1,
                     height: containerHeight
                 }]}
-
             >
             
             {/* Profile Picture */}
                 <View style={styles.picCont}>
 
                     <View style={styles.mainPicCont}>
-                        <Image source={require("../../assets/test-pic.jpg")} style={styles.profilePic} />
+                        {
+                            image && <Image source={{uri: image}} style={styles.profilePic} />
+                        }
                     </View>
 
                 </View>
 
             {/* Profile Picture Change Button */}
-                <TouchableOpacity style={styles.button}>
-                    <LinearGradient
-                        colors={colors}
-                        end={{ x: 0.75, y: 0.25 }}
-                        style={styles.imageGrad}
-                    >
-
-                    </LinearGradient>
-
-                    <Icon
-                    style={{
-                        position: 'absolute',
-                        top: 14,
-                        left: 14
-                    }} name="image" size={30} color="#eee" />
-                </TouchableOpacity>
+            <ImageUpload colors={colors} edit={edit} styles={styles} addImageCamera={addImageCamera} addImageMedia={addImageMedia}/>
 
             {/* Account Details Container */}
                 <View style={styles.account}>
@@ -184,6 +236,8 @@ const ProfilePage = () => {
                         
                         {/* <Text style={styles.inputTag}>D.O.B</Text> */}
                         
+                        
+
                          
                     </View>
 
@@ -220,7 +274,7 @@ const ProfilePage = () => {
                         value={textField}
                         placeholder='Something about yourselve...'
                         onContentSizeChange={(event) => {
-                            setTextHeight(event.nativeEvent.contentSize.height>100?event.nativeEvent.contentSize.height:100);
+                            setTextHeight(event.nativeEvent.contentSize.height>120?event.nativeEvent.contentSize.height:120);
                         }}
                         onChangeText={text => setTextField(text)}
                         style={[styles.input, {height:textHeight, textAlignVertical: 'top', textAlign: 'left', paddingVertical:14, paddingHorizontal:10}]}
@@ -347,18 +401,15 @@ const ProfilePage = () => {
 
 
                     <Text style={styles.accountHeader}>More about me</Text>
-                    
+                             
                     {/* Height */}
                     <Height styles={styles} height={height} setHeight={setHeight} height={height} edit={edit}/>
-
 
                     {/* Star Sign */}
                     <StarSign styles={styles} starSign={starSign} setStarSign={setStarSign} edit={edit}/>
 
-
                     {/* Looking For */}
                     <LookingFor styles={styles} setLook={setLook} edit={edit}/>
-
 
                     {/* Pronouns */}
                     <TouchableOpacity style={styles.basicOption}>
@@ -401,13 +452,13 @@ const ProfilePage = () => {
                         end={{ x: 0.75, y: 0.25 }}
                         style={styles.updateButtonGrad}
                     >
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             onPress={() => setEdit(false)}
                         >
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
-                        
+
                         </TouchableOpacity>
-                
+
                     </LinearGradient>
                     
                     {/* Delete Account Button */}
@@ -420,13 +471,13 @@ const ProfilePage = () => {
                             onPress={() => setEdit(false)}
                         >
                             <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
-                        
+
                         </TouchableOpacity>
-                
+
                     </LinearGradient>
 
                 </View>
-                
+
             </View>
 
         </ScrollView>
@@ -449,7 +500,6 @@ const styles = StyleSheet.create({
         height: "100%",
         top:-1,
         resizeMode: 'contain',
-        
         
     },
 
@@ -474,8 +524,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        
-        
     },
 
     accountHeader:{
@@ -502,8 +550,6 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         display: 'flex',
         flexDirection: 'column',
-        
-        
     },  
 
     picCont: {
@@ -515,7 +561,9 @@ const styles = StyleSheet.create({
         right:0,
         overflow: 'hidden',
         borderRadius:Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        
+        borderWidth: 1,
+        borderColor: '#ededed',
+        backgroundColor: '#ededed'
     },
 
     mainPicCont: {
@@ -525,7 +573,7 @@ const styles = StyleSheet.create({
         right: 0,
         height: 320,
         width: "100%",
-        
+
     },
 
     button:{

@@ -110,7 +110,7 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                 }} size={18} color="#333"/>
 
             </TouchableOpacity>
-
+            
             <View style={styles.centeredView}>
                 
                 <Modal
@@ -223,7 +223,6 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                     
                     </View>
                 </Modal>
-            
             </View>
         </>
     )
