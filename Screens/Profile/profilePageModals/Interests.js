@@ -77,6 +77,8 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                 ...s,
                 new: i
             }))
+
+            setToAdd('');
         }
         
     }
