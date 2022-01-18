@@ -8,12 +8,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     alignItems:"center",
-    width:"35%",
+    width:"45%",
     padding:10,
     flexDirection:"row",
     justifyContent:"space-around",
-    marginRight:"10%",
-    marginBottom:"5%"
+    marginRight:"5%",
+    marginBottom:"5%",
+   
     
   },
   emoji:{
@@ -23,7 +24,8 @@ const styles = StyleSheet.create({
   },
   text:{
       color:"#FF4E8D",
-      textAlign:"center"
+      textAlign:"center",
+      textTransform:"uppercase"
   }
 });
 
