@@ -2,36 +2,52 @@ import { StatusBar, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    position:"absolute",
+    position: "absolute",
     marginTop: StatusBar.currentHeight || 0,
     width: "100%",
     height: "10%",
     backgroundColor: "rgba(18, 18, 18, 0.25)",
-    display:"flex",
-    flexDirection:"row",
-    alignItems:'center',
-    paddingLeft:10,
-    elevation:2
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 10,
+    elevation: 1,
   },
-  text:{
-      fontSize:18,
-      color:"#fff",
-      marginLeft:10,
-      fontWeight:"bold"
+  containerB: {
+    position: "absolute",
+    marginTop: StatusBar.currentHeight || 0,
+    width: "100%",
+    height: "10%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 10,
+    elevation: 1,
   },
-  image:{
+  text: {
+    fontSize: 18,
+    color: "#fff",
+    marginLeft: 10,
+    fontWeight: "bold",
+  },
+  textB: {
+    fontSize: 18,
+    color: "#292C6D",
+    marginLeft: 10,
+    fontWeight: "bold",
+  },
+  image: {
     width: 20,
-    height: 20
+    height: 20,
   },
-  iconWrapper:{
-    marginLeft:"auto",
-    marginRight:10,
+  iconWrapper: {
+    marginLeft: "auto",
+    marginRight: 10,
   },
-  icon:{
-    fontSize:20,
-    color:"#fff",
-    fontWeight:"bold"
-  }
-
+  icon: {
+    fontSize: 20,
+    color: "#fff",
+    fontWeight: "bold",
+  },
 });
 export default styles;

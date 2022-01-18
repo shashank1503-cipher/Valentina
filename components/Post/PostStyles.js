@@ -37,7 +37,14 @@ const styles = StyleSheet.create({
     elevation:2,
     color:"#fff"
   },
-  //  right container
+  leftContainer:{
+    position:"absolute",
+    top:"50%",
+    paddingLeft:"10%",
+    flexWrap:"wrap",
+    flexDirection:"row",
+    justifyContent:"center"
+  },
   rightContainer: {
     alignSelf: 'flex-end',
     height: 250,
@@ -48,5 +55,28 @@ const styles = StyleSheet.create({
   iconContainer: {
     alignItems: 'center',
   },
+  firstPage: {
+    width: Dimensions.get("window").width
+  },
+  aboutMeContainer:{
+    width: Dimensions.get("window").width,
+  },
+  aboutMeHeading:{
+    position:"absolute",
+    top:"20%",
+    color:"#292C6D",
+    fontSize:40,
+    marginLeft:"10%",
+    fontWeight:'bold'
+  },
+  aboutMeContent:{
+    position:"absolute",
+    top:"30%",
+    color:"#292C6D",
+    fontSize:20,
+    marginLeft:"10%",
+    marginRight:"10%",
+  }
+
 });
 export default styles;
