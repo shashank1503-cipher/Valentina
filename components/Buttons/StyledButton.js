@@ -12,7 +12,7 @@ const Button = ({page, text}) => {
     }
     return (
         <Pressable  
-          onPress={Pressed} style={styles.button}
+          onPress={Pressed} style={style.button}
         >
           <LinearGradient
             colors={colors}
