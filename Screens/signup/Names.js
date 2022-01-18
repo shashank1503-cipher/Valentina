@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 ;

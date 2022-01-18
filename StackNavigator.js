@@ -20,7 +20,6 @@ const StackNavigator = () => {
     >
       <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
       <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />
-      {/* <Stack.Screen name="CollegeID" component={CollegeID} /> */}
       <Stack.Screen name="Names" component={Names}/>
       <Stack.Screen name="Dob" component={Dob}/>
       <Stack.Screen name="Gender" component={Gender}/>
