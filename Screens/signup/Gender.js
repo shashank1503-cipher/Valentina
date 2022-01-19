@@ -1,12 +1,11 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Pressable } from 'react-native'
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, Pressable } from 'react-native'
+
 import StyledButton from '../../components/Buttons/StyledButton'
 
 
 import styles from './Style/Styles'
 const Gender = () => {
-    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>

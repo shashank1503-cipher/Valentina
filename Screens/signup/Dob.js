@@ -7,12 +7,12 @@ import styles from './Style/Styles'
 
 const Dob = () => {    
        
-    const [date, setDate] = useState('15-01-2022');        
+    //const [date, setDate] = useState('15-01-2022');        
       
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>How old are you?</Text>
-
+            {/*
             <View style={styles.date} >
             
 
@@ -53,7 +53,7 @@ const Dob = () => {
                   }}
             />   
             
-            </View> 
+                </View>  */}
 
             <StyledButton page="Gender" text="Next"/> 
              
