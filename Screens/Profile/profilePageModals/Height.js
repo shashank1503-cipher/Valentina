@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Modal, StyleSheet, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -12,7 +12,9 @@ const Height = ({styles, height, setHeight, edit}) => {
 
         <>
 
-        <TouchableOpacity style={styles.basicOption}
+        <TouchableOpacity style={[styles.basicOption,{
+            alignItems: 'center'
+        }]}
             onPress={() => setModalVisible(!modalVisible)}
             disabled={!edit}
         >
@@ -28,14 +30,32 @@ const Height = ({styles, height, setHeight, edit}) => {
                     marginTop:4
                 }} size={20} color="#222"/>
                 
+                
+
                 <Text style={styles.basicText}>Height</Text>
             
             </View>
 
+            <View
+                style={{
+                    backgroundColor:'#efefef',
+                    textAlign: 'center',
+                    paddingHorizontal: 10,
+                    right: 10,
+                    borderRadius: 20,
+                    borderColor: '#ddd',
+                    borderWidth: 1,
+                    display: height.feet !== '0'?'flex':'none'
+                }}
+            >
+                <Text>
+                    {height.feet}'{height.inch}
+                </Text>
+            </View>
 
             <Icon name="chevron-forward" style={{
                 marginRight:8,
-                marginTop:6
+                // marginTop:6
             }} size={18} color="#333"/>
 
         </TouchableOpacity>

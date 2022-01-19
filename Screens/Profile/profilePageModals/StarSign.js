@@ -73,7 +73,9 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
 
     return (
         <>
-            <TouchableOpacity style={styles.basicOption}
+            <TouchableOpacity style={[styles.basicOption,{
+                alignItems: 'center'
+            }]}
                 onPress={() => setModalVisible(!modalVisible)}
                 disabled={!edit}
             >
@@ -93,10 +95,31 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
 
                 </View>
 
+                
+                    <View
+                        style={{
+                            backgroundColor:'#efefef',
+                            textAlign: 'center',
+                            paddingHorizontal: 10,
+                            right: 10,
+                            borderRadius: 20,
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            paddingBottom: 2,
+                            textAlign: 'center',
+                            display: starSign?'flex':'none'
+                        }}
+                    >
+                        <Text>
+                            {starSign}
+                        </Text>
+                    </View>
+               
+
 
                 <Icon name="chevron-forward" style={{
                     marginRight:8,
-                    marginTop:6
+                    
                 }} size={18} color="#333"/>
 
             </TouchableOpacity>

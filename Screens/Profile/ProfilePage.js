@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
     View, 
     Text, 
@@ -11,7 +11,7 @@ import {
     ScrollView,
     
 } from 'react-native'
-import DropDownPicker from 'react-native-dropdown-picker'
+
 import Icon from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Languages from './profilePageModals/Languages'
@@ -21,6 +21,8 @@ import StarSign from './profilePageModals/StarSign'
 import LookingFor from './profilePageModals/LookingFor'
 import * as ImagePicker from 'expo-image-picker'
 import ImageUpload from './profilePageModals/ImageUpload'
+import ProfilePrompt from './profilePageModals/ProfilePrompt'
+import Location from './profilePageModals/Location'
 
 const ProfilePage = () => {
 
@@ -43,22 +45,12 @@ const ProfilePage = () => {
         inch:'0'
     })
 
+    const [profilePrompts, setProfilePrompts] = useState({})
+
     const [starSign, setStarSign] = useState('')
 
-    const [containerHeight, setContainerHeight] = useState(1700)
+    const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
-   
-    const [open, setOpen] = useState(false);
-    const [prompt, setPrompt] = useState("")
-    const [promptValue, setPromptValue] = useState("")
-        
-    const [items, setItems] = useState([
-        {label: "If you laugh at this, we'll get along...", value: "If you laugh at this, we'll get along..."},
-        {label: 'Perfect fist date...', value: 'Perfect fist date...'},
-        {label: 'A pro and a con of dating me...', value: 'A pro and a con of dating me...'},
-        {label: 'Something I learned way later than I should have...', value: 'Something I learned way later than I should have...'},
-        {label: "When no one's watching I...", value: "When no one's watching I..."}
-    ]);
 
     const addImageMedia = async () => {
         let _image = await ImagePicker.launchImageLibraryAsync({
@@ -82,25 +74,21 @@ const ProfilePage = () => {
             return;
         }      
 
-
         let _image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
             aspect: [4,3],
             quality:1, 
         })
 
-
         if(!_image.cancelled)
             setImage(_image.uri)
     }
-
 
     const exportData = () => {
         
         const data = {
             bio: textField,
-            profilePrompt: prompt,
-            profilePromptValue: promptValue,
+            profilePrompts: profilePrompts,
             interest: interests,
             lookingFor: look,
             languages: lang,
@@ -144,9 +132,17 @@ const ProfilePage = () => {
 
     }
 
+    useEffect(() => {
+
+        if(textHeight > 120)
+            setContainerHeight(1600+(textHeight-120))
+        
+        else
+            setContainerHeight(1550)
+
+    }, [textHeight])
 
     return (
-        <>
 
         <ScrollView
             showsVerticalScrollIndicator={true}
@@ -164,14 +160,24 @@ const ProfilePage = () => {
 
                     <View style={styles.mainPicCont}>
                         {
-                            image && <Image source={{uri: image}} style={styles.profilePic} />
+                            image && 
+                            <Image 
+                                source={{uri: image}} 
+                                style={styles.profilePic}
+                            />
                         }
                     </View>
 
                 </View>
 
             {/* Profile Picture Change Button */}
-            <ImageUpload colors={colors} edit={edit} styles={styles} addImageCamera={addImageCamera} addImageMedia={addImageMedia}/>
+            <ImageUpload 
+                colors={colors} 
+                edit={edit} 
+                styles={styles} 
+                addImageCamera={addImageCamera} 
+                addImageMedia={addImageMedia}
+            />
 
             {/* Account Details Container */}
                 <View style={styles.account}>
@@ -184,7 +190,7 @@ const ProfilePage = () => {
                                 <Text style={styles.editButton}>Edit</Text>
                             </TouchableOpacity>
                             :
-                            <TouchableOpacity onPress={() =>{setEdit(false);exportData()}}>
+                            <TouchableOpacity onPress={() =>{setEdit(false)}}>
                                 <Text style={styles.editButton}>Submit</Text>
                             </TouchableOpacity>
                         }   
@@ -203,7 +209,6 @@ const ProfilePage = () => {
                             }]}
                             value={name}
                             selectionColor="#FF4E8C"
-                            // onChangeText={name => setName(name)}
                             editable={false}
                         />
                     
@@ -223,9 +228,7 @@ const ProfilePage = () => {
                             value={mnumber}
                             selectionColor="#FF4E8C"
                             keyboardType='numeric'
-                            // onChangeText={mnumber => setmnumber(mnumber)}
                             editable={false}
-                            // selectTextOnFocus={edit}
                             maxLength={10}
                         />
                         
@@ -253,13 +256,13 @@ const ProfilePage = () => {
                                 paddingRight: 20
                             }]}
                             value={email}
-                            selectionColor="#FF4E8C"
-                            // onChangeText={email => setEmail(email)}
+                            selectionColor="#FF4E8C"                    
                             editable={false}
-                            // selectTextOnFocus={edit}
+        
                         />
                         
                     </View>
+
 
                     <Text style={styles.accountHeader}>My bio</Text>
                     
@@ -277,76 +280,29 @@ const ProfilePage = () => {
                             setTextHeight(event.nativeEvent.contentSize.height>120?event.nativeEvent.contentSize.height:120);
                         }}
                         onChangeText={text => setTextField(text)}
-                        style={[styles.input, {height:textHeight, textAlignVertical: 'top', textAlign: 'left', paddingVertical:14, paddingHorizontal:10}]}
+                        style={[styles.input, {
+                            height:textHeight, 
+                            textAlignVertical: 'top', 
+                            textAlign: 'left', 
+                            paddingVertical:14, 
+                            paddingHorizontal:10
+                        }]}
                     />
 
                     <Text style={styles.accountHeader}>My Profile Prompts</Text>
                     
                     {/* Profile Prompt DropDown */}
-                    <DropDownPicker
-                        open={open}
-                        value={prompt}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setPrompt}
-                        setItems={setItems}
-                        autoScroll={true}
-                        style={styles.input}
-                        labelStyle={{
-                            fontWeight: "bold"
-                        }}
-                        
-                        closeAfterSelecting={true}
-                        listMode="SCROLLVIEW"
-                        dropDownDirection='down'
-                        disabled={!edit}
-                        dropDownContainerStyle={{
-                            
-                            borderWidth: 2,
-                            borderColor: "#DDDDDD",
-                            borderRadius: 10,
-                            backgroundColor: "#EFEFEF",
-                            width:"90%",
-                            marginHorizontal:"5%",
-                        }}
-                        
+                    <ProfilePrompt 
+                        styles={styles} 
+                        profilePrompts={profilePrompts} 
+                        setProfilePrompts={setProfilePrompts} 
+                        edit={edit}
                     />
-
-
-                    <TextInput 
-                        placeholder='Profile Prompt'
-                        style={styles.input}
-                        value={promptValue}
-                        selectionColor="#FF4E8C"
-                        onChangeText={pv => setPromptValue(pv)}
-                        editable={edit}
-                        selectTextOnFocus={edit}
-                    />
-
 
                     <Text style={styles.accountHeader}>My Basics</Text>
                     
                     {/* Location */}
-                    <TouchableOpacity style={styles.basicOption}>
-
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexGrow: 1,
-                        }}>
-                            <Icon name="location" style={{
-                                marginRight:10,
-                                marginTop:4
-                            }} size={20} color="#222"/>
-                            <Text style={styles.basicText}>Location</Text>
-                        </View>
-
-                        <Icon name="chevron-forward" style={{
-                            marginRight:8,
-                            marginTop:6
-                        }} size={18} color="#333"/>
-
-                    </TouchableOpacity>
+                    <Location styles={styles} edit={edit} />
 
                     {/* School */}
                     <TouchableOpacity style={styles.basicOption}>
@@ -373,51 +329,48 @@ const ProfilePage = () => {
 
 
                     {/* Languages */}
-                    <Languages styles={styles} lang={lang} setLang={setLang} edit={edit}/>
-
-
-                     {/* Home */}
-                     <TouchableOpacity style={styles.basicOption}>
-
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexGrow: 1,
-                        }}>
-                            <Icon name="home" style={{
-                                marginRight:10,
-                                marginTop:4
-                            }} size={20} color="#222"/>
-                            <Text style={styles.basicText}>Hometown</Text>
-                        </View>
-
-
-                        <Icon name="chevron-forward" style={{
-                            marginRight:8,
-                            marginTop:6
-                        }} size={18} color="#333"/>
-
-                    </TouchableOpacity>
+                    <Languages 
+                        styles={styles} 
+                        lang={lang} 
+                        setLang={setLang} 
+                        edit={edit}
+                    />
 
 
                     <Text style={styles.accountHeader}>More about me</Text>
                              
                     {/* Height */}
-                    <Height styles={styles} height={height} setHeight={setHeight} height={height} edit={edit}/>
+                    <Height 
+                        styles={styles} 
+                        height={height} 
+                        setHeight={setHeight} 
+                        height={height} 
+                        edit={edit}
+                    />
 
                     {/* Star Sign */}
-                    <StarSign styles={styles} starSign={starSign} setStarSign={setStarSign} edit={edit}/>
+                    <StarSign 
+                        styles={styles} 
+                        starSign={starSign} 
+                        setStarSign={setStarSign} 
+                        edit={edit}
+                    />
 
                     {/* Looking For */}
-                    <LookingFor styles={styles} setLook={setLook} edit={edit}/>
+                    <LookingFor 
+                        styles={styles} 
+                        setLook={setLook} 
+                        edit={edit}
+                        look={look}
+                    />
 
                     {/* Pronouns */}
                     <TouchableOpacity style={styles.basicOption}>
 
                         <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexGrow: 1,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexGrow: 1,
                             }}>
                         
 
@@ -441,11 +394,17 @@ const ProfilePage = () => {
 
                     </TouchableOpacity>
 
-                    <Text style={styles.accountHeader}>Interests</Text>
 
                     {/* Interest Field */}
-                    <Interests styles={styles} interests={interests} setInterests={setInterests} edit={edit}/>
 
+                    <Interests 
+                        styles={styles} 
+                        interests={interests} 
+                        setInterests={setInterests} 
+                        edit={edit}
+                    />
+
+                       
                     {/* Logout Button */}
                     <LinearGradient
                         colors={colors}
@@ -481,7 +440,6 @@ const ProfilePage = () => {
             </View>
 
         </ScrollView>
-        </>
 
     )
 }
@@ -529,7 +487,7 @@ const styles = StyleSheet.create({
     accountHeader:{
         fontSize:18,
         fontWeight: 'bold',
-        marginTop: 20
+        marginTop: 0,
     },
 
     editButton: {

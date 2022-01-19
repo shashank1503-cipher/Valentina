@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput,TouchableOpacity, Modal, Pressable, StyleSheet, FlatList } from 'react-native'
+import { View, Text, TextInput,TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
@@ -17,18 +17,19 @@ const Interests = ({styles , interests, setInterests, edit}) => {
         'sports'
     ]
 
-    const Item = ({title}) => {
+    const Item = ({title, outside}) => {
         
         const bool = (interests.main.includes(title) | interests.new.includes(title))?true:false
 
         return (
         <Pressable
             style={{
-                padding: 10,
+                padding: outside?5:10,
                 borderColor: '#eeeeee',
-                borderWidth: 2,
+                borderWidth: outside?1:2,
                 borderRadius: 20,
                 margin: 8,
+                marginTop: outside?0:8,
                 alignItems: 'center',
                 backgroundColor: bool?'#eeeeee':'#fefefe',
                 shadowColor: '#000',
@@ -37,6 +38,8 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                 shadowRadius:1,
                 elevation: bool?0:10,
             }}
+
+            disabled={outside}
 
             onPress={() => onPressHandler(title)}
         >
@@ -87,31 +90,74 @@ const Interests = ({styles , interests, setInterests, edit}) => {
     return (
         <>
             <TouchableOpacity style={[styles.basicOption,{
-                marginBottom: 20
-            }]}
+                    marginBottom: 0,
+                    alignItems: 'center',
+                }]}
                 onPress={() => setModalVisible(!modalVisible)}
                 disabled={!edit}
             >
 
-                <View style={{
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingVertical: 10,
+                        width: '100%',
+                        marginLeft: -8,
+
+                    }}
+                >
+
+                    <Text style={styles.accountHeader}>Interests</Text>
+                    
+                    <Icon name="add" style={{
+                        backgroundColor: '#FF4E8C',
+                        borderRadius: 10,
+                        paddingTop: 2,
+                        paddingLeft: 2.5,
+                        height: 20,
+                        width: 20,
+                        alignSelf: 'center',
+                        marginTop:2,
+                        
+                    }} size={15} color="#fff"/>
+
+                </View>
+
+            </TouchableOpacity>
+
+
+            <View style={{
                     display: 'flex',
                     flexDirection: 'row',
                     flexGrow: 1,
-                }}>
+                    flexWrap: 'wrap'
+                }}
+            >
                     {/* <Icon name="language" style={{
                         marginRight:10,
                         marginTop:4
                     }} size={20} color="#222"/> */}
-                    <Text style={styles.basicText}>Interests</Text>
-                </View>
+                    
+                    
+                    {
+                        Object.keys(interests).length !== 0
 
+                        &&
 
-                <Icon name="chevron-forward" style={{
-                    marginRight:8,
-                    marginTop:6
-                }} size={18} color="#333"/>
+                        interests.main.map(interest => (
+                            <Item 
+                                outside={true}
+                                title={interest} 
+                                key={interest}
+                            />
+                        ))
+                        
+                    }
 
-            </TouchableOpacity>
+            </View>
+
             
             <View style={styles.centeredView}>
                 

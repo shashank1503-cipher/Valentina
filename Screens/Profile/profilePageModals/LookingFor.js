@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'reac
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
-const LookingFor = ({styles, setLook, edit}) => {
+const LookingFor = ({styles, setLook, edit, look}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -15,7 +15,9 @@ const LookingFor = ({styles, setLook, edit}) => {
     return (
         
         <>
-            <TouchableOpacity style={styles.basicOption}
+            <TouchableOpacity style={[styles.basicOption,{
+                alignItems:'center'
+            }]}
                 onPress={() => setModalVisible(true)}
                 disabled={!edit}
             >
@@ -33,11 +35,27 @@ const LookingFor = ({styles, setLook, edit}) => {
                     <Text style={styles.basicText}>Looking For</Text>
                 
                 </View>
+                
+                <View
+                    style={{
+                        backgroundColor:'#efefef',
+                        textAlign: 'center',
+                        paddingHorizontal: 10,
+                        right: 10,
+                        borderRadius: 20,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        display: look?'flex':'none'
+                    }}
+                >
+                    <Text>
+                        {look}
+                    </Text>
+                </View>
 
 
                 <Icon name="chevron-forward" style={{
                     marginRight:8,
-                    marginTop:6
                 }} size={18} color="#333"/>
 
             </TouchableOpacity>
