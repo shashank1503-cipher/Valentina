@@ -11,6 +11,8 @@ import Sexuality from './Screens/signup/Sexuality';
 import GenderInterest from "./Screens/signup/GenderInterest";
 import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
+import ChatScreen from "./Screens/ChatScreen/ChatScreen";
+import MessageScreen from "./Screens/ChatScreen/MessageScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,9 @@ const StackNavigator = () => {
     >
       <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
       <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />
+      {/* <Stack.Screen name="CollegeID" component={CollegeID} /> */}
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Message" component={MessageScreen} options={{headerShown:false}}/>
       <Stack.Screen name="Names" component={Names}/>
       <Stack.Screen name="Dob" component={Dob}/>
       <Stack.Screen name="Gender" component={Gender}/>
