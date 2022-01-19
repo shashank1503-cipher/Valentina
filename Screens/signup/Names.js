@@ -3,7 +3,11 @@ import { View, Text, TextInput } from 'react-native'
 import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 ;
-const Names = ({First, Last, setValue}) => {
+const Names = ({}) => {
+    const [First, setFirst] = useState('')
+    const [Last, setLast] = useState('')
+    const validate=0;
+
 
     return (
         <View style={ styles.container }>
@@ -13,16 +17,16 @@ const Names = ({First, Last, setValue}) => {
                 placeholder="First Name" 
                 style={styles.input}
                 value={First}
-                onChangetext={setValue}
+                setValue={setFirst}
             />
             <TextInput 
                 placeholder="Last Name" 
                 style={styles.input}
                 value={Last}
-                onChangetext={setValue}
+                setValue={setLast}
             />
 
-            <StyledButton page="Dob" text="Next"/>
+            <StyledButton page="Dob" text="Next" onClick={validate}/>
 
         </View>
     )
