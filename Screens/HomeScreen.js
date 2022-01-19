@@ -1,10 +1,8 @@
-import React, { useContext, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import Post from "../components/Post/Post";
 import { Dimensions, FlatList, StatusBar, View } from "react-native";
 import AppContext from "../context/AppContext";
-
 
 const data = [
   {
@@ -13,6 +11,11 @@ const data = [
     age: "27",
     batch: "2020",
     bio: " Hello, I am Gal Gadot. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.",
+    img: [
+      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
+      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
+      "",
+    ],
     aboutStuff: [
       {
         type: "height",
@@ -43,7 +46,7 @@ const data = [
         value: "She/Her",
       },
     ],
-    interests: ['Photography','Coding','Gaming','Singing','Dancing']
+    interests: ["Photography", "Coding", "Gaming", "Singing", "Dancing"],
   },
   {
     id: "2",
@@ -51,6 +54,11 @@ const data = [
     age: "28",
     batch: "2019",
     bio: " Hello, I am Gal Gadot from another universe for batch 2019. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.",
+    img: [
+      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
+      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
+      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642505999/image_2_1_yohp3i.png",
+    ],
     aboutStuff: [
       {
         type: "height",
@@ -81,7 +89,7 @@ const data = [
         value: "She/Her",
       },
     ],
-    interests: ['Photography','Coding','Gaming','Singing','Dancing']
+    interests: ["Photography", "Coding", "Gaming", "Singing", "Dancing"],
   },
   {
     id: "3",
@@ -89,6 +97,11 @@ const data = [
     age: "104",
     batch: "2018",
     bio: " Hello, I am Diana Prince aka Wonder Woman. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.",
+    img: [
+      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
+      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
+      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642505999/image_2_1_yohp3i.png",
+    ],
     aboutStuff: [
       {
         type: "height",
@@ -119,21 +132,21 @@ const data = [
         value: "She/Her",
       },
     ],
-    interests: ['Photography','Coding','Gaming','Singing','Dancing']
+    interests: ["Photography", "Coding", "Gaming", "Singing", "Dancing"],
   },
 ];
 
 const HomeScreen = () => {
   // const [statusBarStyle, setStatusBarStyle] = useState(STYLES[0]);
-  let { headerState ,SetHeaderState, ScrollViewRef } = useContext(AppContext);
-    let handleVerticalScroll = () => {
-      SetHeaderState(0);
-      ScrollViewRef.current.scrollTo({
-        x: 0,
-      });
-    };
-  let style = headerState ?  'dark-content' : 'light-content' 
+  let { headerState, HorizontalScrollViewRef, SetScrollViewRef,SetHeaderState } = useContext(AppContext);
+  let style = headerState ? "dark-content" : "light-content";
   StatusBar.setBarStyle(style, true);
+  let handleVerticalScroll = (e) => {
+        SetHeaderState(0)
+        // console.log(HorizontalScrollViewRef)
+        // HorizontalScrollViewRef.current.scrollTo({x:0,animated:true})
+
+  };
   return (
     <View>
       <Header />
@@ -147,16 +160,20 @@ const HomeScreen = () => {
             bio={item.bio}
             aboutStuff={item.aboutStuff}
             interests={item.interests}
+            img={item.img}
           />
         )}
         showsVerticalScrollIndicator={false}
         snapToInterval={Dimensions.get("screen").height}
         snapToAlignment={"start"}
         decelerationRate={"fast"}
-        onScroll={handleVerticalScroll}
+        ref={(ref) => {
+          SetScrollViewRef(ref);
+        }}
         alwaysBounceHorizontal={false}
         alwaysBounceVertical={true}
         bounces={true}
+        onScroll={handleVerticalScroll}
       />
     </View>
   );

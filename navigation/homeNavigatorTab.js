@@ -22,7 +22,7 @@ const homeNavigatorTab = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Likes"
         component={LikeScreen}
         options={{
@@ -30,7 +30,7 @@ const homeNavigatorTab = () => {
             <AntDesign name={focused ? "heart" : "hearto"} size={25} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Chat"
         component={ChatScreen}

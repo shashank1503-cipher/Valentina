@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   overlay: {
     height: "100%",
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     elevation: 2,
   },
   image: {
@@ -115,6 +115,34 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: "10%",
     marginRight: "10%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    
+  },
+  modalView: {
+    
+    backgroundColor: "white",
+    borderRadius: 20,
+    width:"75%",
+    padding: "5%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    color:"#000",
+    fontSize:17,
+    marginBottom: 15,
+
   },
 });
 export default styles;
