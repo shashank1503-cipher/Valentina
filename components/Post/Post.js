@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
+  Pressable,
+  Alert,
 } from "react-native";
 import styles from "./PostStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -16,15 +19,23 @@ import { LinearGradient } from "expo-linear-gradient";
 import Interest from "../Interest/Interest";
 
 const Post = (props) => {
-  const { changeHeader, ScrollViewRef,SetHorizontalScrollViewRef } = useContext(AppContext);
+  const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
+    useContext(AppContext);
   const [isLiked, setIsLiked] = useState(false);
-  let pageIndex=1;
+  let pageIndex = 1;
   const onLikePress = () => {
     setIsLiked(isLiked ? false : true);
   };
   const onDisLikePress = () => {
-    ScrollViewRef.scrollToOffset({ offset: Dimensions.get("screen").height*pageIndex, animated: true });
+    ScrollViewRef.scrollToOffset({
+      offset: Dimensions.get("screen").height * pageIndex,
+      animated: true,
+    });
     pageIndex++;
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const onReportPress = () => {
+    setModalVisible(!modalVisible);
   };
 
   const emojiMap = {
@@ -36,6 +47,7 @@ const Post = (props) => {
     looking_for: "🧑",
     pronouns: "🏳️‍🌈",
   };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -46,7 +58,7 @@ const Post = (props) => {
         decelerationRate={"fast"}
         onScroll={changeHeader}
         ref={(ref) => {
-          SetHorizontalScrollViewRef(ref)
+          SetHorizontalScrollViewRef(ref);
         }}
       >
         <DoubleClick doubleTap={onLikePress}>
@@ -81,7 +93,7 @@ const Post = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconContainer}
-                  onPress={onDisLikePress}
+                  onPress={onReportPress}
                 >
                   <MaterialCommunityIcons
                     name="dots-vertical"
@@ -106,14 +118,6 @@ const Post = (props) => {
                   {props.aboutStuff.map((val) => (
                     <Interest value={val.value} emoji={emojiMap[val.type]} />
                   ))}
-                  {/* <Interest value="5'11" emoji="📏" />
-                  <Interest value="2002" emoji="📅" />
-                  <Interest value="5'11" emoji="📏" />
-                  <Interest value="2002" emoji="📅" />
-                  <Interest value="2002" emoji="📅" />
-                  <Interest value="2002" emoji="📅" />
-                  <Interest value="2002" emoji="📅" />
-                  <Interest value="2002" emoji="📅" /> */}
                 </View>
                 <View style={styles.rightContainer}>
                   <TouchableOpacity
@@ -139,13 +143,12 @@ const Post = (props) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.iconContainer}
-                    onPress={onDisLikePress}
+                    onPress={onReportPress}
                   >
                     <MaterialCommunityIcons
                       name="dots-vertical"
                       size={30}
                       color={"white"}
-                      // style={{transform: [{rotate: '45deg'}]}}
                     />
                   </TouchableOpacity>
                 </View>
@@ -185,7 +188,7 @@ const Post = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconContainer}
-                  onPress={onDisLikePress}
+                  onPress={onReportPress}
                 >
                   <MaterialCommunityIcons
                     name="dots-vertical"
@@ -234,13 +237,12 @@ const Post = (props) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.iconContainer}
-                    onPress={onDisLikePress}
+                    onPress={onReportPress}
                   >
                     <MaterialCommunityIcons
                       name="dots-vertical"
                       size={30}
                       color={"white"}
-                      // style={{transform: [{rotate: '45deg'}]}}
                     />
                   </TouchableOpacity>
                 </View>
@@ -279,7 +281,7 @@ const Post = (props) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.iconContainer}
-                    onPress={onDisLikePress}
+                    onPress={onReportPress}
                   >
                     <MaterialCommunityIcons
                       name="dots-vertical"
@@ -329,13 +331,12 @@ const Post = (props) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.iconContainer}
-                      onPress={onDisLikePress}
+                      onPress={onReportPress}
                     >
                       <MaterialCommunityIcons
                         name="dots-vertical"
                         size={30}
                         color={"white"}
-                        // style={{transform: [{rotate: '45deg'}]}}
                       />
                     </TouchableOpacity>
                   </View>
@@ -345,6 +346,27 @@ const Post = (props) => {
           </DoubleClick>
         )}
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity>
+              <Text style={[styles.modalText, { color: "#F60711" }]}>
+                Report
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={styles.modalText}>Get Email Id</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
