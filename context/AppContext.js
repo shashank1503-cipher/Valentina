@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useState } from "react";
 import { Dimensions } from "react-native";
 
 const AppContext = createContext();
@@ -8,23 +8,25 @@ export default AppContext;
 export const AppProvider = ({ children }) => {
   const [HeaderState, setHeaderState] = useState(0);
   const changeHeader = (e) => {
-    let scrollX = e.nativeEvent.contentOffset.x
-    let width= Dimensions.get("window").width
-    if (parseInt(scrollX) % parseInt(width) === 0){
-        let counter = parseInt(scrollX) / parseInt(width)
-        setHeaderState(counter%2)
+    let scrollX = e.nativeEvent.contentOffset.x;
+    let width = Dimensions.get("window").width;
+    if (parseInt(scrollX) % parseInt(width) === 0) {
+      let counter = parseInt(scrollX) / parseInt(width);
+      setHeaderState(counter % 2);
     }
   };
-  let scrollRef = useRef();
+  const [scrollViewRef, setScrollViewRef] = useState(null);
+  const [horizontalScrollRef, setHorizontalScrollRef] = useState(null);
   let contextData = {
     headerState: HeaderState,
-    SetHeaderState:setHeaderState,
+    SetHeaderState: setHeaderState,
     changeHeader: changeHeader,
-    ScrollViewRef:scrollRef,
+    ScrollViewRef: scrollViewRef,
+    SetScrollViewRef: setScrollViewRef,
+    HorizontalScrollViewRef: horizontalScrollRef,
+    SetHorizontalScrollViewRef: setHorizontalScrollRef,
   };
   return (
-    <AppContext.Provider value={contextData}>
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextData}>{children}</AppContext.Provider>
   );
 };
