@@ -47,7 +47,7 @@ const Post = (props) => {
           <View style={styles.firstPage}>
             <Image
               style={styles.image}
-              source={{uri:'https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png'}}
+              source={{uri:props.img[0]}}
             />
             <View style={styles.uiContainer}>
               <Text style={styles.textH}>
@@ -154,7 +154,7 @@ const Post = (props) => {
           <View style={styles.firstPage}>
             <Image
               style={styles.image}
-              source={{uri:'https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png'}}
+              source={{uri:props.img[1]}}
             />
             <View style={styles.uiContainer}>
               {/* <Text style={styles.textH}>
@@ -252,7 +252,7 @@ const Post = (props) => {
           <View style={styles.firstPage}>
             <Image
               style={styles.image}
-              source={{uri:'https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png'}}
+              source={{uri:props.img[2]}}
             />
             <View style={styles.overlay}>
               <Text style={styles.promptType}>
