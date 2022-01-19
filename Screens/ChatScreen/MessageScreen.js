@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import {
   Platform,
   Keyboard,
-  Button,
   SafeAreaView,
   View,
   KeyboardAvoidingView,
-  TouchableHighlight,
   TouchableWithoutFeedback,
   Text,
   StyleSheet,
@@ -19,16 +17,33 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import SenderMessage from "../../components/ChatComponents/SenderMessage";
 import ReceiverMessage from "../../components/ChatComponents/ReceiverMessage";
+import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const MessageScreen = () => {
   const navigation = useNavigation();
   const { params } = useRoute();
   const [input, setInput] = useState("");
-  //messages fetched from firebase
-  const [messages, setMessages] = useState([]);
+
+  //const [messages, setMessages] = useState([]);
 
   const { name } = params;
-
+  // static messages, will be replaced by realtime messages from firebase with the help message state
+  const messages = [   
+    {
+        timestamp: "Today 12:05",
+        userid: "0",
+        id: "e",
+        message: "Can I follow you? Cause my mom told me to follow my dreams...",
+      },
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    
+  ];
+  //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {};
 
   return (
@@ -47,27 +62,21 @@ const MessageScreen = () => {
         <Text style={styles.text}>{name}</Text>
       </SafeAreaView>
       <KeyboardAvoidingView
-        behaviour={Platform.OS == "ios" ? "padding" : "height"}
+        behaviour={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={10}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <>
-            <FlatList
-              style={{ paddingLeft: 4 }}
-              data={messages}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item: message }) =>
-                messages.userId === user.id ? (
-                  <SenderMessage key={message.id} message={message} />
-                ) : (
-                  <ReceiverMessage key={message.id} message={message} />
-                )
-              }
-            />
-          </>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+          <FlatList
+            style={{ paddingLeft: 4 }}  
+            //inverted={-1}       
+            data={messages}            
+            renderItem={({ item: message }) => 
+              message.userid == "0" ? (<SenderMessage key={message.id} message={message}/>):(<ReceiverMessage key={message.id} message={message}/>)                
+            }
+          />
         </TouchableWithoutFeedback>
 
-        <View style={styles.container}>
+        <View style={styles.footer}>
           <TextInput
             style={styles.input}
             placeholder="Type Something...."
@@ -75,11 +84,11 @@ const MessageScreen = () => {
             onSubmitEditing={sendMessage}
             value={input}
           />
-          <TouchableHighlight onPress={sendMessage}>
+          <TouchableOpacity onPress={sendMessage}>
             <View>
-              <Ionicons name="arrow-forward-circle" size={50} color="#FF4E8D" />
+              <Ionicons name="arrow-forward-circle" size={60} color="#FF4E8D" />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -90,6 +99,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: "10%",
     marginLeft: "5%",
+    paddingBottom: "5%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -105,13 +115,22 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     textAlign: "left",
   },
+  footer: {
+    position: "absolute",
+    marginTop: "120%",
+    marginLeft: "5%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   input: {
     paddingLeft: 10,
-    //position: 'absolute',
+    position: "relative",
+    fontSize: 14,
     marginRight: "10%",
-    width: 260,
+    width: "72%",
     height: 50,
-    //top: 50,
+    //top: "80%",
     backgroundColor: "#F1F1F1",
     borderColor: "#000000",
     borderWidth: 1,
