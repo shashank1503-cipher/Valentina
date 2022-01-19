@@ -46,8 +46,6 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
 
         delete profilePrompts[e];
 
-        console.log(profilePrompts)
-
         setProfilePrompts(s => ({
             ...s
         }))

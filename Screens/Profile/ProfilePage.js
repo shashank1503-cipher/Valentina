@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     accountHeader:{
         fontSize:18,
         fontWeight: 'bold',
-        marginTop: 0,
+        marginTop: 10,
     },
 
     editButton: {
