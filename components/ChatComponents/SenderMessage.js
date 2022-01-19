@@ -1,22 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const SenderMessage = ({ message }) => {
+const SenderMessage = ({ message }) => {  
   return (
-    <View style={styles.container}>
-      <Text>{message.message}</Text>
-    </View>
+     <>
+        <Text style={{textAlign:"center",paddingBottom: "5%", color: "#B9B9B9"}}>{message.timestamp}</Text>
+        <View style={styles.container}>        
+            <Text style={{color:"white"}}>{message.message}</Text>
+        </View>
+     </> 
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
-    width: 234,
-    height: 60,
-    left: 137,
+    fontSize: 14,
+    position: "relative",    
     alignItems: "flex-start",
-    marginLeft: "auto",
+    marginLeft: "auto",    
+    padding: 10,
+    marginBottom: '5%',
+    width: "60%",
     //top: 307px
     backgroundColor: "#FF9B7B",
     borderRadius: 20,
