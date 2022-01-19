@@ -2,21 +2,17 @@ import {StyleSheet,Platform, StatusBar} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal:45,
-         paddingVertical:90,
+        paddingHorizontal:40,
+        paddingTop:10,
          backgroundColor: '#fff',
          display: 'flex',
-         flex: 1,
-         alignSelf: 'center',         
-    },
-    subcontainer:{
-        width:'95%',
+         flex: 1,       
     },
     heading: {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize:28,
-        paddingBottom:20,
+        paddingTop:25,
         fontWeight: 'bold',
     },
     input:{
@@ -52,8 +48,9 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
   button:{
+    position: "relative",
         alignItems: "center",        
-        top:280,
+        top:250,
         justifyContent: "center",
     },
     date: {
@@ -61,7 +58,8 @@ const styles = StyleSheet.create({
         top:180,
     },
     Welcometext: {
-        paddingBottom:100,
+        paddingTop:5,
+        paddingBottom:70,
     },
     Moretext: {
         alignItems: "center",
@@ -74,6 +72,8 @@ const styles = StyleSheet.create({
         paddingVertical:12,
         marginVertical:8,
         borderRadius:6,
+        alignItems: "center",
+        justifyContent: "center",
     },
     Searchcontainer:{
         backgroundColor:'#fff',
