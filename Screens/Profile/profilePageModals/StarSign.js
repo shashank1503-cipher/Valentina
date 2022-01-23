@@ -42,6 +42,16 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
             case 'aquarius':
                 s = require('../../../assets/starSigns/aquarius.png')
                 break;
+            case 'gemini':
+                s = require('../../../assets/starSigns/gemini.png')
+                break;
+            case 'pisces':
+                s = require('../../../assets/starSigns/pisces.png')
+                break;
+            case 'sagittarius':
+                s = require('../../../assets/starSigns/sagittarius.png')
+                break;
+            
         }
 
         return (
@@ -153,6 +163,9 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
                             <Sign title="TAURUS"/>
                             <Sign title="SCORPIO"/>
                             <Sign title="LIBRA"/>
+                            <Sign title="GEMINI"/>
+                            <Sign title="PISCES"/>
+                            <Sign title="SAGITTARIUS"/>
    
                         </View>
     

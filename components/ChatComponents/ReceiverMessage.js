@@ -5,7 +5,6 @@ const ReceiverMessage = ({ message }) => {
   //console.log(message);
   return (
     <View style={styles.recieve}>
-      <Image style={{width: 41, height: 41}} source={require("../../assets/matched1.png")} />
       <View style={styles.container}>      
         <Text>{message.message}</Text>      
       </View>
@@ -24,7 +23,8 @@ const styles = StyleSheet.create({
     position: "relative",     
     padding: 10,
     textAlign: "justify",
-    width: "60%",   
+    width: "60%",
+    marginBottom: '5%',
     //top: 307px
     backgroundColor: "#B9B0B0",
     borderRadius: 20,

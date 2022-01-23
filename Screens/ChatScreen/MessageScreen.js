@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  ScrollView,
+  StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -28,7 +30,7 @@ const MessageScreen = () => {
 
   const { name } = params;
   // static messages, will be replaced by realtime messages from firebase with the help message state
-  const messages = [   
+  const [messages, setMessages] = useState([   
     {
         timestamp: "Today 12:05",
         userid: "0",
@@ -41,14 +43,122 @@ const MessageScreen = () => {
       id: "a",
       message: "I’m not a hoarder but I really Loream ipls",
     },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: "I’m not a hoarder but I really Loream ipls",
+    },   
+    {
+      timestamp: "Today 12:10", 
+      userid: "1",
+      id: "a",
+      message: " Loream ipls",
+    },   
     
-  ];
+  ]);
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
-  const sendMessage = () => {};
+  const sendMessage = () => {
+
+    if(!input)
+      return;
+
+    const message = {
+      message: input,
+      userid: '0',
+      id: 'e',
+      timestamp: 'Today 12:30'
+    }
+    setMessages(m => [...m, message])
+    
+    setInput("")
+
+    this.ScrollView.scrollToEnd()
+
+  };
 
   return (
-    <SafeAreaView>
-      <SafeAreaView style={styles.container}>
+    <>
+      
+      <View style={styles.container}>
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={() => navigation.goBack()}
@@ -60,49 +170,61 @@ const MessageScreen = () => {
           source={require("../../assets/matched1.png")}
         />
         <Text style={styles.text}>{name}</Text>
-      </SafeAreaView>
-      <KeyboardAvoidingView
-        behaviour={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={10}
+      </View>
+
+      <ScrollView
+        // behaviour={Platform.OS === "ios" ? "padding" : "height"}
+        //keyboardVerticalOffset={10}
+        showsVerticalScrollIndicator={true}
+        ref={ref => {this.ScrollView = ref}}
+        
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+        <TouchableWithoutFeedback
+          style={{
+            height: '100%'
+          }}
+          onPress={Keyboard.dismiss} >
           <FlatList
-            style={{ paddingLeft: 4 }}  
-            //inverted={-1}       
-            data={messages}            
+            style={{ paddingHorizontal: 10, bottom: 0 }}     
+            data={messages}
+            
             renderItem={({ item: message }) => 
               message.userid == "0" ? (<SenderMessage key={message.id} message={message}/>):(<ReceiverMessage key={message.id} message={message}/>)                
             }
           />
         </TouchableWithoutFeedback>
+      </ScrollView>
 
-        <View style={styles.footer}>
+      <View style={styles.footer}>
           <TextInput
             style={styles.input}
             placeholder="Type Something...."
             onChangeText={setInput}
-            onSubmitEditing={sendMessage}
             value={input}
+            multiline={true}
           />
           <TouchableOpacity onPress={sendMessage}>
             <View>
-              <Ionicons name="arrow-forward-circle" size={60} color="#FF4E8D" />
+              <Ionicons name="arrow-forward-circle" size={40} color="#FF4E8D" />
             </View>
           </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </View>
+
+    </>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "10%",
-    marginLeft: "5%",
-    paddingBottom: "5%",
+    marginTop: StatusBar.currentHeight,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    zIndex: 2,
+    padding: 10,
+    width: "100%",
+    borderColor: '#aaa',
   },
   text: {
     fontFamily: "Roboto",
@@ -116,26 +238,31 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   footer: {
-    position: "absolute",
-    marginTop: "120%",
-    marginLeft: "5%",
+    bottom: 0,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    marginVertical: 10,
+    width: "100%",
+    shadowColor: '#000',
+    shadowOffset: { width: 10, height: 10},
+    shadowOpacity: 1,
+    shadowRadius:2,
+    elevation: 5,
+    justifyContent: 'space-around',
+    alignContent: 'center',
+    alignItems: 'center'
   },
   input: {
-    paddingLeft: 10,
     position: "relative",
+    paddingHorizontal: 15,
     fontSize: 14,
-    marginRight: "10%",
-    width: "72%",
-    height: 50,
-    //top: "80%",
-    backgroundColor: "#F1F1F1",
-    borderColor: "#000000",
+    width: "80%",
+    backgroundColor: "#FeFeFe",
+    borderColor: "#eeeeee",
     borderWidth: 1,
-    borderStyle: "solid",
     borderRadius: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
 
