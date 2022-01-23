@@ -302,7 +302,10 @@ const ProfilePage = () => {
                     <Text style={styles.accountHeader}>My Basics</Text>
                     
                     {/* Location */}
-                    <Location styles={styles} edit={edit} />
+                    <Location 
+                        styles={styles} 
+                        edit={edit}
+                    />
 
                     {/* School */}
                     <TouchableOpacity style={styles.basicOption}>
