@@ -23,11 +23,16 @@ import * as ImagePicker from 'expo-image-picker'
 import ImageUpload from './profilePageModals/ImageUpload'
 import ProfilePrompt from './profilePageModals/ProfilePrompt'
 import Location from './profilePageModals/Location'
+// import { db } from '../firebase'
+// import useAuth from '../hooks/useAuth'
+// import { doc, serverTimestamp, setDoc} from 'firebase/firestore'
 
 const ProfilePage = () => {
+    
+    //const {user, logout} = useAuth()
 
-    const [name, setName] = useState("fnifn ejfenf")
-    const [mnumber, setmnumber] = useState("783xxxxx58")
+    const [name, setName] = useState("user.displayName")
+    const [mnumber, setmnumber] = useState("user.phoneNumber" || "783xxxxx58")
     const [edit, setEdit] = useState(false)
     const [textField, setTextField] = useState()
     const [image, setImage] = useState(null)
@@ -37,7 +42,8 @@ const ProfilePage = () => {
         new:[]
     })
    
-    const [email, setEmail] = useState("whfbwj20bcs999")
+
+    const [email, setEmail] = useState("user.email")
     const [look, setLook] = useState()
     const [lang, setLang] = useState([])
     const [height, setHeight] = useState({
@@ -87,6 +93,7 @@ const ProfilePage = () => {
     const exportData = () => {
         
         const data = {
+            id: user.uid,
             bio: textField,
             profilePrompts: profilePrompts,
             interest: interests,
@@ -94,10 +101,21 @@ const ProfilePage = () => {
             languages: lang,
             height: height,
             starSign: starSign,
-            image: image
+            imageUrl: imageURL,
+            timestamp: serverTimestamp()
         }
 
-        console.log(JSON.stringify(data))
+        console.log(JSON.stringify({...data}))
+
+        setDoc(doc(db, 'users', user.uid), {
+            ...data
+        })
+        .then(() => {
+            console.log("done")
+        })
+        .catch(err => {
+            alert(err.message)
+        })
 
     }
 
@@ -308,7 +326,7 @@ const ProfilePage = () => {
                     />
 
                     {/* School */}
-                    <TouchableOpacity style={styles.basicOption}>
+                    {/* <TouchableOpacity style={styles.basicOption}>
 
                         <View style={{
                             display: 'flex',
@@ -328,7 +346,7 @@ const ProfilePage = () => {
                             marginTop:6
                         }} size={18} color="#333"/>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
 
                     {/* Languages */}
@@ -361,7 +379,7 @@ const ProfilePage = () => {
 
                     {/* Looking For */}
                     <LookingFor 
-                        styles={styles} 
+                        styles={styles}
                         setLook={setLook} 
                         edit={edit}
                         look={look}
@@ -415,7 +433,7 @@ const ProfilePage = () => {
                         style={styles.updateButtonGrad}
                     >
                         <TouchableOpacity
-                            onPress={() => setEdit(false)}
+                            onPress={logout}
                         >
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
 
