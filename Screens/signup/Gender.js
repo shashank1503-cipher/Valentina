@@ -2,9 +2,12 @@ import React, { useState} from 'react'
 import { View, Text, Pressable,Button, TouchableHighlight } from 'react-native'
 import StyledButton from '../../components/Buttons/StyledButton'
 import Header from './Header'
+import { useNavigation } from "@react-navigation/native";
+
 
 import styles from './Style/Styles'
 const Gender = () => {
+    const navigation = useNavigation(); 
     const genders = [
         {
             genderOptions: [
@@ -48,7 +51,7 @@ const Gender = () => {
                 <Text>More gender options ˅</Text>
             </Pressable>
             
-            <StyledButton page="IdentityConfirmation" text="Next"/>
+            <StyledButton page="Identity Confirmation" text="Next"/>
     
         </View>
     )

@@ -433,7 +433,7 @@ const ProfilePage = () => {
                         style={styles.updateButtonGrad}
                     >
                         <TouchableOpacity
-                            onPress={logout}
+                            // onPress={logout}
                         >
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
 

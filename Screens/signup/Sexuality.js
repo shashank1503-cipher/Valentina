@@ -29,7 +29,7 @@ const Sexuality = () => {
                 ))}
             </View>
 
-            <StyledButton page="GenderInterest" text="Next"/>
+            <StyledButton page="Gender Interest" text="Next"/>
     </View>
     )
 }

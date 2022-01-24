@@ -22,7 +22,7 @@ const SplashScreen = () => {
             </Text>
         </TouchableOpacity>
       </LinearGradient>
-      <Button page="Names" text="Sign up"/>
+      <Button page="What's in the name tho?" text="Sign up"/>
     </View>
   );
 };
