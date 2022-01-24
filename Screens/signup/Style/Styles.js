@@ -3,7 +3,7 @@ import {StyleSheet,Platform, StatusBar} from 'react-native';
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal:40,
-        paddingTop:10,
+        paddingTop:5,
          backgroundColor: '#fff',
          display: 'flex',
          flex: 1,       
@@ -65,10 +65,37 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingTop:10,
     },
+    btn:{
+        backgroundColor: "#fff",
+        color: '#000',
+    },
+    btnNormal: {
+        borderColor: "#c4c4c4",
+        borderWidth:1,
+        paddingHorizontal:20,
+        paddingVertical:12,
+        marginVertical:8,
+        borderRadius:6,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      btnPress: {
+        borderColor: '#000',
+        backgroundColor:'#000',
+        color: '#fff',
+        borderWidth: 1,
+        paddingHorizontal:20,
+        paddingVertical:12,
+        marginVertical:8,
+        borderRadius:6,
+        alignItems: "center",
+        justifyContent: "center",
+        
+      },
     option: {
         borderColor: "#c4c4c4",
         borderWidth:1,
-        paddingHorizontal:10,
+        paddingHorizontal:20,
         paddingVertical:12,
         marginVertical:8,
         borderRadius:6,
@@ -82,7 +109,50 @@ const styles = StyleSheet.create({
     search:{
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         color: '#8C8C8C',
-    }
+    },
+    IdentityConfirmationPress:{
+        borderColor: "#c4c4c4",
+        borderWidth:1,
+        paddingHorizontal:20,
+        paddingVertical:12,
+        marginVertical:8,
+        borderRadius:6,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    showOnProfile: {
+        position: 'relative',
+        top:40,
+        borderColor: "#c4c4c4",
+        borderWidth:1,
+        paddingHorizontal:20,
+        paddingVertical:12,
+        marginVertical:8,
+        borderRadius:6,
+    },
+    subcontainer:{
+        justifyContent: "center",
+    },
+    toggleSwitch: {
+        top:-33,
+    },
+    showText: {
+        fontSize:20,
+    },
+    turnText: {
+        paddingTop:10,
+        width:'80%',
+        fontSize:14,
+        color: '#817B7B'
+    },
+    sexconatiner: {
+        position: 'relative',
+        paddingTop:30,
+    },
+    sexconatiner: {
+        position: 'relative',
+        paddingTop:50,
+    },
     
 });
 

@@ -3,18 +3,27 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from '../components/Buttons/StyledButton';
-
+import useAuth from "../hooks/useAuth"; 
 
 const SplashScreen = () => {
   const colors = ["#F9D7D5", "#FF9B7B", "#FF4E8C"];
   const navigation = useNavigation();
-  return (
+  const {user,logout} = useAuth();
+  console.log(user);
+
+  return (     
     <View style={styles.container}>
+                 
       <LinearGradient
         colors={colors}
         style={styles.background}
         end={{ x: 0.90, y: 0.10 }}
-      >
+      >     
+        <View style={{top: 100,alignItems: "center"}}>
+          <Text style={styles.text,{color: '#fff'}} >
+              Hello, {user.displayName}
+          </Text>
+        </View>                
         <Image source={require("../assets/ico.png")} style={styles.image} />
         <TouchableOpacity onPress={() => navigation.navigate("Main")}  style={styles.button}>
             <Text style={styles.text}>
@@ -22,8 +31,14 @@ const SplashScreen = () => {
             </Text>
         </TouchableOpacity>
       </LinearGradient>
-      <Button page="Names" text="Sign up"/>
-    </View>
+      <Button page="What's in the name tho?" text="Sign up"/>
+      <TouchableOpacity onPress={logout} style={styles.logout}>
+            <Text style={styles.text}>
+                Logout
+            </Text>
+      </TouchableOpacity>
+    </View>   
+    
   );
 };
 const styles = StyleSheet.create({
@@ -55,10 +70,23 @@ const styles = StyleSheet.create({
   },
   button: {
     "position": "absolute",
-    "width": 330,
+    "width": "80%",
     "height": 50,
     "left": 35,
     "top": 500,
+    "backgroundColor": "#FFFFFF",
+    "borderTopLeftRadius": 30,
+    "borderTopRightRadius": 30,
+    "borderBottomRightRadius": 30,
+    "borderBottomLeftRadius": 30,
+    elevation: 3,
+  },
+  logout: {
+    "position": "absolute",
+    "width": "80%",
+    "height": 50,
+    "left": 35,
+    "top": 700,
     "backgroundColor": "#FFFFFF",
     "borderTopLeftRadius": 30,
     "borderTopRightRadius": 30,
