@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const ChatScreenHeader = ({ title, type }) => {
+const ChatScreenHeader = ({ title}) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
@@ -22,15 +22,15 @@ const ChatScreenHeader = ({ title, type }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: "4%",
-    //marginRight: "35%",
+    // marginRight: "35%",
     display: "flex",
     flexDirection: "row",
-    //alignItems:'center',
+    alignItems:'center',
   },
   text: {
     fontSize: 18,
     color: "black",
-    marginRight: "35%",
+    marginRight: "41%",
     marginTop: "5%",
     fontWeight: "bold",
     textAlign: "center",

@@ -14,6 +14,7 @@ import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
 import MessageScreen from "./Screens/ChatScreen/MessageScreen";
+import DisplayMatchedScreen from "./Screens/DisplayMatchedScreen/DisplayMatchedScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Photo" component={Photo}/>
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
+      <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
     </Stack.Navigator>
   );
 };
