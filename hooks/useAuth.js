@@ -1,4 +1,4 @@
-import React, {createContext, useContext} from 'react';
+import React, {createContext,useMemo, useContext, useState, useEffect} from 'react';
 import * as Google from 'expo-google-app-auth';
 import {
     GoogleAuthProvider,
@@ -18,8 +18,38 @@ const config = {
 }
 
 export const AuthProvider = ({children}) => {
+    const [error, setError] = useState(null);
+    const [user, setUser] = useState(null);
+    //to prevent the opening of splash screen for a split second b4 google auth
+    const [loadingInitial, setLoadingInitial] = useState(true);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(
+        () => 
+            onAuthStateChanged(auth, (user) => {
+                if(user){
+                    //logged in
+                    setUser(user);
+                }else{
+                    //not logged in
+                    setUser(null);
+                }
+                setLoadingInitial(false);
+            }),
+        []
+    );
+
+    const logout = () => {
+        setLoading(true);
+
+        signOut(auth)
+            .catch((error) => setError(error))
+            .finally(() => setLoading(false));
+    }
 
     const signInWithGoogle = async () => {
+        setLoading(true);
+
         await Google.logInAsync(config).then(async (logInResult) => {
             if(logInResult.type === 'success') {
                 let domain = logInResult.user.email.split('@')[1];
@@ -36,16 +66,27 @@ export const AuthProvider = ({children}) => {
             }
 
             return Promise.reject();            
-        });
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
     };
 
-  return (
-    <AuthContext.Provider 
-        value={{
-            user: null,
+    //cached values to prevent wastage re-rendering 
+    const memoedValue = useMemo(
+        ()=> ({
+            user,
+            loading,
+            error,
             signInWithGoogle,
-        }}>
-      {children}
+            logout,
+        }),
+        [user, loading, error]
+        //re-renders only if user, loading or error state changes
+    )
+
+  return (
+    <AuthContext.Provider value={memoedValue}>
+      {!loadingInitial&&children}
     </AuthContext.Provider>
   );
 };

@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
 
 const LoginScreen = () => {
-  const { signInWithGoogle} = useAuth();
+  const { signInWithGoogle, loading} = useAuth();
   const colors = ["#F9D7D5", "#FF9B7B", "#FF4E8C"];
   const navigation = useNavigation();
   return (
@@ -16,12 +16,16 @@ const LoginScreen = () => {
         end={{ x: 0.90, y: 0.10 }}
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />        
-      </LinearGradient>
-      <TouchableOpacity onPress={signInWithGoogle}  style={styles.button}>
+        <View style={{top:450,alignItems: "center"}}>
+          <Text style={{fontSize: 20,color:'#fff'}}>{loading ? "Loading..." : "Login using your IIITK Gmail"}</Text>
+        </View>
+        <TouchableOpacity onPress={signInWithGoogle}  style={styles.button}>
             <Text style={styles.text}>
               Google SignIn
             </Text>
-      </TouchableOpacity>      
+        </TouchableOpacity> 
+                    
+      </LinearGradient>          
     </View>
   );
 };
@@ -54,7 +58,8 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "absolute",
-    width: 330,
+    left: 35,
+    width: "80%",
     height: 50,
     top: 500,   
     backgroundColor: "#FFFFFF",
