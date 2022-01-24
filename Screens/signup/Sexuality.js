@@ -21,7 +21,7 @@ const Sexuality = () => {
         <View style={styles.container}>
             <Header title="I am"/>
 
-            <View style={styles.sexconatiner}>
+            <View style={styles.sexcontainer}>
                 {sexuality[0].Options.map((Option)=> (
                     <TouchableHighlight  >
                         <Text style={styles.option}>{Option.optionText}</Text>
