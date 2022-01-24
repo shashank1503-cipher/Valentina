@@ -40,14 +40,11 @@ const StackNavigator = () => {
       <Stack.Screen name="Photo" component={Photo}/>
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
-<<<<<<< HEAD
+      <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
       </>
     ) : (
       <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
-    )}
-=======
-      <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
->>>>>>> 2239ee69df170ae79d59dc5900052cf7ee50e303
+    )}      
     </Stack.Navigator>
   );
 };
