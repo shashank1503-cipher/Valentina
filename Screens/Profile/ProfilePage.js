@@ -23,6 +23,7 @@ import * as ImagePicker from 'expo-image-picker'
 import ImageUpload from './profilePageModals/ImageUpload'
 import ProfilePrompt from './profilePageModals/ProfilePrompt'
 import Location from './profilePageModals/Location'
+import Pronouns from './profilePageModals/Pronouns'
 // import { db } from '../firebase'
 // import useAuth from '../hooks/useAuth'
 // import { doc, serverTimestamp, setDoc} from 'firebase/firestore'
@@ -54,6 +55,8 @@ const ProfilePage = () => {
     const [profilePrompts, setProfilePrompts] = useState({})
 
     const [starSign, setStarSign] = useState('')
+
+    const [pronoun, setPronoun] = useState('')
 
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
@@ -102,6 +105,7 @@ const ProfilePage = () => {
             height: height,
             starSign: starSign,
             imageUrl: imageURL,
+            pronoun: pronoun,
             timestamp: serverTimestamp()
         }
 
@@ -257,8 +261,6 @@ const ProfilePage = () => {
                         
                         {/* <Text style={styles.inputTag}>D.O.B</Text> */}
                         
-                        
-
                          
                     </View>
 
@@ -386,7 +388,7 @@ const ProfilePage = () => {
                     />
 
                     {/* Pronouns */}
-                    <TouchableOpacity style={styles.basicOption}>
+                    {/* <TouchableOpacity style={styles.basicOption}>
 
                         <View style={{
                                 display: 'flex',
@@ -413,11 +415,17 @@ const ProfilePage = () => {
                             marginTop:6
                         }} size={18} color="#333"/>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+
+                    <Pronouns
+                        styles={styles}
+                        edit={edit}
+                        pronoun={pronoun}
+                        setPronoun={setPronoun}
+                    />
 
 
                     {/* Interest Field */}
-
                     <Interests 
                         styles={styles} 
                         interests={interests} 
