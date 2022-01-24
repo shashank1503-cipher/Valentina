@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     Moretext: {
         alignItems: "center",
         paddingTop:10,
+        marginBottom:-70,
     },
     btn:{
         backgroundColor: "#fff",
@@ -129,29 +130,62 @@ const styles = StyleSheet.create({
         paddingVertical:12,
         marginVertical:8,
         borderRadius:6,
+        paddingBottom:-30
     },
     subcontainer:{
         justifyContent: "center",
     },
     toggleSwitch: {
-        top:-33,
+        top:-20,
     },
     showText: {
         fontSize:20,
+        marginBottom:-20,
     },
     turnText: {
-        paddingTop:10,
+        marginBottom:8,
         width:'80%',
         fontSize:14,
         color: '#817B7B'
     },
-    sexconatiner: {
-        position: 'relative',
-        paddingTop:30,
-    },
-    sexconatiner: {
+    sexcontainer: {
         position: 'relative',
         paddingTop:50,
+        marginBottom:-120
+    },
+    interestsconatiner: {
+        position: 'relative',
+        paddingTop:100,
+        marginBottom:-50,
+    }, 
+    dropdown: {
+        paddingTop:30,
+        borderBottomWidth:1,
+        borderBottomColor: "#c4c4c4",
+        color: '#8E8E8E',
+        
+    },
+    item: {
+        paddingVertical: 17,
+        paddingHorizontal: 4,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        
+    },
+    textItem: {
+        flex: 1,
+        fontSize: 16,       
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
     },
     
 });
