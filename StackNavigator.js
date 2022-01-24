@@ -14,12 +14,9 @@ import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
 import MessageScreen from "./Screens/ChatScreen/MessageScreen";
-<<<<<<< HEAD
 import LoginScreen from "./Screens/LoginScreen";
 import useAuth from "./hooks/useAuth";
-=======
 import DisplayMatchedScreen from "./Screens/DisplayMatchedScreen/DisplayMatchedScreen";
->>>>>>> 2239ee69df170ae79d59dc5900052cf7ee50e303
 
 const Stack = createNativeStackNavigator();
 
