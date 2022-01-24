@@ -14,17 +14,21 @@ import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
 import MessageScreen from "./Screens/ChatScreen/MessageScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import useAuth from "./hooks/useAuth";
 import DisplayMatchedScreen from "./Screens/DisplayMatchedScreen/DisplayMatchedScreen";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
+  const {user} = useAuth();
+
   return (
-    <Stack.Navigator  
-    >
+    <Stack.Navigator> 
+    {user ? (
+      <>
       <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
-      <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />
-      {/* <Stack.Screen name="CollegeID" component={CollegeID} /> */}
+      <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />      
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown:false}}/>
       <Stack.Screen name="Message" component={MessageScreen} options={{headerShown:false}}/>
       <Stack.Screen name="What's in the name tho?" component={Names}/>
@@ -37,6 +41,10 @@ const StackNavigator = () => {
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
       <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
+      </>
+    ) : (
+      <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
+    )}      
     </Stack.Navigator>
   );
 };
