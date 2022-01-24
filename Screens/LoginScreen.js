@@ -1,4 +1,4 @@
-import { Button, StyleSheet, View,Text } from "react-native";
+import { TouchableOpacity, StyleSheet, View,Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +17,11 @@ const LoginScreen = () => {
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />        
       </LinearGradient>
-      <Button title="Google SignIn" onPress={signInWithGoogle}  style={styles.button}/>
+      <TouchableOpacity onPress={signInWithGoogle}  style={styles.button}>
+            <Text style={styles.text}>
+              Google SignIn
+            </Text>
+      </TouchableOpacity>      
     </View>
   );
 };
@@ -52,7 +56,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 330,
     height: 50,
-    left: 35,
     top: 500,   
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 30,

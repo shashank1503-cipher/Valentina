@@ -20,7 +20,6 @@ const Post = (props) => {
   const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
     useContext(AppContext);
   const [isLiked, setIsLiked] = useState(false);
-  let pageIndex = 1;
   const onLikePress = () => {
     setIsLiked(isLiked ? false : true);
   };
@@ -28,11 +27,10 @@ const Post = (props) => {
     setIsLiked(true);
   };
   const onDisLikePress = () => {
-    ScrollViewRef.scrollToOffset({
-      offset: Dimensions.get("screen").height * pageIndex,
-      animated: true,
-    });
-    pageIndex++;
+    // ScrollViewRef.scrollToOffset({
+    //   offset: Dimensions.get("screen").height * pageIndex,
+    //   animated: true,
+    // });
   };
   const [modalVisible, setModalVisible] = useState(false);
   const onReportPress = () => {

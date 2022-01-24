@@ -6,6 +6,7 @@ import {
     signInWithCredential,
     signOut
 } from '@firebase/auth'
+import {auth} from '../firebase';
 
 const AuthContext = createContext({});
 
@@ -21,10 +22,17 @@ export const AuthProvider = ({children}) => {
     const signInWithGoogle = async () => {
         await Google.logInAsync(config).then(async (logInResult) => {
             if(logInResult.type === 'success') {
-                //login
-                const {idToken, accessToken} =logInResult;
-                const credentials = GoogleAuthProvider.credential(idToken, accessToken);
-                await signInWithCredential(auth,credentials);
+                let domain = logInResult.user.email.split('@')[1];
+                if(domain=='iiitkottayam.ac.in') {
+                    //login
+                    const {idToken, accessToken} =logInResult;
+                    const credentials = GoogleAuthProvider.credential(idToken, accessToken);
+                    await signInWithCredential(auth,credentials);
+                    console.log('Successfully logged in!'); 
+                }else{
+                    console.log('Sign in using kottayam account only');     
+                    return Promise.reject();                 
+                }                
             }
 
             return Promise.reject();            
