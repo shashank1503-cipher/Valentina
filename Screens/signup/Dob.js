@@ -3,16 +3,17 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import StyledButton from '../../components/Buttons/StyledButton'
 import styles from './Style/Styles'
-
+import Header from './Header'
 
 const Dob = () => {    
        
-    //const [date, setDate] = useState('15-01-2022');        
+    const [date, setDate] = useState('15-01-2022');        
       
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>How old are you?</Text>
-            {/*
+          <Header title="How old are you?"/>
+
+            
             <View style={styles.date} >
             
 
@@ -53,7 +54,7 @@ const Dob = () => {
                   }}
             />   
             
-                </View>  */}
+                </View>  
 
             <StyledButton page="Gender" text="Next"/> 
              

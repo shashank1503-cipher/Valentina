@@ -116,17 +116,16 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
     marginRight: "10%",
   },
-  centeredView: {
+  endView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    
+    justifyContent:'flex-end',
+    alignItems:'flex-end'
   },
   modalView: {
     
     backgroundColor: "white",
     borderRadius: 20,
-    width:"75%",
+    width:Dimensions.get("screen").width,
     padding: "5%",
     alignItems: "center",
     shadowColor: "#000",

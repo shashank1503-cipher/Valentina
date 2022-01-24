@@ -4,11 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from '../../Screens/signup/Style/Styles'
 
-const Button = ({page, text}) => {
+const Button = ({page, text, validate}) => {
     const navigation = useNavigation();
     const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
     const Pressed = () => {
-      navigation.navigate(`${page}`)
+      navigation.navigate(`${page}`);
+      {validate};
     }
     return (
         <Pressable  
