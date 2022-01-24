@@ -156,8 +156,7 @@ const MessageScreen = () => {
   };
 
   return (
-    <>
-      
+    <>      
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.iconWrapper}
@@ -171,13 +170,11 @@ const MessageScreen = () => {
         />
         <Text style={styles.text}>{name}</Text>
       </View>
-
       <ScrollView
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
         //keyboardVerticalOffset={10}
         showsVerticalScrollIndicator={true}
-        ref={ref => {this.ScrollView = ref}}
-        
+        ref={ref => {this.ScrollView = ref}}        
       >
         <TouchableWithoutFeedback
           style={{

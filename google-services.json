@@ -1,5 +1,4 @@
 {
-  "_comment": "We need to make .env file to store necessary variable in this file during production",
   "project_info": {
     "project_number": "311128380415",
     "project_id": "valentina-834fa",
@@ -14,6 +13,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "311128380415-1n97a7l9i4lbsbni46r469ohb9egra6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "host.exp.exponent",
+            "certificate_hash": "d5e196823e15cdb232345c6c19f7014194fa3424"
+          }
+        },
         {
           "client_id": "311128380415-2ti5hndg6b5ibi52nfr68s7jo48jim4l.apps.googleusercontent.com",
           "client_type": 3
@@ -30,6 +37,13 @@
             {
               "client_id": "311128380415-2ti5hndg6b5ibi52nfr68s7jo48jim4l.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "311128380415-5dh787597b9j93t9klig0oj58t8tv619.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
             }
           ]
         }
