@@ -40,7 +40,7 @@ const Names = () => {
                     />
                     <ErrorMessage error={errors.last} />
 
-                    <StyledButton page="Dob" text="Next" validate="{handleSubmit}"/>
+                    <StyledButton page="Are you old enough?" text="Next" validate="{handleSubmit}"/>
                 </React.Fragment>
             )}
         

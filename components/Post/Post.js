@@ -7,16 +7,14 @@ import {
   ScrollView,
   Dimensions,
   Modal,
-  Pressable,
-  Alert,
 } from "react-native";
 import styles from "./PostStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import DoubleClick from "react-native-double-tap";
 import AppContext from "../../context/AppContext";
 import { LinearGradient } from "expo-linear-gradient";
 import Interest from "../Interest/Interest";
+import DoubleClick from "../DoubleClick/DoubleClick";
 
 const Post = (props) => {
   const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
@@ -25,6 +23,9 @@ const Post = (props) => {
   let pageIndex = 1;
   const onLikePress = () => {
     setIsLiked(isLiked ? false : true);
+  };
+  const onDoubleTap = () => {
+    setIsLiked(true);
   };
   const onDisLikePress = () => {
     ScrollViewRef.scrollToOffset({
@@ -61,7 +62,7 @@ const Post = (props) => {
           SetHorizontalScrollViewRef(ref);
         }}
       >
-        <DoubleClick doubleTap={onLikePress}>
+        <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
             <Image style={styles.image} source={{ uri: props.img[0] }} />
             <View style={styles.uiContainer}>
@@ -105,7 +106,7 @@ const Post = (props) => {
             </View>
           </View>
         </DoubleClick>
-        <DoubleClick doubleTap={onLikePress}>
+        <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.aboutMeContainer}>
             <LinearGradient
               colors={["#FFFFFF", "#F9D7D5"]}
@@ -156,7 +157,7 @@ const Post = (props) => {
             </LinearGradient>
           </View>
         </DoubleClick>
-        <DoubleClick doubleTap={onLikePress}>
+        <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
             <Image style={styles.image} source={{ uri: props.img[1] }} />
             <View style={styles.uiContainer}>
@@ -200,7 +201,7 @@ const Post = (props) => {
             </View>
           </View>
         </DoubleClick>
-        <DoubleClick doubleTap={onLikePress}>
+        <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.aboutMeContainer}>
             <LinearGradient
               colors={["#FFFFFF", "#F9D7D5"]}
@@ -251,7 +252,12 @@ const Post = (props) => {
           </View>
         </DoubleClick>
         {props.img[2] ? (
-          <DoubleClick doubleTap={onLikePress}>
+          <DoubleClick
+            icon
+            delay={300}
+            timeout={1000}
+            doubleClick={onDoubleTap}
+          >
             <View style={styles.firstPage}>
               <Image style={styles.image} source={{ uri: props.img[2] }} />
               <View style={styles.overlay}>
@@ -294,7 +300,12 @@ const Post = (props) => {
             </View>
           </DoubleClick>
         ) : (
-          <DoubleClick doubleTap={onLikePress}>
+          <DoubleClick
+            icon
+            delay={300}
+            timeout={1000}
+            doubleClick={onDoubleTap}
+          >
             <View style={styles.aboutMeContainer}>
               <LinearGradient
                 colors={["#FFFFFF", "#F9D7D5"]}
@@ -354,15 +365,24 @@ const Post = (props) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <View style={styles.endView}>
           <View style={styles.modalView}>
             <TouchableOpacity>
-              <Text style={[styles.modalText, { color: "#F60711" }]}>
+              <Text style={[styles.modalText, { color: "#FF0000" }]}>
                 Report
               </Text>
             </TouchableOpacity>
             <TouchableOpacity>
               <Text style={styles.modalText}>Get Email Id</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={[styles.modalText, { color: "#FF4E8C" }]}>
+                Close
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

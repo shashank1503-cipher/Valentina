@@ -33,8 +33,6 @@ const IdentityConfirmation = () => {
                     </View>
                     <Text style={styles.turnText}>Turn this on to have your gender identity on your profile</Text>
                 </View>
-
-             
                 <StyledButton page="Sexuality" text="Next"/>
 
         
