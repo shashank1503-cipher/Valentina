@@ -29,7 +29,7 @@ const IdentityConfirmation = () => {
                             onValueChange={toggleSwitch}
                             value={isEnabled}
                             style={styles.toggleSwitch}
-                        />    
+                        />     
                     </View>
                     <Text style={styles.turnText}>Turn this on to have your gender identity on your profile</Text>
                 </View>
