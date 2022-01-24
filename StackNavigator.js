@@ -8,6 +8,7 @@ import Gender from './Screens/signup/Gender';
 import Identities from './Screens/signup/Identities';
 import IdentityConfirmation from './Screens/signup/IdentityConfirmation';
 import Sexuality from './Screens/signup/Sexuality';
+import Photo from './Screens/signup/Photo';
 import GenderInterest from "./Screens/signup/GenderInterest";
 import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
@@ -35,6 +36,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Identities" component={Identities}/>
       <Stack.Screen name="IdentityConfirmation" component={IdentityConfirmation}/>
       <Stack.Screen name="Sexuality" component={Sexuality}/>
+      <Stack.Screen name="Photo" component={Photo}/>
       <Stack.Screen name="GenderInterest" component={GenderInterest}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
       </>
