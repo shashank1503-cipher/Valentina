@@ -6,11 +6,9 @@ const styles = StyleSheet.create({
         paddingTop:5,
          backgroundColor: '#fff',
          display: 'flex',
-         flex: 1,       
+         flex: 1,
     },
     heading: {
-        alignItems: 'center',
-        justifyContent: 'center',
         fontSize:28,
         paddingTop:25,
         fontWeight: 'bold',
@@ -187,6 +185,41 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
     },
+    circle:{
+        backgroundColor:'#c4c4c4',
+        height:150,
+        width:150,
+        borderRadius:80,
+        paddingVertical:12,
+        left:'28%',
+        top:70,
+        alignItems:'center',
+    },
+    icon:{        
+        top:30,
+    },
+    camcontainer:{
+        flexDirection: 'column',
+        position: 'relative',
+        top:120,
+        width:'90%',
+    },
+    subcamcontainer:{
+        flexDirection: 'row',
+        borderBottomWidth:1,
+        paddingVertical:8,
+        marginBottom:8,
+        borderRadius:2,
+    },
+    opicons:{
+        paddingRight:60,
+        marginBottom:2,
+    },
+    optext:{
+        marginBottom:-5,
+    }
+
+    
     
 });
 
