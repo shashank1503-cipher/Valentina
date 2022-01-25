@@ -26,6 +26,8 @@ import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
 import { doc, setDoc } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
+import DatePicker from 'react-native-datepicker'
+
 
 const ProfilePage = () => {
     
@@ -56,6 +58,8 @@ const ProfilePage = () => {
         inch:'0'
     })
 
+    const [location, setLocation] = useState('')
+
     const [profilePrompts, setProfilePrompts] = useState({})
 
     const [starSign, setStarSign] = useState('')
@@ -63,6 +67,8 @@ const ProfilePage = () => {
     const [pronoun, setPronoun] = useState('')
 
     const [religion, setReligion] = useState('')
+
+    const [date, setDate] = useState('15-01-2022');        
 
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
@@ -119,6 +125,7 @@ const ProfilePage = () => {
             profilePrompts: profilePrompts,
             interest: interests,
             languages: lang,
+            dob: date,
             
             "aboutStuff":[
                 {
@@ -136,6 +143,15 @@ const ProfilePage = () => {
                 {
                     "type": 'pronoun',
                     "value": pronoun || '',
+                },
+                {
+                    "type": 'religion',
+                    "value": religion || '',
+                },
+                {
+                    "type": 'location',
+                    "value": location
+                    
                 }
             ]
         }
@@ -154,6 +170,7 @@ const ProfilePage = () => {
             profilePrompts: profilePrompts,
             interest: interests,
             languages: lang,
+            dob: date,
             
             "aboutStuff":[
                 {
@@ -171,14 +188,21 @@ const ProfilePage = () => {
                 {
                     "type": 'pronoun',
                     "value": pronoun || '',
+                },
+                {
+                    "type": 'religion',
+                    "value": religion || '',
+                },
+                {
+                    "type": 'location',
+                    "value": location
+                    
                 }
             ]
         }
 
         if(JSON.stringify(data) == JSON.stringify(oldData))
             return;
-
-        console.log("hello")
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
@@ -326,16 +350,9 @@ const ProfilePage = () => {
                         
                     </View>
 
-                    {/* D.O.B Field */}
-                    <View>
-                        
-                        {/* <Text style={styles.inputTag}>D.O.B</Text> */}
-                        
-                         
-                    </View>
 
-                    {/* Email Field */}
-                    <View>
+                     {/* Email Field */}
+                     <View>
                         
                         <Text style={styles.inputTag}>Email</Text>
                         
@@ -353,6 +370,62 @@ const ProfilePage = () => {
                         
                     </View>
 
+
+                    {/* D.O.B Field */}
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            // alignSelf: 'center'
+                        }}
+                            
+                    >
+                        
+                        <Text style={[styles.inputTag,{
+                            position: 'relative',
+                            marginVertical: 0,
+                        }]}>D.O.B</Text>
+                        <DatePicker
+                            mode="date"
+                            date={date}
+                            placeholder='Select date'
+                            format="DD/MM/YYYY"
+                            minDate="01-01-1900"
+                            maxDate="01-01-2003"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            disabled={!edit}
+
+                            customStyles={[{
+                                
+                                borderRadius:10,
+
+                                dateIcon: {
+                                  position: 'absolute',
+                                  right: -5,
+                                  top: 4,
+                                  marginLeft: 0,
+                                },
+                                dateInput: {
+                                  alignItems: "flex-start",
+                                },
+                                placeholderText: {
+                                  fontSize: 17,
+                                  color: "gray"
+                                },
+                                dateText: {
+                                  fontSize: 17,
+                                }
+                            }]}
+                            onDateChange={(date) => {
+                                setDate(date);
+                            }}
+                        />
+                         
+                    </View>
 
                     <Text style={styles.accountHeader}>My bio</Text>
                     
@@ -396,6 +469,8 @@ const ProfilePage = () => {
                     <Location 
                         styles={styles} 
                         edit={edit}
+                        location={location}
+                        setLocation={setLocation}
                     />
 
                     {/* School */}
