@@ -10,6 +10,7 @@ import IdentityConfirmation from './Screens/signup/IdentityConfirmation';
 import Sexuality from './Screens/signup/Sexuality';
 import Photo from './Screens/signup/Photo';
 import GenderInterest from "./Screens/signup/GenderInterest";
+import Interests from "./Screens/signup/Interests";
 import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
@@ -39,6 +40,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Sexuality" component={Sexuality}/>
       <Stack.Screen name="Photo" component={Photo}/>
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
+      <Stack.Screen name="Interests" component={Interests}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
       <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
       </>

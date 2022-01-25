@@ -7,7 +7,7 @@ import Header from './Header'
 const Photo = () => {
   return (
     <View style={styles.container}>
-            <Header title="I am"/>
+            <Header title="My photo"/>
     </View>
   );
 };
