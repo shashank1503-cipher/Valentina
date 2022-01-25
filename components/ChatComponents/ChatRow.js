@@ -13,8 +13,8 @@ const ChatRow = ({ name, imageSrc }) => {
       <View>
         <Text style={styles.text}>{name}</Text>
         <View style={styles.smallt}>
-          <Text style={{ textAlign: "left" }}>Is your body from Mcdonalds</Text>
-          <Text style={{ paddingLeft: "20%", textAlign: "right" }}>11:30</Text>
+          <Text style={{textAlign: "left" }}>Is your body from Mcdonalds</Text>
+          <Text style={{paddingLeft: "10%", textAlign: "right" }}>11:30</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -23,7 +23,7 @@ const ChatRow = ({ name, imageSrc }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: "5%",
+    //marginLeft: "5%",
     marginTop: "5%",
     display: "flex",
     flexDirection: "row",
