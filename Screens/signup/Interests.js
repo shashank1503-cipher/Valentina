@@ -1,9 +1,9 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React, {useState} from 'react';
 import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 import Header from './Header'
-import MultiSelect from 'react-native-multiple-select';
+import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 
 const interestsOptions = [
   {label: 'Photography', value: 'photography'},
@@ -22,6 +22,7 @@ const Interests = (props) => {
 
   const _renderItem = item => {
     return (
+
     <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
     </View>
@@ -33,7 +34,6 @@ const Interests = (props) => {
       <Header title="My interests"/>
 
       <MultiSelect
-      
         style={styles.dropdown}
         data={interestsOptions}
         labelField="label"
@@ -45,11 +45,11 @@ const Interests = (props) => {
         value={selected}
         tagRemoveIconColor="#CCC"
         tagBorderColor="#FF4E8D"
-        tagBorderRadius="6"
+        tagRadius='6'
         tagTextColor="#CCC"
         selectedItemTextColor="#CCC"
+        selectedItemIconColor="#CCC"
         itemTextColor="#000"
-        displayKey="name"
         searchInputStyle={{color: '#C4c4c4'}}
         onChange={item => {
           setSelected(item);
