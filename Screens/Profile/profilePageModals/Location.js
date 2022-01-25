@@ -4,16 +4,13 @@ import * as Loc from 'expo-location'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
-const Location = ({styles, edit}) => {
+const Location = ({styles, edit, location, setLocation}) => {
 
-    const [location, setLocation] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [city,setCity] = useState('')
     const [translation, setTranslation] = useState(0);
 
     const loc = async () => {
         
-        setLocation(null)
         setLoading(true)
 
         let { status } = await Loc.requestForegroundPermissionsAsync();
@@ -25,8 +22,6 @@ const Location = ({styles, edit}) => {
 
         let location = await Loc.getCurrentPositionAsync({})
 
-        setLocation(location)
-
         let city = await Loc.reverseGeocodeAsync({
             latitude : location.coords.latitude,
             longitude : location.coords.longitude
@@ -34,7 +29,7 @@ const Location = ({styles, edit}) => {
 
         setLoading(false)
         
-       setCity(city[0].subregion)
+       setLocation(city[0].subregion)
 
     }
 
@@ -96,12 +91,12 @@ const Location = ({styles, edit}) => {
                             borderRadius: 20,
                             borderColor: '#ddd',
                             borderWidth: 1,
-                            display: city?'flex':'none',
+                            display: location?'flex':'none',
                             paddingTop: 2
                         }}
                     >
                         <Text>
-                            {city}
+                            {location}
                         </Text>
                     </View>
                 }
