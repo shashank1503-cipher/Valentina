@@ -6,6 +6,37 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
+    const [image, setImage] = useState('')
+
+    const onPressHandler = (text) => {
+        setImage(text)
+    }
+
+    const Select = ({title}) => (
+        <TouchableOpacity
+            style={[style.button],{
+                backgroundColor: title === image?'#eee':'',
+                alignItems: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+                padding: 10,
+                borderRadius: 10,
+                width: 110,
+            }}
+            onPress={() => onPressHandler(title)}
+        >
+            {   
+                title === image?
+                    <Icon name="image" size={30}/>
+                    :
+                    <Icon name="image-outline" size={30}/>
+            }
+                
+            <Text>{title.replace('_',' ')}</Text>
+        
+        </TouchableOpacity>
+    )
+
 
     return (
         <>
@@ -46,12 +77,26 @@ const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
                     <View style={styles.centeredView}>
                     
                         <View style={[styles.modalView, {
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-evenly',
+                            width: 330,
+                        }]}>
+                                  
+                            <Select title={'Background'}/>
+                            <Select title={'Profile_1'}/>
+                            <Select title={'Profile_2'}/>
+
+
+                        </View>
+
+
+                        <View style={[styles.modalView, {
+                            justifyContent: 'space-between',
+                            display: image?'flex': 'none' 
                         }]}>
 
                             <TouchableOpacity
                                 style={style.button}
-                                onPress={() => addImageCamera()}
+                                onPress={() => addImageCamera(image)}
                             >
                                 <Icon name="camera" size={30}/>
                                 <Text>Camera</Text>
@@ -60,13 +105,14 @@ const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
 
                             <TouchableOpacity
                                 style={style.button}
-                                onPress={() => addImageMedia()}
+                                onPress={() => addImageMedia(image)}
                             >
                                 <Icon name="images" size={30}/>
                                 <Text>Gallery</Text>
                             </TouchableOpacity>
-                           
+
                         </View>
+                           
                     
                     <TouchableOpacity
                             onPress={() => setModalVisible(!modalVisible)}
