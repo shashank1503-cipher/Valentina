@@ -11,38 +11,6 @@ import * as ImagePicker from 'expo-image-picker'
 import { doc, setDoc } from 'firebase/firestore'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-
-
-const formImage = async (image, text) => {
-
-  let CLOUDINARY_URL = "ClOUD_URL"
-
-  let base64Img = `data:image/jpg;base64,${image.base64}`
-
-  let data = {
-      "file": base64Img,
-      "upload_preset": "PRESET"
-  }
-
-  fetch(CLOUDINARY_URL, {
-      body: JSON.stringify(data),
-      headers: {
-          'content-type': 'application/json'
-      },
-      method: "POST",
-  })
-  .then(async r => r.json())
-  .then(data => {
-      console.log(data)
-      
-      setImage(i => ({
-          ...i,
-          [text]:data.secure_url.toString()
-      }))
-
-  })
-
-}
 const Photo = () => {
   const [image, setImage] = useState('')
   const [bool, setBool] = useState(false)
@@ -54,7 +22,7 @@ const Photo = () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: text === 'background'?[4,3]:[9,16],
+        aspect: text === [9,16],
         quality: 1,
         base64:true
     });
@@ -77,7 +45,7 @@ const addImageCamera = async (text) => {
 
     let _image = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
-        aspect:  text === 'background'?[4,3]:[9,16],
+        aspect:  text === [9,16],
         quality:1, 
     })
 
@@ -85,6 +53,38 @@ const addImageCamera = async (text) => {
         formImage(_image, text)
 
   }
+
+  const formImage = async (image, text) => {
+
+    let CLOUDINARY_URL = "ClOUD_URL"
+  
+    let base64Img = `data:image/jpg;base64,${image.base64}`
+  
+    let data = {
+        "file": base64Img,
+        "upload_preset": "PRESET"
+    }
+  
+    fetch(CLOUDINARY_URL, {
+        body: JSON.stringify(data),
+        headers: {
+            'content-type': 'application/json'
+        },
+        method: "POST",
+    })
+    .then(async r => r.json())
+    .then(data => {
+        console.log(data)
+        
+        setImage(i => ({
+            ...i,
+            [text]:data.secure_url.toString()
+        }))
+  
+    })
+  
+  }
+
   return (
     <View style={styles.container}>
       <Header title="Your fake candids"/>
@@ -93,7 +93,7 @@ const addImageCamera = async (text) => {
           style={{zIndex:10}}
           onPress={() => setBool(!bool)}
         >
-          <Icon name="camera" size={58} style={styles.icon}/>
+          <Icon name="camera" size={75} style={styles.icon}/>
               
         </TouchableOpacity>
             

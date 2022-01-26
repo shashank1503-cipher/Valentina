@@ -45,15 +45,31 @@ const styles = StyleSheet.create({
         "borderBottomLeftRadius": 30,
         elevation: 3,
     },
-  button:{
-    position: "relative",
+    button:{
+        position: "relative",
         alignItems: "center",        
         top:250,
         justifyContent: "center",
     },
-    date: {
-        alignItems: "center", 
-        top:180,
+    date: { 
+        top:140,
+        alignItems:'center'
+                
+    },
+    datetext:{
+        color: '#8E8E8E',
+        borderWidth:1,
+        borderColor: "#8E8E8E",
+        width:280,
+        paddingVertical:12,
+        paddingHorizontal:10,
+        marginVertical: 8,
+        borderRadius:6,
+    },
+    showdate:{
+        position: "relative",
+        top:150,
+        paddingHorizontal: 110,
     },
     Welcometext: {
         paddingTop:5,
@@ -196,7 +212,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     icon:{        
-        top:30,
+        top:22,
     },
     camcontainer:{
         flexDirection: 'column',
