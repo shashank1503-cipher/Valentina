@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import StyledButton from '../../components/Buttons/StyledButton'
 import styles from './Style/Styles'
@@ -7,54 +7,40 @@ import Header from './Header'
 
 const Dob = () => {    
        
-    const [date, setDate] = useState('15-01-2022');        
+    const [date, setDate] = useState(new Date());  
+    const [open, setOpen] = useState(false)
+      
       
     return (
         <View style={styles.container}>
           <Header title="How old are you?"/>
 
             
-            <View style={styles.date} >
-            
-
+            <TouchableOpacity onPress={() => setOpen(true)} style={styles.date} >           
+              <Text>Select date</Text>
               <DatePicker               
                   mode="date"
                   date={date}
-                  placeholder="Select date"
+                  placeholder="DD/MM/YYYY"
                   format="DD/MM/YYYY"
                   minDate="01-01-1900"
                   maxDate="01-01-2003"
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
-                
-
-                  customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      right: -5,
-                      top: 4,
-                      marginLeft: 0,
-                    },
-                    dateInput: {
-                      borderColor : "gray",
-                      alignItems: "flex-start",
-                      borderWidth: 0,
-                      borderBottomWidth: 1,
-                    },
-                    placeholderText: {
-                      fontSize: 17,
-                      color: "gray"
-                    },
-                    dateText: {
-                      fontSize: 17,
-                    }
+                  style={{
+                    width:250,                    
+                    paddingBottom:5,
                   }}
-                  onDateChange={(date) => {
-                    setDate(date);
+                  onConfirm={(date) => {
+                    setOpen(false)
+                    setDate(date)
                   }}
-            />   
+                  onCancel={() => {
+                    setOpen(false)
+                  }}
+              />   
             
-                </View>  
+                </TouchableOpacity>  
 
             <StyledButton page="Gender" text="Next"/> 
              
