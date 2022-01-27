@@ -5,7 +5,7 @@ const Interest = (props) => {
     return (
         <View style={styles.wrapper}>
             {props.emoji? <Text>{props.emoji}</Text> :null}
-            <Text style={styles.text}>{props.value}</Text>
+            {typeof props.value === "string" ? (<Text style={styles.text}>{props.value}</Text>) :(<Text style={styles.text}>{props.value.feet} {props.value.inch}</Text>) }
         </View>
     )
 }

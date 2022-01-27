@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     paddingLeft: "10%",
+    paddingRight: "10%",
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",

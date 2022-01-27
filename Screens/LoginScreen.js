@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, View,Text } from "react-native";
+import { TouchableOpacity, StyleSheet, View,Text, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +17,7 @@ const LoginScreen = () => {
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />        
         <View style={{top:450,alignItems: "center"}}>
-          <Text style={{fontSize: 20,color:'#fff'}}>{loading ? "Loading..." : "Login using your IIITK Gmail"}</Text>
+          {loading ? <ActivityIndicator color="#FFF"/>:<Text style={{fontSize: 20,color:'#fff'}}> Login using your IIITK Gmail</Text>}
         </View>
         <TouchableOpacity onPress={signInWithGoogle}  style={styles.button}>
             <Text style={styles.text}>
