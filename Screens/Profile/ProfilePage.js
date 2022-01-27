@@ -9,6 +9,7 @@ import {
     TextInput, 
     TouchableOpacity, 
     ScrollView,
+    Alert,
     
 } from 'react-native'
 
@@ -27,7 +28,7 @@ import useAuth from '../../hooks/useAuth'
 import { doc, setDoc } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
-
+import Batch from './profilePageModals/Batch'
 
 const ProfilePage = () => {
     
@@ -43,7 +44,7 @@ const ProfilePage = () => {
         profile_2: 'null'
     })
 
-    const [textHeight, setTextHeight] = useState(0)
+    const [textHeight, setTextHeight] = useState(120)
     const [interests, setInterests] = useState({
         main:[],
         new:[]
@@ -68,7 +69,9 @@ const ProfilePage = () => {
 
     const [religion, setReligion] = useState('')
 
-    const [date, setDate] = useState('15-01-2022');        
+    const [date, setDate] = useState('15-01-2022');
+    
+    const [batch, setBatch] = useState('')
 
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
@@ -151,7 +154,10 @@ const ProfilePage = () => {
                 {
                     "type": 'location',
                     "value": location
-                    
+                },
+                {
+                    "type": 'batch',
+                    "value": batch
                 }
             ]
         }
@@ -159,7 +165,50 @@ const ProfilePage = () => {
         setOldData(data)
     }
 
+
+    const checkForm = () => {
+
+        console.log(!textField)
+
+        if(!textField)
+        {
+            console.log("Bio")
+            Alert.alert(
+                "Empty fields",
+                `Add Bio`,
+                [
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+        }
+
+        else if(interests.main.length === 0 && interests.new.length === 0)
+        {
+            console.log("Bio")
+            Alert.alert(
+                "Empty fields",
+                `Add atleast one Interest`,
+                [
+                  { text: "OK"}
+                ]
+            );
+        }
+
+        return true;
+
+    }
+
+
     const exportData = () => {
+
+        if(checkForm())
+        {
+            setEdit(true);
+            return;
+        }
+
+
+        return;
         
         const data = {
             id: user.uid,
@@ -196,7 +245,10 @@ const ProfilePage = () => {
                 {
                     "type": 'location',
                     "value": location
-                    
+                },
+                {
+                    "type": 'batch',
+                    "value": batch
                 }
             ]
         }
@@ -248,26 +300,41 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
+        
+        const len = Object.keys(profilePrompts).length
 
         if(textHeight > 120)
-            setContainerHeight(1600+(textHeight-120))
+            setContainerHeight(1550+(textHeight-120))
+        
+        else if(len === 0)
+            setContainerHeight(1550+(textHeight-120))
+
+        else if(len === 1)
+            setContainerHeight(containerHeight+50)
+        
+        else if(len === 2)
+            setContainerHeight(containerHeight + 50)
         
         else
             setContainerHeight(1550)
 
-    }, [textHeight])
+        console.log(containerHeight)
+
+    }, [textHeight, profilePrompts])
 
     return (
 
         <ScrollView
             showsVerticalScrollIndicator={true}
+            ref={ref => {this.ScrollView = ref}}
         >
 
             <View 
                 style={[styles.container, {
                     flexGrow: 1,
-                    height: containerHeight
+                    height:containerHeight
                 }]}
+                
             >
             
             {/* Profile Picture */}
@@ -507,7 +574,20 @@ const ProfilePage = () => {
 
 
                     {/* Religion */}
-                    <Religion edit={edit} styles={styles} religion={religion} setReligion={setReligion} />
+                    <Religion 
+                        edit={edit} 
+                        styles={styles} 
+                        religion={religion} 
+                        setReligion={setReligion} 
+                    />
+
+                    
+                    <Batch
+                        edit={edit}
+                        styles={styles}
+                        batch={batch}
+                        setBatch={setBatch}
+                    />
 
 
                     <Text style={styles.accountHeader}>More about me</Text>

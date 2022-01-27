@@ -105,11 +105,14 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                         paddingVertical: 10,
                         width: '100%',
                         marginLeft: -8,
+                        alignContent:'center'
 
                     }}
                 >
 
-                    <Text style={styles.accountHeader}>Interests</Text>
+                    <Text style={[styles.accountHeader,{
+                        marginTop:0
+                    }]}>Interests</Text>
                     
                     <Icon name="add" style={{
                         backgroundColor: '#FF4E8C',
