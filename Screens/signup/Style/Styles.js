@@ -6,11 +6,9 @@ const styles = StyleSheet.create({
         paddingTop:5,
          backgroundColor: '#fff',
          display: 'flex',
-         flex: 1,       
+         flex: 1,
     },
     heading: {
-        alignItems: 'center',
-        justifyContent: 'center',
         fontSize:28,
         paddingTop:25,
         fontWeight: 'bold',
@@ -47,15 +45,31 @@ const styles = StyleSheet.create({
         "borderBottomLeftRadius": 30,
         elevation: 3,
     },
-  button:{
-    position: "relative",
+    button:{
+        position: "relative",
         alignItems: "center",        
         top:250,
         justifyContent: "center",
     },
-    date: {
-        alignItems: "center", 
-        top:180,
+    date: { 
+        top:140,
+        alignItems:'center'
+                
+    },
+    datetext:{
+        color: '#8E8E8E',
+        borderWidth:1,
+        borderColor: "#8E8E8E",
+        width:280,
+        paddingVertical:12,
+        paddingHorizontal:10,
+        marginVertical: 8,
+        borderRadius:6,
+    },
+    showdate:{
+        position: "relative",
+        top:150,
+        paddingHorizontal: 110,
     },
     Welcometext: {
         paddingTop:5,
@@ -187,6 +201,41 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
     },
+    circle:{
+        backgroundColor:'#c4c4c4',
+        height:150,
+        width:150,
+        borderRadius:80,
+        paddingVertical:12,
+        left:'28%',
+        top:70,
+        alignItems:'center',
+    },
+    icon:{        
+        top:22,
+    },
+    camcontainer:{
+        flexDirection: 'column',
+        position: 'relative',
+        top:120,
+        width:'90%',
+    },
+    subcamcontainer:{
+        flexDirection: 'row',
+        borderBottomWidth:1,
+        paddingVertical:8,
+        marginBottom:8,
+        borderRadius:2,
+    },
+    opicons:{
+        paddingRight:60,
+        marginBottom:2,
+    },
+    optext:{
+        marginBottom:-5,
+    }
+
+    
     
 });
 
