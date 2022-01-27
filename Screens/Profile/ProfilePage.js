@@ -12,8 +12,6 @@ import {
     
 } from 'react-native'
 
-import Icon from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Languages from './profilePageModals/Languages'
 import Height from './profilePageModals/Height'
 import Interests from './profilePageModals/Interests'
@@ -23,19 +21,28 @@ import * as ImagePicker from 'expo-image-picker'
 import ImageUpload from './profilePageModals/ImageUpload'
 import ProfilePrompt from './profilePageModals/ProfilePrompt'
 import Location from './profilePageModals/Location'
-// import { db } from '../firebase'
-// import useAuth from '../hooks/useAuth'
-// import { doc, serverTimestamp, setDoc} from 'firebase/firestore'
+import Pronouns from './profilePageModals/Pronouns'
+import { db } from '../../firebase'
+import useAuth from '../../hooks/useAuth'
+import { doc, setDoc } from 'firebase/firestore'
+import Religion from './profilePageModals/Religion'
+import DatePicker from 'react-native-datepicker'
+
 
 const ProfilePage = () => {
     
-    //const {user, logout} = useAuth()
+    const {user, logout} = useAuth()
 
-    const [name, setName] = useState("user.displayName")
-    const [mnumber, setmnumber] = useState("user.phoneNumber" || "783xxxxx58")
+    const [name, setName] = useState(user.displayName)
+    const [mnumber, setmnumber] = useState(user.phoneNumber || "")
     const [edit, setEdit] = useState(false)
     const [textField, setTextField] = useState()
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState({
+        background: 'null',
+        profile_1: 'null',
+        profile_2: 'null'
+    })
+
     const [textHeight, setTextHeight] = useState(0)
     const [interests, setInterests] = useState({
         main:[],
@@ -43,7 +50,7 @@ const ProfilePage = () => {
     })
    
 
-    const [email, setEmail] = useState("user.email")
+    const [email, setEmail] = useState(user.email.replace('@iiitkottayam.ac.in', ''))
     const [look, setLook] = useState()
     const [lang, setLang] = useState([])
     const [height, setHeight] = useState({
@@ -51,28 +58,42 @@ const ProfilePage = () => {
         inch:'0'
     })
 
+    const [location, setLocation] = useState('')
+
     const [profilePrompts, setProfilePrompts] = useState({})
 
     const [starSign, setStarSign] = useState('')
 
+    const [pronoun, setPronoun] = useState('')
+
+    const [religion, setReligion] = useState('')
+
+    const [date, setDate] = useState('15-01-2022');        
+
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
 
-    const addImageMedia = async () => {
+    const addImageMedia = async (text) => {
+
+        text = text.toLowerCase()
+
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4,3],
+            aspect: text === 'background'?[4,3]:[9,16],
             quality: 1,
+            base64:true
         });
 
         if(!_image.cancelled)
-            setImage(_image.uri)
-
+            formImage(_image, text)
+                
     }
 
-    const addImageCamera = async () => {
+    const addImageCamera = async (text) => {
 
+        text = text.toLowerCase()
+        
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (permissionResult.granted === false) {
@@ -82,30 +103,106 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            aspect: [4,3],
+            aspect:  text === 'background'?[4,3]:[9,16],
             quality:1, 
         })
 
         if(!_image.cancelled)
-            setImage(_image.uri)
+            formImage(_image, text)
+
+    }
+
+    const [oldData, setOldData] = useState({});
+
+    const formData = () => {
+        
+        const data = {
+            id: user.uid,
+            name: name,
+            bio: textField || '',
+            phoneNumber: mnumber,
+            image: image,
+            profilePrompts: profilePrompts,
+            interest: interests,
+            languages: lang,
+            dob: date,
+            
+            "aboutStuff":[
+                {
+                    "type": 'looking_for',
+                    "value": look || ''
+                },
+                {
+                    "type": 'height',
+                    "value": height,
+                },
+                {
+                    "type": 'star_sign',
+                    "value": starSign || '',
+                },
+                {
+                    "type": 'pronoun',
+                    "value": pronoun || '',
+                },
+                {
+                    "type": 'religion',
+                    "value": religion || '',
+                },
+                {
+                    "type": 'location',
+                    "value": location
+                    
+                }
+            ]
+        }
+
+        setOldData(data)
     }
 
     const exportData = () => {
         
         const data = {
             id: user.uid,
-            bio: textField,
+            name: name,
+            bio: textField || '',
+            phoneNumber: mnumber,
+            image: image,
             profilePrompts: profilePrompts,
             interest: interests,
-            lookingFor: look,
             languages: lang,
-            height: height,
-            starSign: starSign,
-            imageUrl: imageURL,
-            timestamp: serverTimestamp()
+            dob: date,
+            
+            "aboutStuff":[
+                {
+                    "type": 'looking_for',
+                    "value": look || ''
+                },
+                {
+                    "type": 'height',
+                    "value": height,
+                },
+                {
+                    "type": 'star_sign',
+                    "value": starSign || '',
+                },
+                {
+                    "type": 'pronoun',
+                    "value": pronoun || '',
+                },
+                {
+                    "type": 'religion',
+                    "value": religion || '',
+                },
+                {
+                    "type": 'location',
+                    "value": location
+                    
+                }
+            ]
         }
 
-        console.log(JSON.stringify({...data}))
+        if(JSON.stringify(data) == JSON.stringify(oldData))
+            return;
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
@@ -119,34 +216,34 @@ const ProfilePage = () => {
 
     }
 
-    const formImage = () => {
+    const formImage = async (image, text) => {
 
-        if(image)
-        {
-            let filename = image.split('/').pop()
-            
-            let match = /\.(\w+)$/.exec(filename)
-            let type = match ? `image/${match[1]}` : `image`
+        let CLOUDINARY_URL = "ClOUD_URL"
 
-            let formData = new FormData()
+        let base64Img = `data:image/jpg;base64,${image.base64}`
 
-            formData.append('photo', {
-                uri: image,
-                name: filename,
-                type
-            })
-
-            //console.log(formData)
-
-            // await fetch(YOUR_SERVER_URL, {
-            //     method: 'POST',
-            //     body: formData,
-            //     headers: {
-            //       'content-type': 'multipart/form-data',
-            //     },
-            // });
-
+        let data = {
+            "file": base64Img,
+            "upload_preset": "PRESET"
         }
+
+        fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: "POST",
+        })
+        .then(async r => r.json())
+        .then(data => {
+            console.log(data)
+            
+            setImage(i => ({
+                ...i,
+                [text]:data.secure_url.toString()
+            }))
+
+        })
 
     }
 
@@ -177,13 +274,12 @@ const ProfilePage = () => {
                 <View style={styles.picCont}>
 
                     <View style={styles.mainPicCont}>
-                        {
-                            image && 
-                            <Image 
-                                source={{uri: image}} 
-                                style={styles.profilePic}
-                            />
-                        }
+                       
+                        <Image
+                            source={{uri:image.background}} 
+                            style={styles.profilePic}
+                        />
+
                     </View>
 
                 </View>
@@ -204,11 +300,11 @@ const ProfilePage = () => {
                         <Text style={styles.accountHeader}>Account Settings</Text>
                         
                         {!edit?
-                            <TouchableOpacity onPress={() =>{setEdit(true)}}>
+                            <TouchableOpacity onPress={() =>{setEdit(true); formData()}}>
                                 <Text style={styles.editButton}>Edit</Text>
                             </TouchableOpacity>
                             :
-                            <TouchableOpacity onPress={() =>{setEdit(false)}}>
+                            <TouchableOpacity onPress={() =>{setEdit(false); exportData()}}>
                                 <Text style={styles.editButton}>Submit</Text>
                             </TouchableOpacity>
                         }   
@@ -227,7 +323,8 @@ const ProfilePage = () => {
                             }]}
                             value={name}
                             selectionColor="#FF4E8C"
-                            editable={false}
+                            editable={edit}
+                            onChangeText={text => setName(text)}
                         />
                     
                     </View> 
@@ -244,26 +341,18 @@ const ProfilePage = () => {
                                 paddingRight: 20
                             }]}
                             value={mnumber}
+                            onChangeText={text => setmnumber(text)}
                             selectionColor="#FF4E8C"
                             keyboardType='numeric'
-                            editable={false}
+                            editable={edit}
                             maxLength={10}
                         />
                         
                     </View>
 
-                    {/* D.O.B Field */}
-                    <View>
-                        
-                        {/* <Text style={styles.inputTag}>D.O.B</Text> */}
-                        
-                        
 
-                         
-                    </View>
-
-                    {/* Email Field */}
-                    <View>
+                     {/* Email Field */}
+                     <View>
                         
                         <Text style={styles.inputTag}>Email</Text>
                         
@@ -282,6 +371,62 @@ const ProfilePage = () => {
                     </View>
 
 
+                    {/* D.O.B Field */}
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            // alignSelf: 'center'
+                        }}
+                            
+                    >
+                        
+                        <Text style={[styles.inputTag,{
+                            position: 'relative',
+                            marginVertical: 0,
+                        }]}>D.O.B</Text>
+                        <DatePicker
+                            mode="date"
+                            date={date}
+                            placeholder='Select date'
+                            format="DD/MM/YYYY"
+                            minDate="01-01-1900"
+                            maxDate="01-01-2003"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            disabled={!edit}
+
+                            customStyles={[{
+                                
+                                borderRadius:10,
+
+                                dateIcon: {
+                                  position: 'absolute',
+                                  right: -5,
+                                  top: 4,
+                                  marginLeft: 0,
+                                },
+                                dateInput: {
+                                  alignItems: "flex-start",
+                                },
+                                placeholderText: {
+                                  fontSize: 17,
+                                  color: "gray"
+                                },
+                                dateText: {
+                                  fontSize: 17,
+                                }
+                            }]}
+                            onDateChange={(date) => {
+                                setDate(date);
+                            }}
+                        />
+                         
+                    </View>
+
                     <Text style={styles.accountHeader}>My bio</Text>
                     
                     <TextInput
@@ -297,6 +442,7 @@ const ProfilePage = () => {
                         onContentSizeChange={(event) => {
                             setTextHeight(event.nativeEvent.contentSize.height>120?event.nativeEvent.contentSize.height:120);
                         }}
+                        maxLength={200}
                         onChangeText={text => setTextField(text)}
                         style={[styles.input, {
                             height:textHeight, 
@@ -323,6 +469,8 @@ const ProfilePage = () => {
                     <Location 
                         styles={styles} 
                         edit={edit}
+                        location={location}
+                        setLocation={setLocation}
                     />
 
                     {/* School */}
@@ -358,8 +506,13 @@ const ProfilePage = () => {
                     />
 
 
+                    {/* Religion */}
+                    <Religion edit={edit} styles={styles} religion={religion} setReligion={setReligion} />
+
+
                     <Text style={styles.accountHeader}>More about me</Text>
-                             
+
+
                     {/* Height */}
                     <Height 
                         styles={styles} 
@@ -369,6 +522,7 @@ const ProfilePage = () => {
                         edit={edit}
                     />
 
+
                     {/* Star Sign */}
                     <StarSign 
                         styles={styles} 
@@ -376,6 +530,7 @@ const ProfilePage = () => {
                         setStarSign={setStarSign} 
                         edit={edit}
                     />
+
 
                     {/* Looking For */}
                     <LookingFor 
@@ -385,39 +540,17 @@ const ProfilePage = () => {
                         look={look}
                     />
 
+
                     {/* Pronouns */}
-                    <TouchableOpacity style={styles.basicOption}>
-
-                        <View style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                flexGrow: 1,
-                            }}>
-                        
-
-                            <MaterialCommunityIcons
-                                style={{
-                                    marginRight:8,
-                                    marginTop:2,
-                                    marginLeft: -3
-                                }}
-                            name="human" color="#222" size={25} />
-                            
-                            <Text style={styles.basicText}>Pronouns</Text>
-                        
-                        </View>
-
-
-                        <Icon name="chevron-forward" style={{
-                            marginRight:8,
-                            marginTop:6
-                        }} size={18} color="#333"/>
-
-                    </TouchableOpacity>
+                    <Pronouns
+                        styles={styles}
+                        edit={edit}
+                        pronoun={pronoun}
+                        setPronoun={setPronoun}
+                    />
 
 
                     {/* Interest Field */}
-
                     <Interests 
                         styles={styles} 
                         interests={interests} 
