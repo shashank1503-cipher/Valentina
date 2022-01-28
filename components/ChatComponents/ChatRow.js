@@ -1,17 +1,21 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import useAuth from "../../hooks/useAuth";
 
-const ChatRow = ({ name, imageSrc }) => {
+const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation();
+  const { user } = useAuth();
+
+  //console.log(matchDetails);
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate("Message", { name })}
+      onPress={() => navigation.navigate("Message", matchDetails)}
     >
       <Image source={require("../../assets/matched1.png")} />
       <View>
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{matchDetails.name}</Text>
         <View style={styles.smallt}>
           <Text style={{textAlign: "left" }}>Is your body from Mcdonalds</Text>
           <Text style={{paddingLeft: "10%", textAlign: "right" }}>11:30</Text>
