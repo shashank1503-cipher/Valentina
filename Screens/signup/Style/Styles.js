@@ -52,25 +52,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     date: { 
-        top:140,
+        top:130,
         alignItems:'center'
                 
     },
     datetext:{
-        color: '#8E8E8E',
-        borderWidth:1,
-        borderColor: "#8E8E8E",
         width:280,
-        paddingVertical:12,
-        paddingHorizontal:10,
-        marginVertical: 8,
-        borderRadius:6,
     },
-    showdate:{
-        position: "relative",
-        top:150,
-        paddingHorizontal: 110,
-    },
+    
     Welcometext: {
         paddingTop:5,
         paddingBottom:70,

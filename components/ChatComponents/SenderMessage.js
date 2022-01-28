@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 const SenderMessage = ({ message }) => {  
   return (
      <>
-        <Text style={{textAlign:"center",paddingBottom: "5%", color: "#B9B9B9"}}>{message.timestamp}</Text>
+        <Text style={{textAlign:"center",paddingBottom: "5%", color: "#B9B9B9"}}>{message.timestamp.split("-")[1]}</Text>
         <View style={styles.container}>        
             <Text style={{color:"white"}}>{message.message}</Text>
         </View>

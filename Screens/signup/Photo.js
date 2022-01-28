@@ -14,45 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const Photo = () => {
   const [image, setImage] = useState('')
   const [bool, setBool] = useState(false)
-  
-  const addImageMedia = async (text) => {
-
-    text = text.toLowerCase()
-
-    let _image = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: text === [9,16],
-        quality: 1,
-        base64:true
-    });
-
-    if(!_image.cancelled)
-        formImage(_image, text)
-            
-}
-
-const addImageCamera = async (text) => {
-
-    text = text.toLowerCase()
-    
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-        alert("You've refused to allow this appp to access your camera!");
-        return;
-    }      
-
-    let _image = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        aspect:  text === [9,16],
-        quality:1, 
-    })
-
-    if(!_image.cancelled)
-        formImage(_image, text)
-
-  }
 
   const formImage = async (image, text) => {
 
@@ -84,6 +45,47 @@ const addImageCamera = async (text) => {
     })
   
   }
+  
+  const addImageMedia = async (text) => {
+
+    text = text.toLowerCase()
+
+    let _image = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [9,16],
+        quality: 1,
+        base64:true
+    });
+
+    if(!_image.cancelled)
+        formImage(_image, text)
+            
+}
+
+const addImageCamera = async (text) => {
+
+    text = text.toLowerCase()
+    
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+        alert("You've refused to allow this appp to access your camera!");
+        return;
+    }      
+
+    let _image = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [9,16],
+        quality:1, 
+    })
+
+    if(!_image.cancelled)
+        formImage(_image, text)
+
+  }
+
+  
 
   return (
     <View style={styles.container}>
