@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import * as Loc from 'expo-location'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -29,7 +29,7 @@ const Location = ({styles, edit, location, setLocation}) => {
 
         setLoading(false)
         
-       setLocation(city[0].subregion)
+        setLocation(city[0].subregion)
 
     }
 
