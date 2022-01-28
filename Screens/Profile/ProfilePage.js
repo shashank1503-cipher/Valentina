@@ -180,6 +180,8 @@ const ProfilePage = () => {
                   { text: "OK", onPress: () => console.log("OK Pressed") }
                 ]
             );
+
+            return true;
         }
 
         else if(interests.main.length === 0 && interests.new.length === 0)
@@ -192,9 +194,11 @@ const ProfilePage = () => {
                   { text: "OK"}
                 ]
             );
+
+            return true;
         }
 
-        return true;
+        return false;
 
     }
 
@@ -207,8 +211,6 @@ const ProfilePage = () => {
             return;
         }
 
-
-        return;
         
         const data = {
             id: user.uid,
