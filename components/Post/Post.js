@@ -18,6 +18,7 @@ import DoubleClick from "../DoubleClick/DoubleClick";
 import useAuth from "../../hooks/useAuth";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import ReportModal from "./Modals/ReportModal";
 const Post = (props) => {
   let { user } = useAuth();
   const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
@@ -33,8 +34,6 @@ const Post = (props) => {
       deleteDoc(doc(db,"users",user.uid,"likes",personUID))
     }
     setIsLiked(isLiked ? false : true);
-    
-    
     
   };
   const onDoubleTap = () => {
@@ -484,11 +483,16 @@ const Post = (props) => {
       >
         <View style={styles.endView}>
           <View style={styles.modalView}>
-            <TouchableOpacity>
+            {/* <TouchableOpacity
+              onPress={setReportModal(!reportModal)}
+            >
               <Text style={[styles.modalText, { color: "#FF0000" }]}>
                 Report
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+            <ReportModal props={props}/>
+
             <TouchableOpacity>
               <Text style={styles.modalText}>Get Email Id</Text>
             </TouchableOpacity>
