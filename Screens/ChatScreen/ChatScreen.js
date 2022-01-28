@@ -80,8 +80,11 @@ const ChatScreen = () => {
           <Image source={require("../../assets/matched1.png")} />
         </TouchableOpacity>
       </View>
-      <Text style={styles.text}>Messages</Text>
-      <Chatlist />
+      <View style={{alignItems: "center"}}>
+        <Text style={styles.text}>Messages</Text>
+        <Chatlist />
+      </View>
+      
     </SafeAreaView>
   );
 };

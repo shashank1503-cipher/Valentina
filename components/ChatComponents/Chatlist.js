@@ -12,9 +12,9 @@ const Chatlist = () => {
   //static matches
   const matches = [
     {
-      id: "1",
-      name: "Silivia",
-      age: "27",
+      id: "X3lIhOpPycUGbOB9dK11WuJBFn43",
+      name: "Bhavya",
+      age: "20",
       batch: "2020",
       imageSrc: "matched2.png",
     },
@@ -45,7 +45,7 @@ const Chatlist = () => {
       data={matches}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <ChatRow name={item.name} imageSrc={item.imageSrc} />
+        <ChatRow matchDetails={item} />
       )}
     />
   ) : (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Platform,
   Keyboard,
@@ -19,21 +19,24 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import SenderMessage from "../../components/ChatComponents/SenderMessage";
 import ReceiverMessage from "../../components/ChatComponents/ReceiverMessage";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
-
+import useAuth from "../../hooks/useAuth";
+import { addDoc, collection, onSnapshot, serverTimestamp, query, orderBy} from "@firebase/firestore";
+import {db} from "../../firebase";
 const MessageScreen = () => {
   const navigation = useNavigation();
-  const { params } = useRoute();
+  const {user} = useAuth();
+  const {params} = useRoute();
   const [input, setInput] = useState("");
-
-  //const [messages, setMessages] = useState([]);
-
-  const { name } = params;
+  const matchDetails = params;
+  //console.log(matchDetails);  
+  //console.log(user.displayName);
+  const name = matchDetails.name;
+  const [messages, setMessages] = useState([]);
   // static messages, will be replaced by realtime messages from firebase with the help message state
-  const [messages, setMessages] = useState([   
+  /*const [messages, setMessages] = useState([   
     {
         timestamp: "Today 12:05",
-        userid: "0",
+        userid: "IF4rMXs4XrdQqbiunMUcmSN0ruh1",
         id: "e",
         message: "Can I follow you? Cause my mom told me to follow my dreams...",
       },
@@ -134,16 +137,44 @@ const MessageScreen = () => {
       message: " Loream ipls",
     },   
     
-  ]);
+  ]);*/
+  useEffect(
+    ()=>
+    onSnapshot(
+      query(
+        collection(db, 'matches', matchDetails.id, 'messages'), 
+        orderBy('timestamp','asc')
+      ), 
+      (snapshot) => 
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+        )         
+      ),
+    [matchDetails,db]
+  );
+
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {
+      let currentDate = new Date();
+      let time = currentDate +"-"+currentDate.getHours() + ":" + currentDate.getMinutes();
+      addDoc(collection(db,"matches",matchDetails.id,"messages"),{
+        timestamp: time,
+        userid: user.uid,
+        displayName: user.displayName,
+        message: input,
+      });
 
-    if(!input)
+      setInput("");
+      //this.ScrollView.scrollToEnd();   
+    /*if(!input)
       return;
 
     const message = {
       message: input,
-      userid: '0',
+      userid: user.uid,
       id: 'e',
       timestamp: 'Today 12:30'
     }
@@ -151,7 +182,7 @@ const MessageScreen = () => {
     
     setInput("")
 
-    this.ScrollView.scrollToEnd()
+    this.ScrollView.scrollToEnd()*/
 
   };
 
@@ -174,7 +205,7 @@ const MessageScreen = () => {
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
         //keyboardVerticalOffset={10}
         showsVerticalScrollIndicator={true}
-        ref={ref => {this.ScrollView = ref}}        
+        //ref={ref => {this.ScrollView = ref}}        
       >
         <TouchableWithoutFeedback
           style={{
@@ -185,8 +216,8 @@ const MessageScreen = () => {
             style={{ paddingHorizontal: 10, bottom: 0 }}     
             data={messages}
             
-            renderItem={({ item: message }) => 
-              message.userid == "0" ? (<SenderMessage key={message.id} message={message}/>):(<ReceiverMessage key={message.id} message={message}/>)                
+            renderItem={({ item: message }) =>
+              message.userid == user.uid ? (<SenderMessage key={message.id} message={message}/>):(<ReceiverMessage key={message.id} message={message}/>)                
             }
           />
         </TouchableWithoutFeedback>
