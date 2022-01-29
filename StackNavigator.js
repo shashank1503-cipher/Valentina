@@ -15,6 +15,7 @@ import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
 import MessageScreen from "./Screens/ChatScreen/MessageScreen";
+import MatchScreen from "./Screens/MatchScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import useAuth from "./hooks/useAuth";
 import DisplayMatchedScreen from "./Screens/DisplayMatchedScreen/DisplayMatchedScreen";
@@ -42,6 +43,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
       <Stack.Screen name="Interests" component={Interests}/>
       <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown:false}}/>
+      <Stack.Screen name="MatchScreen" component={MatchScreen} options={{headerShown:false}}/>
       <Stack.Screen name="DisplayMatchedDetails" component={DisplayMatchedScreen} options={{headerShown:false}}/> 
       </>
     ) : (

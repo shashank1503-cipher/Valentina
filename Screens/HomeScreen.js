@@ -14,7 +14,7 @@ import {
   onSnapshot,
   query,
   where,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 import { db } from "../firebase";
 import Skeleton from "../components/Skeleton/Skeleton";
 const data = [
@@ -198,7 +198,15 @@ const HomeScreen = () => {
     // console.log(HorizontalScrollViewRef)
     // HorizontalScrollViewRef.current.scrollTo({x:0,animated:true})
   };
-
+  useLayoutEffect(
+    () => 
+      onSnapshot(doc(db,'users', user.uid),(snapshot) => {
+        if(!snapshot.exists()){
+          navigation.navigate('Profile');
+        }
+      }),
+    []
+  );
   useEffect(() => {
     let unsub;
 
@@ -208,9 +216,9 @@ const HomeScreen = () => {
       ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
       
 
-      console.log(dislikes);
+      //console.log(dislikes);
       let dislikesUserIds = dislikes.length > 0 ? dislikes : ["test"];
-        console.log(dislikesUserIds)
+      //console.log(Profiles.forEach((profile) => console.log(profile.id)));
       unsub = onSnapshot(
         query(
           collection(db, "users"),
@@ -245,7 +253,6 @@ const HomeScreen = () => {
               uid={item.id}
               name={item.name}
               dob={item.dob}
-              batch={item.batch}
               bio={item.bio}
               aboutStuff={item.aboutStuff}
               interests={item.interest}
