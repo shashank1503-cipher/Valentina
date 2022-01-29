@@ -27,10 +27,10 @@ const MatchScreen = () => {
             <Text style={styles.text2}>
                 Lucy Likes you too
             </Text>
-            <Image source={require("./assets/ico.png")} style={styles.image}>
+            <Image source={require("../assets/ico.png")} style={styles.image}>
                 
             </Image>
-            <Image source={require("./assets/ico.png")} style={styles.image2}></Image>
+            <Image source={require("../assets/ico.png")} style={styles.image2}></Image>
             <View style={{top:"55%"}}>
             
             <TouchableHighlight {...touchProps} onPress={()=>{console.log("Send a Message")}}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>
