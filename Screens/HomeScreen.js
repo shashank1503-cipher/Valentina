@@ -253,7 +253,6 @@ const HomeScreen = () => {
               uid={item.id}
               name={item.name}
               dob={item.dob}
-              batch={item.batch}
               bio={item.bio}
               aboutStuff={item.aboutStuff}
               interests={item.interest}

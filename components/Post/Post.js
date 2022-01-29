@@ -16,7 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Interest from "../Interest/Interest";
 import DoubleClick from "../DoubleClick/DoubleClick";
 import useAuth from "../../hooks/useAuth";
-import { deleteDoc, doc, DocumentSnapshot, getDoc, setDoc, addDoc } from "@firebase/firestore";
+import { deleteDoc, doc, DocumentSnapshot, getDoc, setDoc, addDoc, serverTimestamp } from "@firebase/firestore";
 import { db } from "../../firebase";
 import ReportModal from "./Modals/ReportModal";
 import generateId from "../../libs/generateId";
@@ -33,7 +33,8 @@ const Post = (profUser) => {
     if(!isLiked){
       const loggedInProf = async() => await (await getDoc(doc(db, "users",user.uid))).data();
       
-      const loggedInProfile = loggedInProf();
+      let loggedInProfile = loggedInProf();
+      const loggedInProfW = loggedInProfile._W;
       const mid = generateId(user.uid,profUser.uid);
       getDoc(doc(db,'users',personUID,'likes',user.uid)).then(
         (documentSnapshot) =>{   
@@ -42,12 +43,16 @@ const Post = (profUser) => {
             // user already liked you
             console.log("You matched with ",profUser.name)
             setDoc(doc(db,"users",user.uid,"likes",personUID),{"id":personUID,"displayName":profUser.name})
-
+            console.log(loggedInProfile._W)
+            console.log(profUser)
             //create matches                 
             setDoc(doc(db, "matches",mid),{
-              "userUid": loggedInProfile,
-              "matchedUid": profUser.uid,              
-              "usersMatched": [user.uid, profUser.uid],
+              users:{
+                [user.uid]: loggedInProfile._W,
+                [personUID]: profUser
+              },                  
+              usersMatched: [user.uid, personUID],
+              timestamp: serverTimestamp(),          
             });   
             navigation.navigate("MatchScreen", {
               loggedInProfile,
