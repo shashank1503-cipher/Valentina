@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList} from "react-native";
 import ChatRow from "./ChatRow";
 import useAuth from "../../hooks/useAuth";
-import { collection, onSnapshot, query, where} from "@firebase/firestore"
-import { db } from "../../firebase";
 
 const Chatlist = ({matches}) => {
   const {user} = useAuth();  

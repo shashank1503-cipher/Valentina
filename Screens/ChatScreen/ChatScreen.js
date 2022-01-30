@@ -51,7 +51,7 @@ const ChatScreen = () => {
       <View style={styles.container}>  
         <MatchList matches={matches} />
       </View>         
-      <View style={{alignItems: "center"}}>
+      <View>
         <Text style={styles.text}>Messages</Text>
         <Chatlist matches={matches} />
       </View>
