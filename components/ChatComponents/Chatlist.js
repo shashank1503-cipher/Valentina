@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList} from "react-native";
 import ChatRow from "./ChatRow";
+import useAuth from "../../hooks/useAuth";
+import { collection, onSnapshot, query, where} from "@firebase/firestore"
+import { db } from "../../firebase";
 
-const Chatlist = () => {
-  //const [matches, setMatches] = useState([]);
+const Chatlist = ({matches}) => {
+  const {user} = useAuth();  
 
-  useEffect(
-    //code to fetch matches from firebase
-    () => {}
-  );
+  //console.log(matches);
   //static matches
-  const matches = [
+  /*const matches = [
     {
       id: "X3lIhOpPycUGbOB9dK11WuJBFn43",
       name: "Bhavya",
@@ -39,7 +39,7 @@ const Chatlist = () => {
       batch: "2018",
       imageSrc: "matched3.png",
     },
-  ];
+  ];*/
   return matches.length > 0 ? (
     <FlatList
       data={matches}
@@ -50,7 +50,7 @@ const Chatlist = () => {
     />
   ) : (
     <View>
-      <Text>No matches yet :( </Text>
+      <Text>No match yet :( </Text>
     </View>
   );
 };

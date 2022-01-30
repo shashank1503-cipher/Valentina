@@ -22,15 +22,14 @@ import ReceiverMessage from "../../components/ChatComponents/ReceiverMessage";
 import useAuth from "../../hooks/useAuth";
 import { addDoc, collection, onSnapshot, serverTimestamp, query, orderBy} from "@firebase/firestore";
 import {db} from "../../firebase";
+import getMatchedUserInfo from "../../libs/getMatchedUserInfo";
 const MessageScreen = () => {
   const navigation = useNavigation();
   const {user} = useAuth();
   const {params} = useRoute();
   const [input, setInput] = useState("");
-  const matchDetails = params;
-  //console.log(matchDetails);  
-  //console.log(user.displayName);
-  const name = matchDetails.name;
+  const matchDetails = params.matchDetails;  
+  const name = getMatchedUserInfo(matchDetails.users, user.uid).name;  
   const [messages, setMessages] = useState([]);
   // static messages, will be replaced by realtime messages from firebase with the help message state
   /*const [messages, setMessages] = useState([   
@@ -159,12 +158,13 @@ const MessageScreen = () => {
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {
       let currentDate = new Date();
-      let time = currentDate +"-"+currentDate.getHours() + ":" + currentDate.getMinutes();
+      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes();
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: time,
         userid: user.uid,
         displayName: user.displayName,
         message: input,
+        imgURL: matchDetails.users[user.uid].image.profile_1, 
       });
 
       setInput("");
@@ -217,7 +217,9 @@ const MessageScreen = () => {
             data={messages}
             
             renderItem={({ item: message }) =>
-              message.userid == user.uid ? (<SenderMessage key={message.id} message={message}/>):(<ReceiverMessage key={message.id} message={message}/>)                
+              message.userid == user.uid ? (
+              <SenderMessage key={message.id} message={message}/>):
+              (<ReceiverMessage key={message.id} message={message}/>)                
             }
           />
         </TouchableWithoutFeedback>
