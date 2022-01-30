@@ -84,6 +84,7 @@ const Post = (profUser) => {
     setDoc(doc(db,"users",user.uid,"dislikes",personUID),{"id":personUID})
     if (isLiked){
       deleteDoc(doc(db,"users",user.uid,"likes",personUID))
+      setIsLiked(false)
     }
   };
   const [modalVisible, setModalVisible] = useState(false);
