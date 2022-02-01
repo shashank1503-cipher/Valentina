@@ -268,15 +268,7 @@ const HomeScreen = () => {
           data={Profiles}
           renderItem={({ item }) => (
             <Post
-              uid={item.id}
-              name={item.name}
-              dob={item.dob}
-              bio={item.bio}
-              aboutStuff={item.aboutStuff}
-              interests={item.interest}
-              img={item.image}
-              profilePrompts={item.profilePrompts}
-              languages={item.languages}
+              profUser = {item}
             />
           )}
           showsVerticalScrollIndicator={false}
