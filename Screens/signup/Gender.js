@@ -1,62 +1,60 @@
-import React, { useState} from 'react'
-import { View, Text, Pressable,Button, TouchableHighlight } from 'react-native'
-import StyledButton from '../../components/Buttons/StyledButton'
-import Header from './Header'
+import React, { useState } from "react";
+import { View, Text, Pressable, Button, TouchableOpacity } from "react-native";
+import StyledButton from "../../components/Buttons/StyledButton";
+import Header from "./Header";
 import { useNavigation } from "@react-navigation/native";
 
-
-import styles from './Style/Styles'
+import styles from "./Style/Styles";
+import useAuth from "../../hooks/useAuth";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 const Gender = () => {
-    const navigation = useNavigation(); 
-    const genders = [
-        {
-            genderOptions: [
-                { genderText: 'Woman', value: 'woman' },
-                { genderText: 'Man', value: 'man' },
-                { genderText: 'Non-binary', value: 'non-binary' },
-            ],
-        },       
-    ]
+  let { user } = useAuth();
+  const navigation = useNavigation();
+  const genders = [
+    {
+      genderOptions: [
+        { genderText: "Woman", value: "female" },
+        { genderText: "Man", value: "male" },
+        { genderText: "Non-binary", value: "non-binary" },
+      ],
+    },
+  ];
+  let handleFormData = (gender) => {
+    let data = { gender: gender };
+    updateDoc(doc(db, "users", user.uid), {
+      ...data,
+    })
+      .then(() => {
+        console.log("done");
+        navigation.navigate("Sexuality", { gender: gender });
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+  return (
+    <View style={styles.container}>
+      <Header title="How do you identify?" />
+      <Text style={styles.Welcometext}>Everyone's welcome here!</Text>
 
-    var [ isPress, setIsPress ] = useState(false)
-    var touchProps = {
-        activeOpacity: 1,
-        underlayColor: 'white',      
-        style: isPress ? styles.btnPress : styles.btnNormal,
-        onHideUnderlay: () => setIsPress(false),
-        onShowUnderlay: () => setIsPress(true),
-        onPress: () => console.log('HELLO'),                 
-      };
+      <View>
+        {genders[0].genderOptions.map((genderOption) => (
+          <TouchableOpacity
+            style={styles.btnNormal}
+            onPress={() => handleFormData(genderOption.value)}
+          >
+            <Text>{genderOption.genderText}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-    return (
-        <View style={styles.container}>
-            <Header title="How do you identify?"/>
-            <Text style={styles.Welcometext}>Everyone's welcome here!</Text>
-
-            <View>
-                {genders[0].genderOptions.map((genderOption)=> (
-                    <TouchableHighlight {...touchProps} >
-                        <Text >{genderOption.genderText}</Text>
-                    </TouchableHighlight>
-                ))}
-            </View>
-            
-
-            {/* 
+      {/* 
             <Text style={styles.option}>{genderOptions[0].genderText}</Text>
             <Text style={styles.option}>{genderOptions[1].genderText}</Text>
             <Text style={styles.option}>{genderOptions[2].genderText}</Text> */}
+    </View>
+  );
+};
 
-            <Pressable style={styles.Moretext} onPress={() => navigation.navigate("Identities")}>
-                <Text>More gender options ˅</Text>
-            </Pressable>
-            
-            <StyledButton page="Identity Confirmation" text="Next"/>
-    
-        </View>
-    )
-}
-
-
-
-export default Gender
+export default Gender;

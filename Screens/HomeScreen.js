@@ -204,7 +204,16 @@ const HomeScreen = () => {
     () => 
       onSnapshot(doc(db,'users', user.uid),(snapshot) => {
         if(!snapshot.exists()){
-          navigation.navigate('Profile');
+          navigation.navigate("What's in the name tho?");
+        }
+        else{
+          let image = snapshot.get("image")
+          if(image){
+            if(image["background"] === "null" || image["profile_1"] === "null" || image["profile_2"] === "null"){
+              navigation.navigate("Photo")
+            }
+          }
+          
         }
       }),
     []

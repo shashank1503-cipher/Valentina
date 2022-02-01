@@ -17,7 +17,7 @@ const Photo = () => {
 
   const formImage = async (image, text) => {
 
-    let CLOUDINARY_URL = "ClOUD_URL"
+    let CLOUDINARY_URL = "cloudinary://521337433978484:wrZoinSnM3444woRQhh-6-18C2I@dpjf6btln"
   
     let base64Img = `data:image/jpg;base64,${image.base64}`
   
