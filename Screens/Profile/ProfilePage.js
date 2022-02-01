@@ -272,13 +272,13 @@ const ProfilePage = () => {
 
     const formImage = async (image, text) => {
 
-        let CLOUDINARY_URL = "ClOUD_URL"
+        let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpjf6btln/image/upload"
 
         let base64Img = `data:image/jpg;base64,${image.base64}`
 
         let data = {
             "file": base64Img,
-            "upload_preset": "PRESET"
+            "upload_preset": "zdtbnty8"
         }
 
         fetch(CLOUDINARY_URL, {
@@ -507,7 +507,7 @@ const ProfilePage = () => {
                         selectTextOnFocus={edit}
                         contextMenuHidden={true}
                         value={textField}
-                        placeholder='Something about yourselve...'
+                        placeholder='Something about yourself...'
                         onContentSizeChange={(event) => {
                             setTextHeight(event.nativeEvent.contentSize.height>120?event.nativeEvent.contentSize.height:120);
                         }}

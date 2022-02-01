@@ -1,19 +1,22 @@
 import { TouchableHighlight, StyleSheet, View,Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
+import { useNavigation ,useRoute } from "@react-navigation/native";
 import React from "react";
 
 
-
-
 const MatchScreen = () => {
+    const navigation = useNavigation();
+    const {params} = useRoute();
+    //console.log(params);
+    const loggeduser = params.loggedInProfile._W; 
+    const matchedUser = params.profUser;
     const colors = ["#F9D7D5", "#FF9B7B", "#FF4E8C"];
-    
+    //console.log(loggeduser);
     var touchProps = {
-    activeOpacity: 1,
-    underlayColor: "#aaafff",                              
-    style: styles.button, 
-                   
+        activeOpacity: 1,
+        underlayColor: "#aaafff",                              
+        style: styles.button,                  
     };
     return(
         <View style={styles.container}>
@@ -25,17 +28,17 @@ const MatchScreen = () => {
                 It's A Match!
             </Text>
             <Text style={styles.text2}>
-                Lucy Likes you too
+                {matchedUser.name} Likes you too
             </Text>
-            <Image source={require("./assets/ico.png")} style={styles.image}>
+            <Image source={{uri: loggeduser.image.profile_1}} style={styles.image}>
                 
             </Image>
-            <Image source={require("./assets/ico.png")} style={styles.image2}></Image>
+            <Image source={{uri: matchedUser.image.profile_1}} style={styles.image2}></Image>
             <View style={{top:"55%"}}>
             
-            <TouchableHighlight {...touchProps} onPress={()=>{console.log("Send a Message")}}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>
+            <TouchableHighlight {...touchProps} onPress={()=>navigation.navigate('ChatScreen')}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>
             <View style={{height:20}}></View>
-            <TouchableHighlight {...touchProps} onPress={()=>{console.log("Keep Swiping")}}><Text>Keep Swiping</Text></TouchableHighlight>
+            <TouchableHighlight {...touchProps} onPress={()=>navigation.goBack()}><Text>Keep Swiping</Text></TouchableHighlight>
             </View>
             </LinearGradient>
         </View>

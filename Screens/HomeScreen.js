@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import Post from "../components/Post/Post";
-import { Dimensions, FlatList, StatusBar, View } from "react-native";
+import { Dimensions, FlatList, StatusBar, Text, View } from "react-native";
 import AppContext from "../context/AppContext";
 
 import useAuth from "../hooks/useAuth";
@@ -14,9 +14,10 @@ import {
   onSnapshot,
   query,
   where,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 import { db } from "../firebase";
 import Skeleton from "../components/Skeleton/Skeleton";
+import NoMoreProfile from "./LikeScreen/NoMoreProfile";
 const data = [
   {
     id: "1",
@@ -193,28 +194,53 @@ const HomeScreen = () => {
   let style = headerState ? "dark-content" : "light-content";
   StatusBar.setBarStyle(style, true);
   const [Profiles, setProfiles] = useState([]);
+  const [Loading,setLoading] = useState(true)
   let handleVerticalScroll = (e) => {
     SetHeaderState(0);
     // console.log(HorizontalScrollViewRef)
     // HorizontalScrollViewRef.current.scrollTo({x:0,animated:true})
   };
-
+  useLayoutEffect(
+    () => 
+      onSnapshot(doc(db,'users', user.uid),(snapshot) => {
+        if(!snapshot.exists()){
+          navigation.navigate("What's in the name tho?");
+        }
+        else{
+          let image = snapshot.get("image")
+          if(image){
+            if(image["background"] === "null" || image["profile_1"] === "null" || image["profile_2"] === "null"){
+              navigation.navigate("Photo")
+            }
+          }
+          
+        }
+      }),
+    []
+  );
+  
   useEffect(() => {
     let unsub;
-
+    let dislikes = [];
     const fetchData = async () => {
-      const dislikes = getDocs(
+      const dislikesSnapshot = await getDocs(
         collection(db, "users", user.uid, "dislikes")
-      ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
-      
-
-      console.log(dislikes);
+      )
+      dislikesSnapshot.forEach((doc) =>{
+        let id = doc.id
+        dislikes.push(id)
+      })
       let dislikesUserIds = dislikes.length > 0 ? dislikes : ["test"];
-        console.log(dislikesUserIds)
+      //console.log(Profiles.forEach((profile) => console.log(profile.id)));
+      const userDetails = await getDoc(doc(db,"users",user.uid))
+      // const getAboutStuff = await userDetails.get("aboutStuff")
+      // const getPreference =  await getAboutStuff[0]["value"]
+      const getPreference = userDetails.get("aboutStuff")[0].value
       unsub = onSnapshot(
         query(
           collection(db, "users"),
-          where("id", "not-in", [...dislikesUserIds])
+          where("id", "not-in", [...dislikesUserIds]),
+          where("gender","==",getPreference)
         ),
         (snapshot) => {
           setProfiles(
@@ -225,6 +251,7 @@ const HomeScreen = () => {
                 ...doc.data(),
               }))
           );
+          setLoading(false)
         }
       );
     };
@@ -236,22 +263,12 @@ const HomeScreen = () => {
   return (
     <View>
       <Header />
-
-      {Profiles.length !== 0 ? (
+      {!Loading ? Profiles.length !== 0 ? (
         <FlatList
           data={Profiles}
           renderItem={({ item }) => (
             <Post
-              uid={item.id}
-              name={item.name}
-              dob={item.dob}
-              batch={item.batch}
-              bio={item.bio}
-              aboutStuff={item.aboutStuff}
-              interests={item.interest}
-              img={item.image}
-              profilePrompts={item.profilePrompts}
-              languages={item.languages}
+              profUser = {item}
             />
           )}
           showsVerticalScrollIndicator={false}
@@ -265,10 +282,12 @@ const HomeScreen = () => {
           alwaysBounceVertical={true}
           bounces={true}
           onScroll={handleVerticalScroll}
+          extraData={Profiles}
         />
       ) : (
-        <Skeleton />
-      )}
+       <NoMoreProfile/>
+      ) :  <Skeleton />}
+     
     </View>
   );
 };

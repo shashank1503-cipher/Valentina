@@ -16,19 +16,53 @@ import { LinearGradient } from "expo-linear-gradient";
 import Interest from "../Interest/Interest";
 import DoubleClick from "../DoubleClick/DoubleClick";
 import useAuth from "../../hooks/useAuth";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, DocumentSnapshot, getDoc, setDoc, addDoc, serverTimestamp } from "@firebase/firestore";
 import { db } from "../../firebase";
 import ReportModal from "./Modals/ReportModal";
-const Post = (props) => {
+import generateId from "../../libs/generateId";
+import { useNavigation } from "@react-navigation/native";
+const Post = ({profUser}) => {
+  console.log(profUser)
   let { user } = useAuth();
+  let navigation = useNavigation();
   const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
     useContext(AppContext);
   const [isLiked, setIsLiked] = useState(false);
   const onLikePress = () => {
-    let personUID = props.uid
+    let personUID = profUser.id
     if(!isLiked){
+      const loggedInProf = async() => await (await getDoc(doc(db, "users",user.uid))).data();
       
-      setDoc(doc(db,"users",user.uid,"likes",personUID),{"id":personUID})
+      let loggedInProfile = loggedInProf();
+      const mid = generateId(user.uid,personUID);
+      getDoc(doc(db,'users',personUID,'likes',user.uid)).then(
+        (documentSnapshot) =>{   
+
+          if(documentSnapshot.exists()){
+            // user already liked you
+            console.log("You matched with ",profUser.name)
+            setDoc(doc(db,"users",user.uid,"likes",personUID),{"id":personUID,"displayName":profUser.name})
+            console.log(loggedInProfile._W)
+            console.log(profUser)
+            //create matches                 
+            setDoc(doc(db, "matches",mid),{
+              users:{
+                [user.uid]: loggedInProfile._W,
+                [personUID]: profUser
+              },                  
+              usersMatched: [user.uid, personUID],
+              timestamp: serverTimestamp(),          
+            });   
+            navigation.navigate("MatchScreen", {
+              loggedInProfile,
+              profUser
+            });
+          }else{
+            console.log("You liked ",profUser.name)
+            setDoc(doc(db,"users",user.uid,"likes",personUID),{"id":personUID,"displayName":profUser.name})
+          } 
+        }
+      );         
     }
     else{
       deleteDoc(doc(db,"users",user.uid,"likes",personUID))
@@ -37,7 +71,7 @@ const Post = (props) => {
     
   };
   const onDoubleTap = () => {
-    let personUID = props.uid
+    let personUID = profUser.uid
     setIsLiked(true);
     if (!isLiked){
       setDoc(doc(db,"users",user.uid,"likes",personUID),{"id":personUID})
@@ -45,10 +79,11 @@ const Post = (props) => {
     
   };
   const onDisLikePress = () => {
-    let personUID = props.uid
+    let personUID = profUser.uid
     setDoc(doc(db,"users",user.uid,"dislikes",personUID),{"id":personUID})
     if (isLiked){
       deleteDoc(doc(db,"users",user.uid,"likes",personUID))
+      setIsLiked(false)
     }
   };
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +104,7 @@ const Post = (props) => {
   const [Age, setAge] = useState(0);
   useEffect(() => {
     const getAge = () => {
-      var parts = props.dob.split("/")
+      var parts = profUser.dob.split("/")
       var dob = new Date(parts[2],parts[1]-1,parts[0]);
       var month_diff = Date.now() - dob.getTime();
 
@@ -84,7 +119,7 @@ const Post = (props) => {
       setAge(age);
     };
     getAge();
-  }, [props.dob]);
+  }, [profUser.dob]);
   return (
     <View style={styles.container}>
       <ScrollView
@@ -100,12 +135,12 @@ const Post = (props) => {
       >
         <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: props.img.profile_1 }} />
+            <Image style={styles.image} source={{ uri: profUser.image.profile_1 }} />
             <View style={styles.uiContainer}>
               <Text style={styles.textH}>
-                {props.name}, {Age}
+                {profUser.name}, {Age}
               </Text>
-              <Text style={styles.text}>{props.batch}</Text>
+              <Text style={styles.text}>{profUser.aboutStuff[6].value}</Text>
               <View style={styles.rightContainer}>
                 <TouchableOpacity
                   style={styles.iconContainer}
@@ -149,17 +184,17 @@ const Post = (props) => {
               style={{ height: "100%" }}
             >
               <Text style={styles.aboutMeHeading}>About Me</Text>
-              <Text style={styles.aboutMeContent}>{props.bio}</Text>
+              <Text style={styles.aboutMeContent}>{profUser.bio}</Text>
               <View style={styles.uiContainer}>
                 <View style={styles.leftContainer}>
-                  {props.aboutStuff.map((val) =>
+                  {profUser.aboutStuff.map((val) =>
                     val.value ? (
                       <Interest value={val.value} emoji={emojiMap[val.type]} />
                     ) : (
                       <></>
                     )
                   )}
-                  {props.languages.map((val) => (
+                  {profUser.languages.map((val) => (
                     <Interest value={val} emoji={emojiMap["language"]} />
                   ))}
                 </View>
@@ -202,12 +237,12 @@ const Post = (props) => {
         </DoubleClick>
         <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: props.img.profile_2 }} />
+            <Image style={styles.image} source={{ uri: profUser.image.profile_2 }} />
             <View style={styles.uiContainer}>
               {/* <Text style={styles.textH}>
-                {props.name}, {props.age}
+                {profUser.name}, {profUser.age}
               </Text>
-              <Text style={styles.text}>{props.batch}</Text> */}
+              <Text style={styles.text}>{profUser.aboutStuff[6].value}</Text> */}
               <View style={styles.rightContainer}>
                 <TouchableOpacity
                   style={styles.iconContainer}
@@ -253,10 +288,10 @@ const Post = (props) => {
               <Text style={styles.aboutMeHeading}>Interests</Text>
               <View style={styles.uiContainer}>
                 <View style={styles.interestContainer}>
-                  {props.interests.main.map((val) => (
+                  {profUser.interest.main.map((val) => (
                     <Interest value={val} />
                   ))}
-                  {props.interests.new.map((val) => (
+                  {profUser.interest.new.map((val) => (
                     <Interest value={val} />
                   ))}
                 </View>
@@ -297,8 +332,8 @@ const Post = (props) => {
             </LinearGradient>
           </View>
         </DoubleClick>
-        {Object.keys(props.profilePrompts)[0] ? (
-          props.img.background ? (
+        {Object.keys(profUser.profilePrompts)[0] ? (
+          profUser.image.background ? (
             <DoubleClick
               icon
               delay={300}
@@ -308,14 +343,14 @@ const Post = (props) => {
               <View style={styles.firstPage}>
                 <Image
                   style={styles.image}
-                  source={{ uri: props.img.background }}
+                  source={{ uri: profUser.image.background }}
                 />
                 <View style={styles.overlay}>
                   <Text style={styles.promptType}>
-                    {Object.keys(props.profilePrompts)[0]}
+                    {Object.keys(profUser.profilePrompts)[0]}
                   </Text>
                   <Text style={styles.promptText}>
-                    {Object.values(props.profilePrompts)[0]}
+                    {Object.values(profUser.profilePrompts)[0]}
                   </Text>
                   <View style={styles.rightContainer}>
                     <TouchableOpacity
@@ -366,10 +401,10 @@ const Post = (props) => {
                   style={{ height: "100%" }}
                 >
                   <Text style={[styles.promptType, { color: "#292C6D" }]}>
-                    {Object.keys(props.profilePrompts)[0]}
+                    {Object.keys(profUser.profilePrompts)[0]}
                   </Text>
                   <Text style={[styles.promptText, { color: "#292C6D" }]}>
-                    {Object.values(props.profilePrompts)[0]}
+                    {Object.values(profUser.profilePrompts)[0]}
                   </Text>
                   <View style={styles.uiContainer}>
                     <View style={styles.rightContainer}>
@@ -413,7 +448,7 @@ const Post = (props) => {
         ) : (
           <></>
         )}
-        {Object.keys(props.profilePrompts)[1] ? (
+        {Object.keys(profUser.profilePrompts)[1] ? (
           <DoubleClick
             icon
             delay={300}
@@ -426,10 +461,10 @@ const Post = (props) => {
                 style={{ height: "100%" }}
               >
                 <Text style={[styles.promptType, { color: "#292C6D" }]}>
-                  {Object.keys(props.profilePrompts)[1]}
+                  {Object.keys(profUser.profilePrompts)[1]}
                 </Text>
                 <Text style={[styles.promptText, { color: "#292C6D" }]}>
-                  {Object.values(props.profilePrompts)[1]}
+                  {Object.values(profUser.profilePrompts)[1]}
                 </Text>
                 <View style={styles.uiContainer}>
                   <View style={styles.rightContainer}>
@@ -491,7 +526,7 @@ const Post = (props) => {
               </Text>
             </TouchableOpacity> */}
 
-            <ReportModal props={props}/>
+            <ReportModal profUser={profUser}/>
 
             <TouchableOpacity>
               <Text style={styles.modalText}>Get Email Id</Text>
