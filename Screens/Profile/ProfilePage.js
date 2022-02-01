@@ -507,7 +507,7 @@ const ProfilePage = () => {
                         selectTextOnFocus={edit}
                         contextMenuHidden={true}
                         value={textField}
-                        placeholder='Something about yourselve...'
+                        placeholder='Something about yourself...'
                         onContentSizeChange={(event) => {
                             setTextHeight(event.nativeEvent.contentSize.height>120?event.nativeEvent.contentSize.height:120);
                         }}
