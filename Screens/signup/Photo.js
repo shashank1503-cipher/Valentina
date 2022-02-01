@@ -36,13 +36,7 @@ const Photo = () => {
             [text]:data.secure_url.toString()
         }))
   
-    })
-    //.then(async r => {
-    //   let data = await r.json()
-
-    //   setImage(data.url);
-    // }).catch(err => console.log(err))
-  
+    })  
   }
 
   
