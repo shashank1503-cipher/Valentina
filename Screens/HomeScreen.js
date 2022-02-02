@@ -204,7 +204,16 @@ const HomeScreen = () => {
     () => 
       onSnapshot(doc(db,'users', user.uid),(snapshot) => {
         if(!snapshot.exists()){
-          navigation.navigate('Profile');
+          navigation.navigate("What's in the name tho?");
+        }
+        else{
+          let image = snapshot.get("image")
+          if(image){
+            if(image["background"] === "null" || image["profile_1"] === "null" || image["profile_2"] === "null"){
+              navigation.navigate("Photo")
+            }
+          }
+          
         }
       }),
     []
@@ -259,15 +268,7 @@ const HomeScreen = () => {
           data={Profiles}
           renderItem={({ item }) => (
             <Post
-              uid={item.id}
-              name={item.name}
-              dob={item.dob}
-              bio={item.bio}
-              aboutStuff={item.aboutStuff}
-              interests={item.interest}
-              img={item.image}
-              profilePrompts={item.profilePrompts}
-              languages={item.languages}
+              profUser = {item}
             />
           )}
           showsVerticalScrollIndicator={false}

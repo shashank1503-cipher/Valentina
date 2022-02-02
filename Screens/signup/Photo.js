@@ -1,29 +1,24 @@
-import { View, Text, StyleSheet, 
-  Dimensions, 
-  Image, 
-  TextInput, 
-  TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 import Header from './Header' 
 import * as ImagePicker from 'expo-image-picker'
-import { doc, setDoc } from 'firebase/firestore'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const Photo = () => {
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState('https://res.cloudinary.com/dsjzkocno/image/upload/v1643390487/valentina/dig_vwzdop.jpg')
   const [bool, setBool] = useState(false)
 
   const formImage = async (image, text) => {
 
-    let CLOUDINARY_URL = "ClOUD_URL"
+    let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dsjzkocno/upload"
   
     let base64Img = `data:image/jpg;base64,${image.base64}`
   
     let data = {
         "file": base64Img,
-        "upload_preset": "PRESET"
+        "upload_preset": "valentina"
     }
   
     fetch(CLOUDINARY_URL, {
@@ -32,8 +27,7 @@ const Photo = () => {
             'content-type': 'application/json'
         },
         method: "POST",
-    })
-    .then(async r => r.json())
+     }).then(async r => r.json())
     .then(data => {
         console.log(data)
         
@@ -42,13 +36,13 @@ const Photo = () => {
             [text]:data.secure_url.toString()
         }))
   
-    })
-  
+    })  
   }
+
   
   const addImageMedia = async (text) => {
 
-    text = text.toLowerCase()
+    text = text.toString().toLowerCase()
 
     let _image = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -59,13 +53,13 @@ const Photo = () => {
     });
 
     if(!_image.cancelled)
-        formImage(_image, text)
+    formImage(_image, text)
             
 }
 
 const addImageCamera = async (text) => {
 
-    text = text.toLowerCase()
+    text = text.toString().toLowerCase()
     
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -76,12 +70,13 @@ const addImageCamera = async (text) => {
 
     let _image = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
-        aspect: [9,16],
+        aspect: [4, 3],
         quality:1, 
+        base64:true
     })
 
     if(!_image.cancelled)
-        formImage(_image, text)
+    formImage(_image, text)
 
   }
 

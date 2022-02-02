@@ -21,21 +21,20 @@ import { db } from "../../firebase";
 import ReportModal from "./Modals/ReportModal";
 import generateId from "../../libs/generateId";
 import { useNavigation } from "@react-navigation/native";
-const Post = (profUser) => {
-  //console.log(profUser)
+const Post = ({profUser}) => {
+  console.log(profUser)
   let { user } = useAuth();
   let navigation = useNavigation();
   const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef } =
     useContext(AppContext);
   const [isLiked, setIsLiked] = useState(false);
-  const onLikePress = async () => {
-    let personUID = profUser.uid
+  const onLikePress = () => {
+    let personUID = profUser.id
     if(!isLiked){
       const loggedInProf = async() => await (await getDoc(doc(db, "users",user.uid))).data();
       
       let loggedInProfile = loggedInProf();
-      const loggedInProfW = loggedInProfile._W;
-      const mid = generateId(user.uid,profUser.uid);
+      const mid = generateId(user.uid,personUID);
       getDoc(doc(db,'users',personUID,'likes',user.uid)).then(
         (documentSnapshot) =>{   
 
@@ -136,12 +135,12 @@ const Post = (profUser) => {
       >
         <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: profUser.img.profile_1 }} />
+            <Image style={styles.image} source={{ uri: profUser.image.profile_1 }} />
             <View style={styles.uiContainer}>
               <Text style={styles.textH}>
                 {profUser.name}, {Age}
               </Text>
-              <Text style={styles.text}>{profUser.batch}</Text>
+              <Text style={styles.text}>{profUser.aboutStuff[6].value}</Text>
               <View style={styles.rightContainer}>
                 <TouchableOpacity
                   style={styles.iconContainer}
@@ -238,12 +237,12 @@ const Post = (profUser) => {
         </DoubleClick>
         <DoubleClick icon delay={300} timeout={1000} doubleClick={onDoubleTap}>
           <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: profUser.img.profile_2 }} />
+            <Image style={styles.image} source={{ uri: profUser.image.profile_2 }} />
             <View style={styles.uiContainer}>
               {/* <Text style={styles.textH}>
                 {profUser.name}, {profUser.age}
               </Text>
-              <Text style={styles.text}>{profUser.batch}</Text> */}
+              <Text style={styles.text}>{profUser.aboutStuff[6].value}</Text> */}
               <View style={styles.rightContainer}>
                 <TouchableOpacity
                   style={styles.iconContainer}
@@ -289,10 +288,10 @@ const Post = (profUser) => {
               <Text style={styles.aboutMeHeading}>Interests</Text>
               <View style={styles.uiContainer}>
                 <View style={styles.interestContainer}>
-                  {profUser.interests.main.map((val) => (
+                  {profUser.interest.main.map((val) => (
                     <Interest value={val} />
                   ))}
-                  {profUser.interests.new.map((val) => (
+                  {profUser.interest.new.map((val) => (
                     <Interest value={val} />
                   ))}
                 </View>
@@ -334,7 +333,7 @@ const Post = (profUser) => {
           </View>
         </DoubleClick>
         {Object.keys(profUser.profilePrompts)[0] ? (
-          profUser.img.background ? (
+          profUser.image.background ? (
             <DoubleClick
               icon
               delay={300}
@@ -344,7 +343,7 @@ const Post = (profUser) => {
               <View style={styles.firstPage}>
                 <Image
                   style={styles.image}
-                  source={{ uri: profUser.img.background }}
+                  source={{ uri: profUser.image.background }}
                 />
                 <View style={styles.overlay}>
                   <Text style={styles.promptType}>
