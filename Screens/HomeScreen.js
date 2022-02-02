@@ -126,60 +126,7 @@ const data = [
       "Perfect First Date": "y5hhth",
     },
   },
-  {
-    id: "3",
-    name: "Wonder Woman",
-    age: "104",
-    batch: "2018",
-    bio: "Hello, I am Diana Prince aka Wonder Woman. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.knlnasdlkasdlansdklasndkln",
-    img: [
-      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642505999/image_2_1_yohp3i.png",
-    ],
-    languages: ["English", "Hindi", "Punjabi"],
-    aboutStuff: [
-      {
-        type: "height",
-        value: {
-          feet: "5",
-          inch: "11",
-        },
-      },
-      {
-        type: "location",
-        value: "Lucknow",
-      },
-      {
-        type: "dob",
-        value: "2002",
-      },
-      {
-        type: "star_sign",
-        value: "Capricorn",
-      },
-      {
-        type: "religion",
-        value: "Christian",
-      },
-      {
-        type: "looking_for",
-        value: "Men",
-      },
-      {
-        type: "pronouns",
-        value: "She/Her",
-      },
-    ],
-    interests: {
-      main: ["Gaming", "Singing", "Dancing"],
-      new: ["Photography", "Coding"],
-    },
-    profilePrompts: {
-      "A pro and a con of dating me": "rhrhrh",
-      "Perfect First Date": "y5hhth",
-    },
-  },
+  
 ];
 
 const HomeScreen = () => {
@@ -190,6 +137,8 @@ const HomeScreen = () => {
     HorizontalScrollViewRef,
     SetScrollViewRef,
     SetHeaderState,
+    totalProfiles,
+    setTotalProfiles
   } = useContext(AppContext);
   let style = headerState ? "dark-content" : "light-content";
   StatusBar.setBarStyle(style, true);
@@ -219,7 +168,7 @@ const HomeScreen = () => {
     []
   );
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     let unsub;
     let dislikes = [];
     const fetchData = async () => {
@@ -235,7 +184,8 @@ const HomeScreen = () => {
       const userDetails = await getDoc(doc(db,"users",user.uid))
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
-      const getPreference = userDetails.get("aboutStuff")[0].value
+      const getPreference = userDetails.get("aboutStuff")[1].value
+      console.log(getPreference)
       unsub = onSnapshot(
         query(
           collection(db, "users"),
@@ -252,23 +202,35 @@ const HomeScreen = () => {
               }))
           );
           setLoading(false)
+          setTotalProfiles(Profiles.length)
         }
       );
     };
 
     fetchData();
-
     return unsub;
   }, []);
+  useLayoutEffect(() => {
+    if(Profiles.length === 0){
+      SetHeaderState(1)
+    }
+    else{
+      SetHeaderState(0)
+    }
+    
+    
+  }, [Profiles]);
+  
   return (
     <View>
-      <Header />
+      <Header/>
       {!Loading ? Profiles.length !== 0 ? (
         <FlatList
           data={Profiles}
           renderItem={({ item }) => (
             <Post
               profUser = {item}
+              TotalProfiles = {Profiles.length}
             />
           )}
           showsVerticalScrollIndicator={false}
@@ -285,6 +247,7 @@ const HomeScreen = () => {
           extraData={Profiles}
         />
       ) : (
+       
        <NoMoreProfile/>
       ) :  <Skeleton />}
      
