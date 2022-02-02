@@ -6,6 +6,7 @@ import Names from './Screens/signup/Names';
 import Dob from './Screens/signup/Dob';
 import Gender from './Screens/signup/Gender';
 import Sexuality from './Screens/signup/Sexuality';
+import Bio from './Screens/signup/Bio';
 import Photo from './Screens/signup/Photo';
 import GenderInterest from "./Screens/signup/GenderInterest";
 import Interests from "./Screens/signup/Interests";
@@ -34,6 +35,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Are you old enough?" component={Dob}/>
       <Stack.Screen name="Gender" component={Gender}/>
       <Stack.Screen name="Sexuality" component={Sexuality}/>
+      <Stack.Screen name="Bio" component={Bio}/>
       <Stack.Screen name="Photo" component={Photo}/>
       <Stack.Screen name="Gender Interest" component={GenderInterest}/>
       <Stack.Screen name="Interests" component={Interests}/>
