@@ -25,7 +25,7 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
@@ -72,6 +72,8 @@ const ProfilePage = () => {
     const [date, setDate] = useState('15-01-2022');
     
     const [batch, setBatch] = useState('')
+
+    const [gender, setGender] = useState('')
 
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
@@ -129,6 +131,7 @@ const ProfilePage = () => {
             interest: interests,
             languages: lang,
             dob: date,
+            gender: gender,
             
             "aboutStuff":[
                 {
@@ -222,6 +225,7 @@ const ProfilePage = () => {
             interest: interests,
             languages: lang,
             dob: date,
+            gender: gender,
             
             "aboutStuff":[
                 {
@@ -300,6 +304,46 @@ const ProfilePage = () => {
         })
 
     }
+
+
+    useEffect(() => {
+
+        const getData = () => {
+
+            console.log('started ...')
+
+            getDoc(doc(db, 'users', user.uid))
+            .then(data => data.data())
+            .then(data => {
+                console.log(data)
+                setTextField(data.bio)
+                setName(data.name)
+                setmnumber(data.phoneNumber)
+                setInterests(data.interest)
+                setImage(data.image)
+                setGender(data.gender)
+                setDate(data.dob)
+                setLang(data.languages)
+                setProfilePrompts(data.profilePrompts)
+                setLook(data.aboutStuff[0].value)
+                setHeight(data.aboutStuff[1].value)
+                setStarSign(data.aboutStuff[2].value)
+                setPronoun(data.aboutStuff[3].value)
+                setReligion(data.aboutStuff[4].value)
+                setLocation(data.aboutStuff[5].value)
+                setBatch(data.aboutStuff[6].value)
+            })
+            .catch(e => console.log(e))
+            .finally(()=>{
+                console.log("done")
+            })
+                        
+        }
+
+        getData()
+
+    })
+
 
     useEffect(() => {
         
@@ -468,27 +512,27 @@ const ProfilePage = () => {
                             cancelBtnText="Cancel"
                             disabled={!edit}
 
-                            customStyles={[{
+                            // customStyles={[{
                                 
-                                borderRadius:10,
+                            //     borderRadius:10,
 
-                                dateIcon: {
-                                  position: 'absolute',
-                                  right: -5,
-                                  top: 4,
-                                  marginLeft: 0,
-                                },
-                                dateInput: {
-                                  alignItems: "flex-start",
-                                },
-                                placeholderText: {
-                                  fontSize: 17,
-                                  color: "gray"
-                                },
-                                dateText: {
-                                  fontSize: 17,
-                                }
-                            }]}
+                            //     dateIcon: {
+                            //       position: 'absolute',
+                            //       right: -5,
+                            //       top: 4,
+                            //       marginLeft: 0,
+                            //     },
+                            //     dateInput: {
+                            //       alignItems: "flex-start",
+                            //     },
+                            //     placeholderText: {
+                            //       fontSize: 17,
+                            //       color: "gray"
+                            //     },
+                            //     dateText: {
+                            //       fontSize: 17,
+                            //     }
+                            // }]}
                             onDateChange={(date) => {
                                 setDate(date);
                             }}
