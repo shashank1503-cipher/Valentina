@@ -60,7 +60,7 @@ const MessageScreen = () => {
         userid: user.uid,
         displayName: user.displayName,
         message: input,
-        imgURL: matchDetails.users[user.uid].image.profile_1, 
+        // imgURL: matchDetails.users[user.uid].image.profile_1, 
       });
 
       setInput("");

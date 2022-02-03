@@ -11,6 +11,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  updateDoc,
   onSnapshot,
   query,
   where,
@@ -18,169 +19,7 @@ import {
 import { db } from "../firebase";
 import Skeleton from "../components/Skeleton/Skeleton";
 import NoMoreProfile from "./LikeScreen/NoMoreProfile";
-const data = [
-  {
-    id: "1",
-    name: "Gal",
-    age: "27",
-    batch: "2020",
-    bio: " Hello, I am Gal Gadot. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.",
-    img: [
-      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
-      "",
-    ],
-    aboutStuff: [
-      {
-        type: "height",
-        value: {
-          feet: "5",
-          inch: "11",
-        },
-      },
-      {
-        type: "location",
-        value: "Lucknow",
-      },
-      {
-        type: "dob",
-        value: "2002",
-      },
-      {
-        type: "star_sign",
-        value: "Capricorn",
-      },
-      {
-        type: "religion",
-        value: "Christian",
-      },
-      {
-        type: "looking_for",
-        value: "Men",
-      },
-      {
-        type: "pronouns",
-        value: "She/Her",
-      },
-    ],
-    languages: ["English", "Hindi", "Punjabi"],
-    interests: {
-      main: ["Gaming", "Singing", "Dancing"],
-      new: ["Photography", "Coding"],
-    },
-    profilePrompts: {
-      "A pro and a con of dating me": "rhrhrh",
-    },
-  },
-  {
-    id: "2",
-    name: "Gal Gadot",
-    age: "28",
-    batch: "2019",
-    bio: " Hello, I am Gal Gadot from another universe for batch 2019. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.",
-    img: [
-      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642505999/image_2_1_yohp3i.png",
-    ],
-    aboutStuff: [
-      {
-        type: "height",
-        value: {
-          feet: "5",
-          inch: "11",
-        },
-      },
-      {
-        type: "location",
-        value: "Lucknow",
-      },
-      {
-        type: "dob",
-        value: "2002",
-      },
-      {
-        type: "star_sign",
-        value: "Capricorn",
-      },
-      {
-        type: "religion",
-        value: "Christian",
-      },
-      {
-        type: "looking_for",
-        value: "Men",
-      },
-      {
-        type: "pronouns",
-        value: "She/Her",
-      },
-    ],
-    interests: {
-      main: ["Gaming", "Singing", "Dancing"],
-      new: ["Photography", "Coding"],
-    },
-    languages: ["English", "Hindi", "Punjabi"],
-    profilePrompts: {
-      "A pro and a con of dating me": "rhrhrh",
-      "Perfect First Date": "y5hhth",
-    },
-  },
-  {
-    id: "3",
-    name: "Wonder Woman",
-    age: "104",
-    batch: "2018",
-    bio: "Hello, I am Diana Prince aka Wonder Woman. This is my sample bio if you are interested hit the like button, if not tilted plus is right below like button be free to hit that.knlnasdlkasdlansdklasndkln",
-    img: [
-      "https://res.cloudinary.com/dpjf6btln/image/upload/c_crop,h_695,x_0,y_20/v1642499380/unsplash_VVEwJJRRHgk_b2xius.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642499248/image_2_uysr6j.png",
-      "https://res.cloudinary.com/dpjf6btln/image/upload/v1642505999/image_2_1_yohp3i.png",
-    ],
-    languages: ["English", "Hindi", "Punjabi"],
-    aboutStuff: [
-      {
-        type: "height",
-        value: {
-          feet: "5",
-          inch: "11",
-        },
-      },
-      {
-        type: "location",
-        value: "Lucknow",
-      },
-      {
-        type: "dob",
-        value: "2002",
-      },
-      {
-        type: "star_sign",
-        value: "Capricorn",
-      },
-      {
-        type: "religion",
-        value: "Christian",
-      },
-      {
-        type: "looking_for",
-        value: "Men",
-      },
-      {
-        type: "pronouns",
-        value: "She/Her",
-      },
-    ],
-    interests: {
-      main: ["Gaming", "Singing", "Dancing"],
-      new: ["Photography", "Coding"],
-    },
-    profilePrompts: {
-      "A pro and a con of dating me": "rhrhrh",
-      "Perfect First Date": "y5hhth",
-    },
-  },
-];
+
 
 const HomeScreen = () => {
   let navigation = useNavigation();
@@ -190,57 +29,99 @@ const HomeScreen = () => {
     HorizontalScrollViewRef,
     SetScrollViewRef,
     SetHeaderState,
+    totalProfiles,
+    setTotalProfiles,
   } = useContext(AppContext);
   let style = headerState ? "dark-content" : "light-content";
   StatusBar.setBarStyle(style, true);
   const [Profiles, setProfiles] = useState([]);
-  const [Loading,setLoading] = useState(true)
+  const [Loading, setLoading] = useState(true);
+  const [matches, setMatches] = useState([]);
   let handleVerticalScroll = (e) => {
     SetHeaderState(0);
     // console.log(HorizontalScrollViewRef)
     // HorizontalScrollViewRef.current.scrollTo({x:0,animated:true})
   };
   useLayoutEffect(
-    () => 
-      onSnapshot(doc(db,'users', user.uid),(snapshot) => {
-        if(!snapshot.exists()){
+    () =>
+      onSnapshot(doc(db, "users", user.uid), (snapshot) => {
+        if (!snapshot.exists()) {
           navigation.navigate("What's in the name tho?");
-        }
-        else{
-          let image = snapshot.get("image")
-          if(image){
-            if(image["background"] === "null" || image["profile_1"] === "null" || image["profile_2"] === "null"){
-              navigation.navigate("Photo")
+        } else {
+          let image = snapshot.get("image");
+          if (image) {
+            if (
+              image["background"] === "null" ||
+              image["profile_1"] === "null" ||
+              image["profile_2"] === "null"
+            ) {
+              navigation.navigate("Photo");
             }
           }
-          
         }
       }),
     []
   );
-  
-  useEffect(() => {
+  useEffect(
+    //code to fetch matches from firebase
+    () =>
+      onSnapshot(
+        query(
+          collection(db, "matches"),
+          where("usersMatched", "array-contains", user.uid)
+        ),
+        (snapshot) => {
+          setMatches(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          );
+          // console.log(matches)
+          if(matches.length > 0){
+            let newMatches = matches.filter(match => match.isNewFor === user.uid)
+            console.log(newMatches)
+            if (newMatches.length){
+              console.log("You have new matches head over to match screen to see them")
+              newMatches.forEach((match) => {
+                let data = {isNewFor:""}
+               
+                // updateDoc(doc(db,"matches",match.id),{
+                //   ...data
+                // })
+                console.log(match.id)    
+              })
+            }
+          }
+        }
+      ),
+
+    [user]
+  );
+
+  useLayoutEffect(() => {
     let unsub;
     let dislikes = [];
     const fetchData = async () => {
       const dislikesSnapshot = await getDocs(
         collection(db, "users", user.uid, "dislikes")
-      )
-      dislikesSnapshot.forEach((doc) =>{
-        let id = doc.id
-        dislikes.push(id)
-      })
+      );
+      dislikesSnapshot.forEach((doc) => {
+        let id = doc.id;
+        dislikes.push(id);
+      });
       let dislikesUserIds = dislikes.length > 0 ? dislikes : ["test"];
       //console.log(Profiles.forEach((profile) => console.log(profile.id)));
-      const userDetails = await getDoc(doc(db,"users",user.uid))
+      const userDetails = await getDoc(doc(db, "users", user.uid));
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
-      const getPreference = userDetails.get("aboutStuff")[0].value
+      const getPreference = userDetails.get("aboutStuff")[1].value;
+      console.log(getPreference);
       unsub = onSnapshot(
         query(
           collection(db, "users"),
           where("id", "not-in", [...dislikesUserIds]),
-          where("gender","==",getPreference)
+          where("gender", "==", getPreference)
         ),
         (snapshot) => {
           setProfiles(
@@ -251,43 +132,53 @@ const HomeScreen = () => {
                 ...doc.data(),
               }))
           );
-          setLoading(false)
+          setLoading(false);
+          setTotalProfiles(Profiles.length);
         }
       );
     };
 
     fetchData();
-
+    // console.log(Profiles);
     return unsub;
   }, []);
+  useLayoutEffect(() => {
+    if (Profiles.length === 0) {
+      SetHeaderState(1);
+    } else {
+      SetHeaderState(0);
+    }
+  }, [Profiles]);
+
   return (
     <View>
       <Header />
-      {!Loading ? Profiles.length !== 0 ? (
-        <FlatList
-          data={Profiles}
-          renderItem={({ item }) => (
-            <Post
-              profUser = {item}
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-          snapToInterval={Dimensions.get("screen").height}
-          snapToAlignment={"start"}
-          decelerationRate={"fast"}
-          ref={(ref) => {
-            SetScrollViewRef(ref);
-          }}
-          alwaysBounceHorizontal={false}
-          alwaysBounceVertical={true}
-          bounces={true}
-          onScroll={handleVerticalScroll}
-          extraData={Profiles}
-        />
+      {!Loading ? (
+        Profiles.length !== 0 ? (
+          <FlatList
+            data={Profiles}
+            renderItem={({ item }) => (
+              <Post profUser={item} TotalProfiles={Profiles.length} />
+            )}
+            showsVerticalScrollIndicator={false}
+            snapToInterval={Dimensions.get("screen").height}
+            snapToAlignment={"start"}
+            decelerationRate={"fast"}
+            ref={(ref) => {
+              SetScrollViewRef(ref);
+            }}
+            alwaysBounceHorizontal={false}
+            alwaysBounceVertical={true}
+            bounces={true}
+            onScroll={handleVerticalScroll}
+            extraData={Profiles}
+          />
+        ) : (
+          <NoMoreProfile />
+        )
       ) : (
-       <NoMoreProfile/>
-      ) :  <Skeleton />}
-     
+        <Skeleton />
+      )}
     </View>
   );
 };
