@@ -7,7 +7,7 @@ import ErrorMessage from "./ErrorMessage";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import styles from "./Style/Styles";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 
@@ -15,6 +15,7 @@ import useAuth from "../../hooks/useAuth";
 
 const Bio = () => {
     const navigation = useNavigation();
+    let {user} = useAuth()
     const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
     const validateSchema = Yup.object().shape({
         bio: Yup.string()
@@ -26,7 +27,7 @@ const Bio = () => {
     let handleFormData = (values) => {
         let biodata = values.bio;
         let data = { bio: biodata };
-        setDoc(doc(db, "users", user.uid), {
+        updateDoc(doc(db, "users", user.uid), {
           ...data,
         })
           .then(() => {

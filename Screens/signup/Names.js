@@ -26,7 +26,7 @@ const Names = () => {
   let handleFormData = (values) => {
     let name = values.first + " " + values.last;
     let data = {
-      
+      id:user.uid,
       name: name,
       age: "",
       bio: "",
@@ -66,7 +66,7 @@ const Names = () => {
           value: "",
         },
       ],
-      interests: {
+      interest: {
         main: [],
         new: [],
       },
