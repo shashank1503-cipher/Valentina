@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, Button, TouchableOpacity } from "react-native";
-import StyledButton from "../../components/Buttons/StyledButton";
 import Header from "./Header";
 import { useNavigation } from "@react-navigation/native";
-
 import styles from "./Style/Styles";
 import useAuth from "../../hooks/useAuth";
 import { doc, updateDoc } from "firebase/firestore";
@@ -48,11 +46,6 @@ const Gender = () => {
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* 
-            <Text style={styles.option}>{genderOptions[0].genderText}</Text>
-            <Text style={styles.option}>{genderOptions[1].genderText}</Text>
-            <Text style={styles.option}>{genderOptions[2].genderText}</Text> */}
     </View>
   );
 };
