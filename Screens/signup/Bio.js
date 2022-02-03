@@ -17,7 +17,6 @@ const Bio = () => {
     const navigation = useNavigation();
     let {user} = useAuth()
     const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
-    let { user } = useAuth();
 
     const validateSchema = Yup.object().shape({
         bio: Yup.string()

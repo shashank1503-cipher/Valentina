@@ -65,6 +65,11 @@ const Names = () => {
           type: "pronouns",
           value: "",
         },
+        {
+          type:"batch",
+          value:""
+        }
+        
       ],
       interest: {
         main: [],

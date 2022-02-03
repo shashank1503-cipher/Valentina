@@ -55,6 +55,7 @@ const MessageScreen = () => {
   const sendMessage = () => {
       let currentDate = new Date();
       let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes();
+      console.log(matchDetails)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: time,
         userid: user.uid,
