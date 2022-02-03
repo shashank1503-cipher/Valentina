@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input:{
-        top:150,
+        top:125,
         paddingVertical:12,
         paddingHorizontal:10,
         marginVertical: 8,
@@ -222,6 +222,17 @@ const styles = StyleSheet.create({
     },
     optext:{
         marginBottom:-5,
+    },
+    bioinput:{
+        top:90,
+        paddingVertical:7,
+        paddingBottom:70,
+        paddingHorizontal:10,
+        marginVertical: 8,
+        position: "relative",
+        borderWidth:1,
+        borderColor:'#8c8c8c',
+        borderRadius:6,
     }
 
     

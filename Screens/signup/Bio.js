@@ -16,6 +16,8 @@ import useAuth from "../../hooks/useAuth";
 const Bio = () => {
     const navigation = useNavigation();
     const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
+    let { user } = useAuth();
+
     const validateSchema = Yup.object().shape({
         bio: Yup.string()
           .min(4)
@@ -26,7 +28,8 @@ const Bio = () => {
     let handleFormData = (values) => {
         let biodata = values.bio;
         let data = { bio: biodata };
-        setDoc(doc(db, "users", user.uid), {
+        console.log(data)
+        updateDoc(doc(db, "users", user.uid), {
           ...data,
         })
           .then(() => {
@@ -50,10 +53,11 @@ const Bio = () => {
         {({ handleChange, handleSubmit, errors, values }) => (
           <React.Fragment>
             <TextInput
-              placeholder="Bio..."
+              placeholder="Loading Bio..."
               style={styles.bioinput}
               onChangeText={handleChange("bio")}
               value={values.first}
+              multiline={true}
             />
             <ErrorMessage error={errors.bio} />
 
