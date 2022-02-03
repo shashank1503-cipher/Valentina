@@ -30,14 +30,18 @@ import ReportModal from "./Modals/ReportModal";
 import generateId from "../../libs/generateId";
 import { useNavigation } from "@react-navigation/native";
 import NoMoreProfile from "../../Screens/LikeScreen/NoMoreProfile";
-const Post = ({ profUser,TotalProfiles }) => {
-
+const Post = ({ profUser, TotalProfiles }) => {
   let { user } = useAuth();
   let navigation = useNavigation();
-  const { changeHeader, ScrollViewRef, SetHorizontalScrollViewRef,totalProfiles,setTotalProfiles } =
-    useContext(AppContext);
+  const {
+    changeHeader,
+    ScrollViewRef,
+    SetHorizontalScrollViewRef,
+    totalProfiles,
+    setTotalProfiles,
+  } = useContext(AppContext);
   console.log(totalProfiles);
-    const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const onLikePress = () => {
     let personUID = profUser.id;
@@ -64,6 +68,7 @@ const Post = ({ profUser,TotalProfiles }) => {
               },
               usersMatched: [user.uid, personUID],
               timestamp: serverTimestamp(),
+              isNewFor: personUID,
             });
             navigation.navigate("MatchScreen", {
               loggedInProfile,
@@ -91,7 +96,7 @@ const Post = ({ profUser,TotalProfiles }) => {
   };
   const onDisLikePress = () => {
     setIsVisible(false);
-    setTotalProfiles(totalProfiles-1)
+    setTotalProfiles(totalProfiles - 1);
     let personUID = profUser.id;
     setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
       id: personUID,
@@ -136,12 +141,12 @@ const Post = ({ profUser,TotalProfiles }) => {
     getAge();
   }, [profUser.dob]);
   useEffect(() => {
-    if(totalProfiles === -1){
-      console.log("called",TotalProfiles);
-      setTotalProfiles(TotalProfiles)
-    }    
-  }, );
-  
+    if (totalProfiles === -1) {
+      console.log("called", TotalProfiles);
+      setTotalProfiles(TotalProfiles);
+    }
+  });
+
   return (
     <>
       {isVisible ? (
@@ -174,7 +179,9 @@ const Post = ({ profUser,TotalProfiles }) => {
                       {profUser.name.split(" ")[0]}, {Age}
                     </Text>
                     <Text style={styles.text}>
-                      {profUser.aboutStuff[6].value}
+                      {profUser.aboutStuff[6]
+                        ? profUser.aboutStuff[6].value
+                        : ""}
                     </Text>
                     <View style={styles.rightContainer}>
                       <TouchableOpacity
