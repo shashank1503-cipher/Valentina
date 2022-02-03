@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import HomeScreen from "./Screens/HomeScreen";
+
 import SplashScreen from "./Screens/SplashScreen";
 import Names from './Screens/signup/Names';
 import Dob from './Screens/signup/Dob';

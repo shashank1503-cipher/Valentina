@@ -91,7 +91,42 @@ const Post = ({ profUser, TotalProfiles }) => {
     let personUID = profUser.id;
     setIsLiked(true);
     if (!isLiked) {
-      setDoc(doc(db, "users", user.uid, "likes", personUID), { id: personUID });
+      const loggedInProf = async () =>
+        await (await getDoc(doc(db, "users", user.uid))).data();
+
+      let loggedInProfile = loggedInProf();
+      const mid = generateId(user.uid, personUID);
+      getDoc(doc(db, "users", personUID, "likes", user.uid)).then(
+        (documentSnapshot) => {
+          if (documentSnapshot.exists()) {
+            // user already liked you
+            setDoc(doc(db, "users", user.uid, "likes", personUID), {
+              id: personUID,
+              displayName: profUser.name,
+            });
+
+            //create matches
+            setDoc(doc(db, "matches", mid), {
+              users: {
+                [user.uid]: loggedInProfile._W,
+                [personUID]: profUser,
+              },
+              usersMatched: [user.uid, personUID],
+              timestamp: serverTimestamp(),
+              isNewFor: personUID,
+            });
+            navigation.navigate("MatchScreen", {
+              loggedInProfile,
+              profUser,
+            });
+          } else {
+            setDoc(doc(db, "users", user.uid, "likes", personUID), {
+              id: personUID,
+              displayName: profUser.name,
+            });
+          }
+        }
+      );
     }
   };
   const onDisLikePress = () => {

@@ -2,9 +2,10 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import HomeScreen from "../Screens/HomeScreen";
+
 import ChatScreen from "../Screens/ChatScreen/ChatScreen";
 import ProfilePage from "../Screens/Profile/ProfilePage";
+import HomeScreen from "../Screens/HomeScreen";
 const Tab = createBottomTabNavigator();
   
 const homeNavigatorTab = () => {
