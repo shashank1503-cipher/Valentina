@@ -19,6 +19,7 @@ import {
 import { db } from "../firebase";
 import Skeleton from "../components/Skeleton/Skeleton";
 import NoMoreProfile from "./LikeScreen/NoMoreProfile";
+import MatchModal from "../components/Notifications/MatchModal";
 
 
 const HomeScreen = () => {
@@ -37,6 +38,7 @@ const HomeScreen = () => {
   const [Profiles, setProfiles] = useState([]);
   const [Loading, setLoading] = useState(true);
   const [matches, setMatches] = useState([]);
+  const [matchNotif,setMatchNotif] = useState(false)
   let handleVerticalScroll = (e) => {
     SetHeaderState(0);
     // console.log(HorizontalScrollViewRef)
@@ -82,14 +84,13 @@ const HomeScreen = () => {
             let newMatches = matches.filter(match => match.isNewFor === user.uid)
             console.log(newMatches)
             if (newMatches.length){
-              console.log("You have new matches head over to match screen to see them")
+              setMatchNotif(true)
               newMatches.forEach((match) => {
                 let data = {isNewFor:""}
-               
-                // updateDoc(doc(db,"matches",match.id),{
-                //   ...data
-                // })
-                console.log(match.id)    
+                updateDoc(doc(db,"matches",match.id),{
+                  ...data
+                })
+                    
               })
             }
           }
@@ -115,7 +116,7 @@ const HomeScreen = () => {
       const userDetails = await getDoc(doc(db, "users", user.uid));
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
-      const getPreference = userDetails.get("aboutStuff")[1].value;
+      const getPreference = userDetails.get("aboutStuff").filter(about => about.type ==="looking_for")[0]["value"]
       console.log(getPreference);
       unsub = onSnapshot(
         query(
@@ -155,6 +156,7 @@ const HomeScreen = () => {
       <Header />
       {!Loading ? (
         Profiles.length !== 0 ? (
+          <>
           <FlatList
             data={Profiles}
             renderItem={({ item }) => (
@@ -173,11 +175,19 @@ const HomeScreen = () => {
             onScroll={handleVerticalScroll}
             extraData={Profiles}
           />
+          <MatchModal isVisible ={matchNotif}/>
+          </>
         ) : (
+          <>
           <NoMoreProfile />
+          <MatchModal isVisible ={matchNotif}/>
+          </>
         )
       ) : (
+        <>
         <Skeleton />
+        <MatchModal isVisible ={matchNotif}/>
+        </>
       )}
     </View>
   );

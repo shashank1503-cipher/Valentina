@@ -38,7 +38,7 @@ const ChatRow = ({ matchDetails }) => {
     
     [matchDetails, user]
   );
-  console.log(matchDetails)
+  // console.log(matchDetails)
 
   return (
     <TouchableOpacity

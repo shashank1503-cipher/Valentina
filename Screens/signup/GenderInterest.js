@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import styles from "./Style/Styles";
-import StyledButton from "../../components/Buttons/StyledButton";
 import Header from "./Header";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -31,7 +30,7 @@ const GenderInterest = () => {
     })
       .then(() => {
         console.log("done");
-        navigation.navigate("Bio");
+        navigation.navigate("Batch");
       })
       .catch((err) => {
         alert(err.message);
