@@ -157,6 +157,7 @@ const Post = ({ profUser, TotalProfiles }) => {
     language: "🗣️",
   };
   const [Age, setAge] = useState(0);
+  const [Batch,setBatch] = useState("")
   useEffect(() => {
     const getAge = () => {
       var parts = profUser.dob.split("/");
@@ -174,14 +175,18 @@ const Post = ({ profUser, TotalProfiles }) => {
       setAge(age);
     };
     getAge();
-  }, [profUser.dob]);
+    const getBatch=()=>{
+      setBatch(profUser.aboutStuff.filter(map => map.type ==="batch"))
+    }
+    getBatch();
+  }, [profUser.dob,profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
       console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
     }
   });
-
+  console.log(Batch);
   return (
     <>
       {isVisible ? (
@@ -211,11 +216,11 @@ const Post = ({ profUser, TotalProfiles }) => {
                   />
                   <View style={styles.uiContainer}>
                     <Text style={styles.textH}>
-                      {profUser.name.split(" ")[0]}, {Age}
+                      {profUser.name.split(" ")[0]}{Age ? "," + Age : ""}
                     </Text>
                     <Text style={styles.text}>
-                      {profUser.aboutStuff[6]
-                        ? profUser.aboutStuff[6].value
+                      {Batch.length !==0
+                        ? Batch[0].value
                         : ""}
                     </Text>
                     <View style={styles.rightContainer}>

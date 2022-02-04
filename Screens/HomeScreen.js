@@ -116,7 +116,7 @@ const HomeScreen = () => {
       const userDetails = await getDoc(doc(db, "users", user.uid));
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
-      const getPreference = userDetails.get("aboutStuff")[1].value;
+      const getPreference = userDetails.get("aboutStuff").filter(about => about.type ==="looking_for")[0]["value"]
       console.log(getPreference);
       unsub = onSnapshot(
         query(
