@@ -17,6 +17,7 @@ export const AppProvider = ({ children }) => {
   };
   const [scrollViewRef, setScrollViewRef] = useState(null);
   const [horizontalScrollRef, setHorizontalScrollRef] = useState(null);
+  const [totalProfiles,setTotalProfiles]= useState(-1)
   let contextData = {
     headerState: HeaderState,
     SetHeaderState: setHeaderState,
@@ -25,6 +26,8 @@ export const AppProvider = ({ children }) => {
     SetScrollViewRef: setScrollViewRef,
     HorizontalScrollViewRef: horizontalScrollRef,
     SetHorizontalScrollViewRef: setHorizontalScrollRef,
+    totalProfiles:totalProfiles,
+    setTotalProfiles:setTotalProfiles
   };
   return (
     <AppContext.Provider value={contextData}>{children}</AppContext.Provider>

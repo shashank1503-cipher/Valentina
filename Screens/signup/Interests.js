@@ -3,7 +3,9 @@ import React, {useState} from 'react';
 import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 import Header from './Header'
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
+import {MultiSelect} from 'react-native-element-dropdown';
+
+
 
 const interestsOptions = [
   {label: 'Photography', value: 'photography'},

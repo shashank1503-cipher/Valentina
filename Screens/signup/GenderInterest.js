@@ -31,7 +31,7 @@ const GenderInterest = () => {
     })
       .then(() => {
         console.log("done");
-        navigation.navigate("Interests");
+        navigation.navigate("Batch");
       })
       .catch((err) => {
         alert(err.message);

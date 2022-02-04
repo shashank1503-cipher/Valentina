@@ -6,26 +6,27 @@ import styles from "./Style/Styles";
 import useAuth from "../../hooks/useAuth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-const Gender = () => {
+const Batch = () => {
   let { user } = useAuth();
   const navigation = useNavigation();
-  const genders = [
+  const batches = [
     {
-      genderOptions: [
-        { genderText: "Woman", value: "female" },
-        { genderText: "Man", value: "male" },
-        { genderText: "Non-binary", value: "non-binary" },
+      batchOptions: [
+        { batchText: "2018", value: "2018" },
+        { batchText: "2019", value: "2019" },
+        { batchText: "2020", value: "2020" },
+        { batchText: "2021", value: "2021" },
       ],
     },
   ];
-  let handleFormData = (gender) => {
-    let data = { gender: gender };
+  let handleFormData = (batch) => {
+    let data = { batch: batch };
     updateDoc(doc(db, "users", user.uid), {
       ...data,
     })
       .then(() => {
         console.log("done");
-        navigation.navigate("Sexuality", { gender: gender });
+        navigation.navigate("Bio", { batch: batch });
       })
       .catch((err) => {
         alert(err.message);
@@ -33,16 +34,15 @@ const Gender = () => {
   };
   return (
     <View style={styles.container}>
-      <Header title="How do you identify?" />
-      <Text style={styles.Welcometext}>Everyone's welcome here!</Text>
-
-      <View>
-        {genders[0].genderOptions.map((genderOption) => (
+      <Header title="Which batch are you from?" />
+      
+      <View style={styles.interestsconatiner}>
+        {batches[0].batchOptions.map((batchOption) => (
           <TouchableOpacity
             style={styles.btnNormal}
-            onPress={() => handleFormData(genderOption.value)}
+            onPress={() => handleFormData(batchOption.value)}
           >
-            <Text>{genderOption.genderText}</Text>
+            <Text>{batchOption.batchText}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -50,4 +50,4 @@ const Gender = () => {
   );
 };
 
-export default Gender;
+export default Batch;

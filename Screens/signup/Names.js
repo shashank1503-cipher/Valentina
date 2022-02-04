@@ -25,7 +25,60 @@ const Names = () => {
   });
   let handleFormData = (values) => {
     let name = values.first + " " + values.last;
-    let data = { name: name };
+    let data = {
+      id:user.uid,
+      name: name,
+      age: "",
+      bio: "",
+      image: {
+        background:"",
+        profile_1:"",
+        profile_2:"",
+      },
+      gender:"",
+      languages: [],
+      aboutStuff: [
+        {
+          type: "height",
+          value: {
+            feet: "",
+            inch: "",
+          },
+        },
+        {
+          type: "location",
+          value: "",
+        },
+        {
+          type: "star_sign",
+          value: "",
+        },
+        {
+          type: "religion",
+          value: "",
+        },
+        {
+          type: "looking_for",
+          value: "",
+        },
+        {
+          type: "pronouns",
+          value: "",
+        },
+        {
+          type:"batch",
+          value:""
+        }
+        
+      ],
+      interest: {
+        main: [],
+        new: [],
+      },
+      dob:"",
+      phoneNumber:"",
+      profilePrompts: {},
+    };
     setDoc(doc(db, "users", user.uid), {
       ...data,
     })
