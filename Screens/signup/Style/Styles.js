@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         alignItems: "center",        
         top:250,
         justifyContent: "center",
+        alignItems: "center"
     },
     date: { 
         top:130,
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     camcontainer:{
         flexDirection: 'column',
         position: 'relative',
-        top:120,
+        top:105,
         width:'90%',
     },
     subcamcontainer:{
