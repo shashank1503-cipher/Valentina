@@ -38,7 +38,7 @@ const MessageScreen = () => {
     onSnapshot(
       query(
         collection(db, 'matches', matchDetails.id, 'messages'), 
-        orderBy('timestamp','asc')
+        orderBy('timestamp','desc')
       ), 
       (snapshot) => 
         setMessages(
@@ -54,7 +54,7 @@ const MessageScreen = () => {
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {
       let currentDate = new Date();
-      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes();
+      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes()+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       console.log(matchDetails)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: time,
@@ -112,7 +112,7 @@ const MessageScreen = () => {
           <FlatList
             style={{ paddingHorizontal: 10, bottom: 0 }}     
             data={messages}
-            
+            inverted={-1}
             renderItem={({ item: message }) =>
               message.userid == user.uid ? (
               <SenderMessage key={message.id} message={message}/>):
