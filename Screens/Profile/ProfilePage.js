@@ -25,13 +25,12 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
 import Sexuality from './profilePageModals/Sexuality'
 import Gender from './profilePageModals/Gender'
-
 
 const ProfilePage = () => {
     
@@ -90,7 +89,7 @@ const ProfilePage = () => {
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: text === 'background'?[4,3]:[9,16],
+            aspect: [9,16],
             quality: 1,
             base64:true
         });
@@ -98,6 +97,41 @@ const ProfilePage = () => {
         if(!_image.cancelled)
             formImage(_image, text)
                 
+    }
+
+
+    const deleteAccount2 = () => {
+        
+        console.log("Hello")
+        console.log(user.uid)
+        
+        deleteDoc(doc(db, 'users', user.uid))
+        .then(() => logout())
+    }
+
+
+    const deleteAccount = async () => {
+
+        console.log("Delete")
+
+        const q = query(
+            collection(db, 'matches'),
+            where('usersMatched','array-contains',user.uid)
+        )
+
+        onSnapshot(q,
+            snapshot => {
+                snapshot.docs.map(d => {
+                    deleteDoc(doc(db, 'matches', d.id))
+                })
+            }
+        )
+        
+        deleteAccount2()
+
+        // deleteDoc(query)
+        // deleteDoc(doc(db, 'users', user.uid))
+        // .then(() => logout())
     }
 
     const addImageCamera = async (text) => {
@@ -113,7 +147,7 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            aspect:  text === 'background'?[4,3]:[9,16],
+            aspect: [9,16],
             quality:1, 
         })
 
@@ -274,8 +308,8 @@ const ProfilePage = () => {
             ]
         }
 
-        // if(JSON.stringify(data) == JSON.stringify(oldData))
-        //     return;
+        if(JSON.stringify(data) == JSON.stringify(oldData))
+            return;
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
@@ -291,13 +325,13 @@ const ProfilePage = () => {
 
     const formImage = async (image, text) => {
 
-        let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpjf6btln/image/upload"
+        let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dsjzkocno/upload"
 
         let base64Img = `data:image/jpg;base64,${image.base64}`
 
         let data = {
             "file": base64Img,
-            "upload_preset": "zdtbnty8"
+            "upload_preset": "valentina"
         }
 
         fetch(CLOUDINARY_URL, {
@@ -386,10 +420,10 @@ const ProfilePage = () => {
         const len = Object.keys(profilePrompts).length
 
         if(textHeight > 120)
-            setContainerHeight(1550+(textHeight-120))
+            setContainerHeight(1700+(textHeight-120))
         
         else if(len === 0)
-            setContainerHeight(1550+(textHeight-120))
+            setContainerHeight(1700+(textHeight-120))
 
         else if(len === 1)
             setContainerHeight(containerHeight+50)
@@ -398,7 +432,7 @@ const ProfilePage = () => {
             setContainerHeight(containerHeight + 50)
         
         else
-            setContainerHeight(1550)
+            setContainerHeight(1700)
 
         console.log(containerHeight)
 
@@ -648,6 +682,13 @@ const ProfilePage = () => {
                         setBatch={setBatch}
                     />
 
+                    <Gender
+                        edit={edit}
+                        styles={styles}
+                        gender={gender}
+                        setGender={setGender}
+                    />
+
 
                     <Text style={styles.accountHeader}>More about me</Text>
 
@@ -712,7 +753,7 @@ const ProfilePage = () => {
                         style={styles.updateButtonGrad}
                     >
                         <TouchableOpacity
-                            // onPress={logout}
+                            onPress={logout}
                         >
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
 
@@ -725,9 +766,10 @@ const ProfilePage = () => {
                         colors={colors}
                         end={{ x: 0.75, y: 0.25 }}
                         style={styles.updateButtonGrad}
+                        
                     >
                         <TouchableOpacity 
-                            onPress={() => setEdit(false)}
+                            onPress={() => deleteAccount()}
                         >
                             <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
 
@@ -757,7 +799,7 @@ const styles = StyleSheet.create({
         width: "110%",
         height: "100%",
         top:-1,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         
     },
 
