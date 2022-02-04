@@ -29,6 +29,9 @@ import { doc, getDoc, setDoc } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
+import Sexuality from './profilePageModals/Sexuality'
+import Gender from './profilePageModals/Gender'
+
 
 const ProfilePage = () => {
     
@@ -74,6 +77,8 @@ const ProfilePage = () => {
     const [batch, setBatch] = useState('')
 
     const [gender, setGender] = useState('')
+
+    const [sexuality, setSexuality] = useState('');
 
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
@@ -161,9 +166,15 @@ const ProfilePage = () => {
                 {
                     "type": 'batch',
                     "value": batch
+                },
+                {
+                    "type": "sexuality",
+                    "value": sexuality,
                 }
             ]
         }
+
+        console.log(data)
 
         setOldData(data)
     }
@@ -255,12 +266,16 @@ const ProfilePage = () => {
                 {
                     "type": 'batch',
                     "value": batch
+                },
+                {
+                    "type": "sexuality",
+                    "value": sexuality,
                 }
             ]
         }
 
-        if(JSON.stringify(data) == JSON.stringify(oldData))
-            return;
+        // if(JSON.stringify(data) == JSON.stringify(oldData))
+        //     return;
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
@@ -315,23 +330,44 @@ const ProfilePage = () => {
             getDoc(doc(db, 'users', user.uid))
             .then(data => data.data())
             .then(data => {
-                console.log(data)
-                setTextField(data.bio)
-                setName(data.name)
-                setmnumber(data.phoneNumber)
-                setInterests(data.interest)
-                setImage(data.image)
-                setGender(data.gender)
-                setDate(data.dob)
-                setLang(data.languages)
-                setProfilePrompts(data.profilePrompts)
-                setLook(data.aboutStuff[0].value)
-                setHeight(data.aboutStuff[1].value)
-                setStarSign(data.aboutStuff[2].value)
-                setPronoun(data.aboutStuff[3].value)
-                setReligion(data.aboutStuff[4].value)
-                setLocation(data.aboutStuff[5].value)
-                setBatch(data.aboutStuff[6].value)
+                console.log(data)     
+                setTextField(data.bio || '')
+                setName(data.name || '')
+                setmnumber(data.phoneNumber || '')
+                setInterests(data.interest || interests)
+                setImage(data.image || image)
+                setGender(data.gender || gender)
+                setDate(data.dob || date)
+                setLang(data.languages || lang)
+                setProfilePrompts(data.profilePrompts || profilePrompts)
+
+                data.aboutStuff.map( about => {
+                    if(about.type === "sexuality")
+                        setSexuality(about.value)
+                    
+                    if(about.type === "looking_for")
+                        setLook(about.value || look)
+                    
+                    if(about.type === "height")
+                        setHeight(about.value)
+             
+                    if(about.type === "star_sign")
+                        setStarSign(about.value)
+             
+                    if(about.type === "pronoun")
+                        setPronoun(about.value)
+     
+                    if(about.type === "religion")
+                        setReligion(about.value)
+     
+                    if(about.type === "location")
+                        setLocation(about.value)
+     
+                    if(about.type === "batch")
+                        setBatch(about.value)
+                         
+                })
+
             })
             .catch(e => console.log(e))
             .finally(()=>{
@@ -342,7 +378,7 @@ const ProfilePage = () => {
 
         getData()
 
-    })
+    }, [])
 
 
     useEffect(() => {
@@ -586,29 +622,6 @@ const ProfilePage = () => {
                         setLocation={setLocation}
                     />
 
-                    {/* School */}
-                    {/* <TouchableOpacity style={styles.basicOption}>
-
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexGrow: 1,
-                        }}>
-                            <Icon name="school" style={{
-                                marginRight:10,
-                                marginTop:4
-                            }} size={20} color="#222"/>
-                            <Text style={styles.basicText}>School</Text>
-                        </View>
-
-                        
-                        <Icon name="chevron-forward" style={{
-                            marginRight:8,
-                            marginTop:6
-                        }} size={18} color="#333"/>
-
-                    </TouchableOpacity> */}
-
 
                     {/* Languages */}
                     <Languages 
@@ -665,6 +678,13 @@ const ProfilePage = () => {
                         edit={edit}
                         look={look}
                     />
+
+                    <Sexuality
+                        styles={styles}
+                        setSexuality={setSexuality}
+                        sexuality={sexuality}
+                        edit={edit}
+                    />  
 
 
                     {/* Pronouns */}

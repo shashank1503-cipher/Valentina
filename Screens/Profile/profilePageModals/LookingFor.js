@@ -74,7 +74,8 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                     <View style={styles.centeredView}>
                     
                         <View style={[styles.modalView, {
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-evenly',
+                            width: 300
                         }]}>
 
                             <TouchableOpacity
@@ -93,11 +94,14 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                                 <Icon name="female" size={30}/>
                                 <Text>Female</Text>
                             </TouchableOpacity>
-                            {/* <TouchableOpacity
+                            
+                            <TouchableOpacity
+                                style={style.button}
                                 onPress={() => setModalVisible(!modalVisible)}
                             >
                                 <Icon name="male-female" size={30}/>
-                            </TouchableOpacity> */}
+                                <Text>Both</Text>
+                            </TouchableOpacity>
                         </View>
                     
                     </View>
