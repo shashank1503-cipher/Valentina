@@ -3,6 +3,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
+import Icon from 'react-native-vector-icons/Ionicons'
+
 
 const LoginScreen = () => {
   const { signInWithGoogle, loading} = useAuth();
@@ -17,11 +19,15 @@ const LoginScreen = () => {
       >
         <Image source={require("../assets/ico.png")} style={styles.image} />        
         <View style={{top:450,alignItems: "center"}}>
-          {loading ? <ActivityIndicator color="#FFF"/>:<Text style={{fontSize: 20,color:'#fff'}}> Login using your IIITK Gmail</Text>}
+          {loading ? <ActivityIndicator color="#FFF"/>:<Text style={{fontSize: 20,color:'#fff'}}> </Text>}
         </View>
         <TouchableOpacity onPress={signInWithGoogle}  style={styles.button}>
+              <Icon 
+                name="logo-google"
+                size={18}
+              />
             <Text style={styles.text}>
-              Google SignIn
+              Login using college Id
             </Text>
         </TouchableOpacity> 
                     
@@ -68,15 +74,18 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     elevation: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingHorizontal: 40
   },
   text:{
-    "fontWeight": "500",
-    "fontSize": 15,
+    "fontWeight": "bold",
+    "fontSize": 16,
     "lineHeight": 18,
     "textAlign": "center",
-    "textTransform": "uppercase",
     "color": "#373737",
-    "marginTop":"5%"
   }
 });
 
