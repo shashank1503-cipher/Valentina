@@ -15,7 +15,7 @@ import ProfilePage from "./Screens/Profile/ProfilePage"
 import homeNavigatorTab from "./navigation/homeNavigatorTab";
 import ChatScreen from "./Screens/ChatScreen/ChatScreen";
 import MessageScreen from "./Screens/ChatScreen/MessageScreen";
-import MatchScreen from "./Screens/MatchScreen";
+import MatchScreen from "./Screens/matchScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import useAuth from "./hooks/useAuth";
 import DisplayMatchedScreen from "./Screens/DisplayMatchedScreen/DisplayMatchedScreen";
@@ -28,7 +28,7 @@ const StackNavigator = () => {
     <Stack.Navigator> 
     {user ? (
       <>
-      <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
+      {/* <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} /> */}
       <Stack.Screen name="Main" component={homeNavigatorTab} options={{headerShown:false}} />      
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown:false}}/>
       <Stack.Screen name="Message" component={MessageScreen} options={{headerShown:false}}/>

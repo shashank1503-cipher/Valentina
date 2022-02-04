@@ -25,10 +25,12 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { doc, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
+import Sexuality from './profilePageModals/Sexuality'
+import Gender from './profilePageModals/Gender'
 
 const ProfilePage = () => {
     
@@ -73,6 +75,10 @@ const ProfilePage = () => {
     
     const [batch, setBatch] = useState('')
 
+    const [gender, setGender] = useState('')
+
+    const [sexuality, setSexuality] = useState('');
+
     const [containerHeight, setContainerHeight] = useState(1550)
     const colors = [ "#FF9B7B", "#FF4E8C"];
 
@@ -83,7 +89,7 @@ const ProfilePage = () => {
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: text === 'background'?[4,3]:[9,16],
+            aspect: [9,16],
             quality: 1,
             base64:true
         });
@@ -91,6 +97,41 @@ const ProfilePage = () => {
         if(!_image.cancelled)
             formImage(_image, text)
                 
+    }
+
+
+    const deleteAccount2 = () => {
+        
+        console.log("Hello")
+        console.log(user.uid)
+        
+        deleteDoc(doc(db, 'users', user.uid))
+        .then(() => logout())
+    }
+
+
+    const deleteAccount = async () => {
+
+        console.log("Delete")
+
+        const q = query(
+            collection(db, 'matches'),
+            where('usersMatched','array-contains',user.uid)
+        )
+
+        onSnapshot(q,
+            snapshot => {
+                snapshot.docs.map(d => {
+                    deleteDoc(doc(db, 'matches', d.id))
+                })
+            }
+        )
+        
+        deleteAccount2()
+
+        // deleteDoc(query)
+        // deleteDoc(doc(db, 'users', user.uid))
+        // .then(() => logout())
     }
 
     const addImageCamera = async (text) => {
@@ -106,7 +147,7 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            aspect:  text === 'background'?[4,3]:[9,16],
+            aspect: [9,16],
             quality:1, 
         })
 
@@ -129,6 +170,7 @@ const ProfilePage = () => {
             interest: interests,
             languages: lang,
             dob: date,
+            gender: gender,
             
             "aboutStuff":[
                 {
@@ -158,9 +200,15 @@ const ProfilePage = () => {
                 {
                     "type": 'batch',
                     "value": batch
+                },
+                {
+                    "type": "sexuality",
+                    "value": sexuality,
                 }
             ]
         }
+
+        console.log(data)
 
         setOldData(data)
     }
@@ -222,6 +270,7 @@ const ProfilePage = () => {
             interest: interests,
             languages: lang,
             dob: date,
+            gender: gender,
             
             "aboutStuff":[
                 {
@@ -251,6 +300,10 @@ const ProfilePage = () => {
                 {
                     "type": 'batch',
                     "value": batch
+                },
+                {
+                    "type": "sexuality",
+                    "value": sexuality,
                 }
             ]
         }
@@ -272,13 +325,13 @@ const ProfilePage = () => {
 
     const formImage = async (image, text) => {
 
-        let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpjf6btln/image/upload"
+        let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dsjzkocno/upload"
 
         let base64Img = `data:image/jpg;base64,${image.base64}`
 
         let data = {
             "file": base64Img,
-            "upload_preset": "zdtbnty8"
+            "upload_preset": "valentina"
         }
 
         fetch(CLOUDINARY_URL, {
@@ -301,15 +354,76 @@ const ProfilePage = () => {
 
     }
 
+
+    useEffect(() => {
+
+        const getData = () => {
+
+            console.log('started ...')
+
+            getDoc(doc(db, 'users', user.uid))
+            .then(data => data.data())
+            .then(data => {
+                console.log(data)     
+                setTextField(data.bio || '')
+                setName(data.name || '')
+                setmnumber(data.phoneNumber || '')
+                setInterests(data.interest || interests)
+                setImage(data.image || image)
+                setGender(data.gender || gender)
+                setDate(data.dob || date)
+                setLang(data.languages || lang)
+                setProfilePrompts(data.profilePrompts || profilePrompts)
+
+                data.aboutStuff.map( about => {
+                    if(about.type === "sexuality")
+                        setSexuality(about.value)
+                    
+                    if(about.type === "looking_for")
+                        setLook(about.value || look)
+                    
+                    if(about.type === "height")
+                        setHeight(about.value)
+             
+                    if(about.type === "star_sign")
+                        setStarSign(about.value)
+             
+                    if(about.type === "pronoun")
+                        setPronoun(about.value)
+     
+                    if(about.type === "religion")
+                        setReligion(about.value)
+     
+                    if(about.type === "location")
+                        setLocation(about.value)
+     
+                    if(about.type === "batch")
+                        setBatch(about.value)
+                         
+                })
+
+            })
+            .catch(e => console.log(e))
+            .finally(()=>{
+                console.log("done")
+            })
+                        
+        }
+
+        getData()
+
+    }, [])
+
+
     useEffect(() => {
         
         const len = Object.keys(profilePrompts).length
 
         if(textHeight > 120)
-            setContainerHeight(1550+(textHeight-120))
+            setContainerHeight(1700+(textHeight-120))
         
         else if(len === 0)
-            setContainerHeight(1550+(textHeight-120))
+            setContainerHeight(1700+(textHeight-120))
 
         else if(len === 1)
             setContainerHeight(containerHeight+50)
@@ -318,7 +432,7 @@ const ProfilePage = () => {
             setContainerHeight(containerHeight + 50)
         
         else
-            setContainerHeight(1550)
+            setContainerHeight(1700)
 
         console.log(containerHeight)
 
@@ -468,27 +582,27 @@ const ProfilePage = () => {
                             cancelBtnText="Cancel"
                             disabled={!edit}
 
-                            customStyles={[{
+                            // customStyles={[{
                                 
-                                borderRadius:10,
+                            //     borderRadius:10,
 
-                                dateIcon: {
-                                  position: 'absolute',
-                                  right: -5,
-                                  top: 4,
-                                  marginLeft: 0,
-                                },
-                                dateInput: {
-                                  alignItems: "flex-start",
-                                },
-                                placeholderText: {
-                                  fontSize: 17,
-                                  color: "gray"
-                                },
-                                dateText: {
-                                  fontSize: 17,
-                                }
-                            }]}
+                            //     dateIcon: {
+                            //       position: 'absolute',
+                            //       right: -5,
+                            //       top: 4,
+                            //       marginLeft: 0,
+                            //     },
+                            //     dateInput: {
+                            //       alignItems: "flex-start",
+                            //     },
+                            //     placeholderText: {
+                            //       fontSize: 17,
+                            //       color: "gray"
+                            //     },
+                            //     dateText: {
+                            //       fontSize: 17,
+                            //     }
+                            // }]}
                             onDateChange={(date) => {
                                 setDate(date);
                             }}
@@ -542,29 +656,6 @@ const ProfilePage = () => {
                         setLocation={setLocation}
                     />
 
-                    {/* School */}
-                    {/* <TouchableOpacity style={styles.basicOption}>
-
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexGrow: 1,
-                        }}>
-                            <Icon name="school" style={{
-                                marginRight:10,
-                                marginTop:4
-                            }} size={20} color="#222"/>
-                            <Text style={styles.basicText}>School</Text>
-                        </View>
-
-                        
-                        <Icon name="chevron-forward" style={{
-                            marginRight:8,
-                            marginTop:6
-                        }} size={18} color="#333"/>
-
-                    </TouchableOpacity> */}
-
 
                     {/* Languages */}
                     <Languages 
@@ -589,6 +680,13 @@ const ProfilePage = () => {
                         styles={styles}
                         batch={batch}
                         setBatch={setBatch}
+                    />
+
+                    <Gender
+                        edit={edit}
+                        styles={styles}
+                        gender={gender}
+                        setGender={setGender}
                     />
 
 
@@ -622,6 +720,13 @@ const ProfilePage = () => {
                         look={look}
                     />
 
+                    <Sexuality
+                        styles={styles}
+                        setSexuality={setSexuality}
+                        sexuality={sexuality}
+                        edit={edit}
+                    />  
+
 
                     {/* Pronouns */}
                     <Pronouns
@@ -648,7 +753,7 @@ const ProfilePage = () => {
                         style={styles.updateButtonGrad}
                     >
                         <TouchableOpacity
-                            // onPress={logout}
+                            onPress={logout}
                         >
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
 
@@ -661,9 +766,10 @@ const ProfilePage = () => {
                         colors={colors}
                         end={{ x: 0.75, y: 0.25 }}
                         style={styles.updateButtonGrad}
+                        
                     >
                         <TouchableOpacity 
-                            onPress={() => setEdit(false)}
+                            onPress={() => deleteAccount()}
                         >
                             <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
 
@@ -693,7 +799,7 @@ const styles = StyleSheet.create({
         width: "110%",
         height: "100%",
         top:-1,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         
     },
 

@@ -8,6 +8,8 @@ const Height = ({styles, height, setHeight, edit}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
+    console.log(height)
+
     return (
 
         <>

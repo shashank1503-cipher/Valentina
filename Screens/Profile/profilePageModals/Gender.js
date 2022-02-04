@@ -2,14 +2,13 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-
-const LookingFor = ({styles, setLook, edit, look}) => {
-
+const Gender = ({styles, gender, setGender, edit}) => {
+    
     const [modalVisible, setModalVisible] = useState(false)
 
     const func = (gender) => {
         setModalVisible(!modalVisible)
-        setLook(gender)
+        setGender(gender)
     }
 
     return (
@@ -27,12 +26,12 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                     flexGrow: 1,
                     }}>
                     
-                    <Icon name="person" style={{
+                    <Icon name="transgender" style={{
                         marginRight:10,
                         marginTop:4
                     }} size={20} color="#222"/>
                     
-                    <Text style={styles.basicText}>Looking For</Text>
+                    <Text style={styles.basicText}>Gender</Text>
                 
                 </View>
                 
@@ -45,11 +44,11 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                         borderRadius: 20,
                         borderColor: '#ddd',
                         borderWidth: 1,
-                        display: look?'flex':'none'
+                        display: gender?'flex':'none'
                     }}
                 >
                     <Text>
-                        {look}
+                        {gender}
                     </Text>
                 </View>
 
@@ -110,9 +109,9 @@ const LookingFor = ({styles, setLook, edit, look}) => {
             </View>
         </>
     )
-}
+};
 
-export default LookingFor
+export default Gender;
 
 const style = StyleSheet.create({
     button: {
