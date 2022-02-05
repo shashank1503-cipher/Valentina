@@ -5,6 +5,9 @@ import Header from './Header'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import useAuth from '../../hooks/useAuth';
 
 let interest = [
   'Outdoors', 'Working out', 'Dancing', 'Cooking', 'Sports', 'Running', 'Photography',
@@ -13,7 +16,7 @@ let interest = [
 ]
 
 const Interests = () => {
-
+  let {user} = useAuth()
   const [modalVisible, setModalVisible] = useState(false)
   const [toAdd, setToAdd] = useState()
   const navigation = useNavigation();
@@ -88,6 +91,19 @@ const Interests = () => {
       setToAdd('');
     }   
   } 
+  let handleSubmit  = ()=>{
+    let data={interest:interests}
+    console.log(data)
+    updateDoc(doc(db, "users", user.uid), {
+      ...data,
+    }).then(() => {
+      console.log("done");
+      navigation.navigate("Photo");
+    })
+    .catch((err) => {
+      alert(err.message);
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -139,13 +155,20 @@ const Interests = () => {
         {
           Object.keys(interests).length !== 0
             &&
-            interests.main.map(interest => (
+            (interests.main.map(interest => (
               <Item 
                 outside={true}
                 title={interest} 
                 key={interest}
               />
-            ))           
+            )) ||
+            interests.new.map(interest => (
+              <Item 
+                outside={true}
+                title={interest} 
+                key={interest}
+              />
+            )))          
         }
 
       </View>
@@ -288,7 +311,8 @@ const Interests = () => {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Photo")
+          handleSubmit()
+          
 
         }}
         style={styles.button, {top:-220, alignItems: 'center'}}

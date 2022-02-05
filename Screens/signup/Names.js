@@ -31,9 +31,9 @@ const Names = () => {
       age: "",
       bio: "",
       image: {
-        background:"",
-        profile_1:"",
-        profile_2:"",
+        background:"null",
+        profile_1:"null",
+        profile_2:"null",
       },
       gender:"",
       languages: [],
