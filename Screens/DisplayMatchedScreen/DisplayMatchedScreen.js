@@ -13,15 +13,24 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import Interest from "../../components/Interest/Interest";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import useAuth from "../../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
 
 const DisplayMatchedScreen = ({route}) => {
-
+let {user} = useAuth()
+const navigation = useNavigation();
 const props = route.params
   const onDisLikePress = () => {
-    // ScrollViewRef.scrollToOffset({
-    //   offset: Dimensions.get("screen").height * pageIndex,
-    //   animated: true,
-    // });
+    let personUID =props.id;
+    setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
+      id: personUID,
+    });
+    deleteDoc(doc(db, "users", user.uid, "likes", personUID));
+    deleteDoc(doc(db, "matches",props.mid));
+    navigation.navigate("Chat")
+    
   };
   const [modalVisible, setModalVisible] = useState(false);
   const onReportPress = () => {
@@ -48,7 +57,7 @@ const props = route.params
         decelerationRate={"fast"}
       >
         <View style={styles.firstPage}>
-          <Image style={styles.image} source={{ uri: props.img[0] }} />
+          <Image style={styles.image} source={{ uri: props.img.profile_1 }} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
               {props.name}, {props.age}
@@ -121,7 +130,7 @@ const props = route.params
         </View>
 
         <View style={styles.firstPage}>
-          <Image style={styles.image} source={{ uri: props.img[1] }} />
+          <Image style={styles.image} source={{ uri: props.img.profile_2 }} />
           <View style={styles.uiContainer}>
             {/* <Text style={styles.textH}>
                     {props.name}, {props.age}
@@ -194,7 +203,7 @@ const props = route.params
 
         {props.img[2] ? (
           <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: props.img[2] }} />
+            <Image style={styles.image} source={{ uri: props.img.background }} />
             <View style={styles.overlay}>
               <Text style={styles.promptType}>My Thing.....</Text>
               <Text style={styles.promptText}>Humour</Text>

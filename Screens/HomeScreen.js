@@ -53,7 +53,6 @@ const HomeScreen = () => {
           let image = snapshot.get("image");
           if (image) {
             if (
-              image["background"] === "null" ||
               image["profile_1"] === "null" ||
               image["profile_2"] === "null"
             ) {
@@ -82,7 +81,7 @@ const HomeScreen = () => {
           // console.log(matches)
           if(matches.length > 0){
             let newMatches = matches.filter(match => match.isNewFor === user.uid)
-            console.log(newMatches)
+            // console.log(newMatches)
             if (newMatches.length){
               setMatchNotif(true)
               newMatches.forEach((match) => {
