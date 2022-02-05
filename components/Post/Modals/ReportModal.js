@@ -7,7 +7,6 @@ import { setDoc, doc, getDoc, getDocFromCache } from 'firebase/firestore'
 
 
 const ReportModal = ({props}) => {
-
     const [reportModal, setReportModal] = useState(false)
     const [reportText, setReportText] = useState('')
     const [isReported, setIsreported] = useState(false)
@@ -18,7 +17,7 @@ const ReportModal = ({props}) => {
 
     useEffect( async () => {
 
-        const docRef = doc(db, 'users', props.uid, 'reports', user.uid)
+        const docRef = doc(db, 'users', props.id, 'reports', user.uid)
 
         try{
             const doc = await getDoc(docRef)
@@ -46,11 +45,11 @@ const ReportModal = ({props}) => {
 
             const setData = async () => {
                 
-                await setDoc(doc(db, "users", props.uid, "reports", user.uid),{"report":reportText})
+                await setDoc(doc(db, "users", props.id, "reports", user.uid),{"report":reportText})
 
                 //console.log("1 down")
 
-                // await setDoc(doc(db, "users", user.uid, "reports", props.uid),{
+                // await setDoc(doc(db, "users", user.uid, "reports", props.id),{
                 //     "report": {
                 //         name: props.name,
                 //         report: reportText

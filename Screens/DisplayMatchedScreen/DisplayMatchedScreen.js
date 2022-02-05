@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -17,20 +17,20 @@ import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import ReportModal from "../../components/Post/Modals/ReportModal";
 
-const DisplayMatchedScreen = ({route}) => {
-let {user} = useAuth()
-const navigation = useNavigation();
-const props = route.params
+const DisplayMatchedScreen = ({ route }) => {
+  let { user } = useAuth();
+  const navigation = useNavigation();
+  const props = route.params;
   const onDisLikePress = () => {
-    let personUID =props.id;
+    let personUID = props.id;
     setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
       id: personUID,
     });
     deleteDoc(doc(db, "users", user.uid, "likes", personUID));
-    deleteDoc(doc(db, "matches",props.mid));
-    navigation.navigate("Chat")
-    
+    deleteDoc(doc(db, "matches", props.mid));
+    navigation.navigate("Chat");
   };
   const [modalVisible, setModalVisible] = useState(false);
   const onReportPress = () => {
@@ -200,49 +200,99 @@ const props = route.params
             </View>
           </LinearGradient>
         </View>
-
-        {props.img[2] ? (
-          <View style={styles.firstPage}>
-            <Image style={styles.image} source={{ uri: props.img.background }} />
-            <View style={styles.overlay}>
-              <Text style={styles.promptType}>My Thing.....</Text>
-              <Text style={styles.promptText}>Humour</Text>
-              <View style={styles.rightContainer}>
-                <TouchableOpacity
-                  style={styles.iconContainer}
-                  onPress={onDisLikePress}
-                >
-                  <AntDesign
-                    name="plus"
-                    size={30}
-                    color={"white"}
-                    style={{ transform: [{ rotate: "45deg" }] }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.iconContainer}
-                  onPress={onReportPress}
-                >
-                  <MaterialCommunityIcons
-                    name="dots-vertical"
-                    size={30}
-                    color={"white"}
-                  />
-                </TouchableOpacity>
+        {Object.keys(props.profilePrompts)[0] ? (
+          props.img.background ? (
+            <View style={styles.firstPage}>
+              <Image
+                style={styles.image}
+                source={{ uri: props.img.background }}
+              />
+              <View style={styles.overlay}>
+                <Text style={styles.promptType}>
+                  {Object.keys(props.profilePrompts)[0]}
+                </Text>
+                <Text style={styles.promptText}>
+                  {Object.values(props.profilePrompts)[0]}
+                </Text>
+                <View style={styles.rightContainer}>
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={onDisLikePress}
+                  >
+                    <AntDesign
+                      name="plus"
+                      size={30}
+                      color={"white"}
+                      style={{ transform: [{ rotate: "45deg" }] }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={onReportPress}
+                  >
+                    <MaterialCommunityIcons
+                      name="dots-vertical"
+                      size={30}
+                      color={"white"}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
+          ) : (
+            <View style={styles.aboutMeContainer}>
+              <LinearGradient
+                colors={["#FFFFFF", "#F9D7D5"]}
+                style={{ height: "100%" }}
+              >
+                <Text style={[styles.promptType, { color: "#292C6D" }]}>
+                  {Object.keys(props.profilePrompts)[0]}
+                </Text>
+                <Text style={[styles.promptText, { color: "#292C6D" }]}>
+                  {Object.values(props.profilePrompts)[0]}
+                </Text>
+                <View style={styles.uiContainer}>
+                  <View style={styles.rightContainer}>
+                    <TouchableOpacity
+                      style={styles.iconContainer}
+                      onPress={onDisLikePress}
+                    >
+                      <AntDesign
+                        name="plus"
+                        size={30}
+                        color={"white"}
+                        style={{ transform: [{ rotate: "45deg" }] }}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.iconContainer}
+                      onPress={onReportPress}
+                    >
+                      <MaterialCommunityIcons
+                        name="dots-vertical"
+                        size={30}
+                        color={"white"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </LinearGradient>
+            </View>
+          )
         ) : (
+          <></>
+        )}
+        {Object.keys(props.profilePrompts)[1] ? (
           <View style={styles.aboutMeContainer}>
             <LinearGradient
               colors={["#FFFFFF", "#F9D7D5"]}
               style={{ height: "100%" }}
             >
               <Text style={[styles.promptType, { color: "#292C6D" }]}>
-                My Thing.....
+                {Object.keys(props.profilePrompts)[0]}
               </Text>
               <Text style={[styles.promptText, { color: "#292C6D" }]}>
-                Humour
+                {Object.values(props.profilePrompts)[0]}
               </Text>
               <View style={styles.uiContainer}>
                 <View style={styles.rightContainer}>
@@ -271,6 +321,8 @@ const props = route.params
               </View>
             </LinearGradient>
           </View>
+        ) : (
+          <></>
         )}
       </ScrollView>
       <Modal
@@ -283,11 +335,12 @@ const props = route.params
       >
         <View style={styles.endView}>
           <View style={styles.modalView}>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Text style={[styles.modalText, { color: "#FF0000" }]}>
                 Report
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <ReportModal profUser={props} />
             <TouchableOpacity>
               <Text style={styles.modalText}>Get Email Id</Text>
             </TouchableOpacity>

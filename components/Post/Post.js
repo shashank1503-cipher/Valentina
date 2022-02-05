@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import useAuth from "../../hooks/useAuth";
 import {
   deleteDoc,
   doc,
-  DocumentSnapshot,
+  onSnapshot,
   getDoc,
   setDoc,
   addDoc,
@@ -43,6 +43,23 @@ const Post = ({ profUser, TotalProfiles }) => {
   console.log(totalProfiles);
   const [isLiked, setIsLiked] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  
+  useEffect(() => {
+    let fetchLiked = () => {
+      console.log("called")
+      let personUID = profUser.id;
+      console.log(personUID)
+      onSnapshot(doc(db,"users",user.uid,"likes",personUID),(snapshot)=>{
+        console.log(snapshot.data())
+        if(snapshot.exists()){
+          setIsLiked(true)
+        }
+      })
+    };
+    fetchLiked();
+  }, [user]);
+  
+
   const onLikePress = () => {
     let personUID = profUser.id;
     if (!isLiked) {
@@ -157,7 +174,7 @@ const Post = ({ profUser, TotalProfiles }) => {
     language: "🗣️",
   };
   const [Age, setAge] = useState(0);
-  const [Batch,setBatch] = useState("")
+  const [Batch, setBatch] = useState("");
   useEffect(() => {
     const getAge = () => {
       var parts = profUser.dob.split("/");
@@ -175,11 +192,11 @@ const Post = ({ profUser, TotalProfiles }) => {
       setAge(age);
     };
     getAge();
-    const getBatch=()=>{
-      setBatch(profUser.aboutStuff.filter(map => map.type ==="batch"))
-    }
+    const getBatch = () => {
+      setBatch(profUser.aboutStuff.filter((map) => map.type === "batch"));
+    };
     getBatch();
-  }, [profUser.dob,profUser.aboutStuff]);
+  }, [profUser.dob, profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
       console.log("called", TotalProfiles);
@@ -216,12 +233,11 @@ const Post = ({ profUser, TotalProfiles }) => {
                   />
                   <View style={styles.uiContainer}>
                     <Text style={styles.textH}>
-                      {profUser.name.split(" ")[0]}{Age ? "," + Age : ""}
+                      {profUser.name.split(" ")[0]}
+                      {Age ? "," + Age : ""}
                     </Text>
                     <Text style={styles.text}>
-                      {Batch.length !==0
-                        ? Batch[0].value
-                        : ""}
+                      {Batch.length !== 0 ? Batch[0].value : ""}
                     </Text>
                     <View style={styles.rightContainer}>
                       <TouchableOpacity

@@ -29,7 +29,8 @@ const MessageScreen = () => {
   const {params} = useRoute();
   const [input, setInput] = useState("");
   const matchDetails = params.matchDetails;  
-  const name = getMatchedUserInfo(matchDetails.users, user.uid).name;  
+  const name = getMatchedUserInfo(matchDetails.users, user.uid).name; 
+  const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
   const [messages, setMessages] = useState([]);
   // static messages, will be replaced by realtime messages from firebase with the help message state
   
@@ -38,7 +39,7 @@ const MessageScreen = () => {
     onSnapshot(
       query(
         collection(db, 'matches', matchDetails.id, 'messages'), 
-        orderBy('timestamp','desc')
+        orderBy('timestamp','asc')
       ), 
       (snapshot) => 
         setMessages(
@@ -94,9 +95,9 @@ const MessageScreen = () => {
         </TouchableOpacity>
         <Image
           style={{ marginLeft: "10%", width: 35, height: 35 }}
-          source={require("../../assets/matched1.png")}
+          source={{uri:image}}
         />
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{name.split(" ")[0]}</Text>
       </View>
       <ScrollView
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
@@ -112,7 +113,7 @@ const MessageScreen = () => {
           <FlatList
             style={{ paddingHorizontal: 10, bottom: 0 }}     
             data={messages}
-            inverted={-1}
+            // inverted={-1}
             renderItem={({ item: message }) =>
               message.userid == user.uid ? (
               <SenderMessage key={message.id} message={message}/>):
