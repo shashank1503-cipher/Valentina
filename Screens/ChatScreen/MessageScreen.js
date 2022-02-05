@@ -94,7 +94,7 @@ const MessageScreen = () => {
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          style={{ marginLeft: "10%", width: 35, height: 35 }}
+          style={{ marginLeft: "2%", width: 45, height: 45,borderRadius:50 }}
           source={{uri:image}}
         />
         <Text style={styles.text}>{name.split(" ")[0]}</Text>

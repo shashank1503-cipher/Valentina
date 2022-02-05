@@ -49,8 +49,7 @@ const Post = ({ profUser, TotalProfiles }) => {
       console.log("called")
       let personUID = profUser.id;
       console.log(personUID)
-      onSnapshot(doc(db,"users",user.uid,"likes",personUID),(snapshot)=>{
-        console.log(snapshot.data())
+      getDoc(doc(db,"users",user.uid,"likes",personUID)).then((snapshot)=>{
         if(snapshot.exists()){
           setIsLiked(true)
         }
@@ -153,8 +152,11 @@ const Post = ({ profUser, TotalProfiles }) => {
     setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
       id: personUID,
     });
-    if (!isLiked) {
+    if (isLiked) {
+     
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
+      const mid = generateId(user.uid, personUID); 
+      deleteDoc(doc(db, "matches", mid));
       setIsLiked(false);
     }
   };
@@ -201,6 +203,9 @@ const Post = ({ profUser, TotalProfiles }) => {
     if (totalProfiles === -1) {
       console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
+    }
+    if(profUser.image.profile_1 === "null"){
+      setIsVisible(false)
     }
   });
   console.log(Batch);

@@ -88,7 +88,7 @@ const Match = ({matchDetails}) => {
 return  (
         //console.log(matchedUserInfo)
       <TouchableOpacity style={{marginLeft:'7%'}} onPress={handleMatchPress}>
-        <Image source={require("../../assets/matched1.png")} />
+        <Image style={{ width: 45, height: 45,borderRadius:50 }} source={{uri:matchedUserInfo?.image.profile_1}} />
       </TouchableOpacity>)
               
   

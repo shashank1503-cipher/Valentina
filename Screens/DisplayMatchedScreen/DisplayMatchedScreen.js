@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Modal,
+  Alert,
 } from "react-native";
 import styles from "../../components/Post/PostStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -18,7 +19,7 @@ import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import ReportModal from "../../components/Post/Modals/ReportModal";
-
+import RNRestart from 'react-native-restart';
 const DisplayMatchedScreen = ({ route }) => {
   let { user } = useAuth();
   const navigation = useNavigation();
@@ -31,6 +32,13 @@ const DisplayMatchedScreen = ({ route }) => {
     deleteDoc(doc(db, "users", user.uid, "likes", personUID));
     deleteDoc(doc(db, "matches", props.mid));
     navigation.navigate("Chat");
+    Alert.alert(
+      "We'll never show you him again",
+      `Next time you open the app the profile will not be shown to you`,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+  );
   };
   const [modalVisible, setModalVisible] = useState(false);
   const onReportPress = () => {

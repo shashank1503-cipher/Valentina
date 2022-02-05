@@ -38,6 +38,7 @@ const HomeScreen = () => {
   const [Loading, setLoading] = useState(true);
   const [matches, setMatches] = useState([]);
   const [matchNotif, setMatchNotif] = useState(false);
+
   let handleVerticalScroll = (e) => {
     SetHeaderState(0);
     // console.log(HorizontalScrollViewRef)
@@ -163,7 +164,6 @@ const HomeScreen = () => {
 
     [user]
   );
-
   useLayoutEffect(() => {
     let unsub;
     let dislikes = [];
@@ -188,7 +188,7 @@ const HomeScreen = () => {
         query(
           collection(db, "users"),
           where("id", "not-in", [...dislikesUserIds]),
-          where("gender", "==", getPreference)
+          where("gender", "==", getPreference),
         ),
         (snapshot) => {
           setProfiles(
