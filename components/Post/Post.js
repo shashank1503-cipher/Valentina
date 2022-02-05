@@ -100,6 +100,8 @@ const Post = ({ profUser, TotalProfiles }) => {
       );
     } else {
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
+      const mid = generateId(user.uid, personUID); 
+      deleteDoc(doc(db, "matches", mid));
     }
     setIsLiked(isLiked ? false : true);
   };
@@ -204,9 +206,7 @@ const Post = ({ profUser, TotalProfiles }) => {
       console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
     }
-    if(profUser.image.profile_1 === "null"){
-      setIsVisible(false)
-    }
+    
   });
   console.log(Batch);
   return (
