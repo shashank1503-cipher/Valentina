@@ -21,7 +21,6 @@ import Skeleton from "../components/Skeleton/Skeleton";
 import NoMoreProfile from "./LikeScreen/NoMoreProfile";
 import MatchModal from "../components/Notifications/MatchModal";
 
-
 const HomeScreen = () => {
   let navigation = useNavigation();
   let { user } = useAuth();
@@ -38,7 +37,7 @@ const HomeScreen = () => {
   const [Profiles, setProfiles] = useState([]);
   const [Loading, setLoading] = useState(true);
   const [matches, setMatches] = useState([]);
-  const [matchNotif,setMatchNotif] = useState(false)
+  const [matchNotif, setMatchNotif] = useState(false);
   let handleVerticalScroll = (e) => {
     SetHeaderState(0);
     // console.log(HorizontalScrollViewRef)
@@ -50,13 +49,70 @@ const HomeScreen = () => {
         if (!snapshot.exists()) {
           navigation.navigate("What's in the name tho?");
         } else {
-          let image = snapshot.get("image");
-          if (image) {
-            if (
-              image["profile_1"] === "null" ||
-              image["profile_2"] === "null"
-            ) {
-              navigation.navigate("Photo");
+          let dob = snapshot.get("dob");
+          if (!dob) {
+            navigation.navigate("Are You Old Enough?");
+          } else {
+            let gender = snapshot.get("gender");
+            if (!gender) {
+              navigation.navigate("Gender");
+            } else {
+              let sexuality = snapshot
+                .get("aboutStuff")
+                .filter((about) => about.type === "sexuality");
+              if (sexuality.length !== 0) {
+                if (!sexuality[0]["value"]) {
+                  navigation.navigate("Sexuality");
+                } else {
+                  let lookingFor = snapshot
+                    .get("aboutStuff")
+                    .filter((about) => about.type === "looking_for");
+                  if (lookingFor.length !== 0) {
+                    if (!lookingFor[0]["value"]) {
+                      navigation.navigate("Gender Interest");
+                    } else {
+                      let batch = snapshot
+                        .get("aboutStuff")
+                        .filter((about) => about.type === "batch");
+                      if (batch.length !== 0) {
+                        if (!batch[0]["value"]) {
+                          navigation.navigate("Batch");
+                        } else {
+                          let bio = snapshot.get("bio");
+                          if (!bio) {
+                            navigation.navigate("Bio");
+                          } else {
+                            let interest = snapshot.get("interest");
+                            if (
+                              interest.main.length === 0 &&
+                              interest.new.length === 0
+                            ) {
+                              navigation.navigate("Interests");
+                            } else {
+                              let image = snapshot.get("image");
+                              if (image) {
+                                if (
+                                  image["profile_1"] === "null" ||
+                                  image["profile_2"] === "null" || image["profile_1"] === "" ||
+                                  image["profile_2"] === ""
+                                ) {
+                                  navigation.navigate("Photo");
+                                }
+                              }
+                            }
+                          }
+                        }
+                      } else {
+                        navigation.navigate("Batch");
+                      }
+                    }
+                  } else {
+                    navigation.navigate("Gender Interest");
+                  }
+                }
+              } else {
+                navigation.navigate("Sexuality");
+              }
             }
           }
         }
@@ -79,18 +135,19 @@ const HomeScreen = () => {
             }))
           );
           // console.log(matches)
-          if(matches.length > 0){
-            let newMatches = matches.filter(match => match.isNewFor === user.uid)
+          if (matches.length > 0) {
+            let newMatches = matches.filter(
+              (match) => match.isNewFor === user.uid
+            );
             // console.log(newMatches)
-            if (newMatches.length){
-              setMatchNotif(true)
+            if (newMatches.length) {
+              setMatchNotif(true);
               newMatches.forEach((match) => {
-                let data = {isNewFor:""}
-                updateDoc(doc(db,"matches",match.id),{
-                  ...data
-                })
-                    
-              })
+                let data = { isNewFor: "" };
+                updateDoc(doc(db, "matches", match.id), {
+                  ...data,
+                });
+              });
             }
           }
         }
@@ -115,7 +172,9 @@ const HomeScreen = () => {
       const userDetails = await getDoc(doc(db, "users", user.uid));
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
-      const getPreference = userDetails.get("aboutStuff").filter(about => about.type ==="looking_for")[0]["value"]
+      const getPreference = userDetails
+        .get("aboutStuff")
+        .filter((about) => about.type === "looking_for")[0]["value"];
       console.log(getPreference);
       unsub = onSnapshot(
         query(
@@ -156,36 +215,36 @@ const HomeScreen = () => {
       {!Loading ? (
         Profiles.length !== 0 ? (
           <>
-          <FlatList
-            data={Profiles}
-            renderItem={({ item }) => (
-              <Post profUser={item} TotalProfiles={Profiles.length} />
-            )}
-            showsVerticalScrollIndicator={false}
-            snapToInterval={Dimensions.get("screen").height}
-            snapToAlignment={"start"}
-            decelerationRate={"fast"}
-            ref={(ref) => {
-              SetScrollViewRef(ref);
-            }}
-            alwaysBounceHorizontal={false}
-            alwaysBounceVertical={true}
-            bounces={true}
-            onScroll={handleVerticalScroll}
-            extraData={Profiles}
-          />
-          <MatchModal isVisible ={matchNotif}/>
+            <FlatList
+              data={Profiles}
+              renderItem={({ item }) => (
+                <Post profUser={item} TotalProfiles={Profiles.length} />
+              )}
+              showsVerticalScrollIndicator={false}
+              snapToInterval={Dimensions.get("screen").height}
+              snapToAlignment={"start"}
+              decelerationRate={"fast"}
+              ref={(ref) => {
+                SetScrollViewRef(ref);
+              }}
+              alwaysBounceHorizontal={false}
+              alwaysBounceVertical={true}
+              bounces={true}
+              onScroll={handleVerticalScroll}
+              extraData={Profiles}
+            />
+            <MatchModal isVisible={matchNotif} />
           </>
         ) : (
           <>
-          <NoMoreProfile />
-          <MatchModal isVisible ={matchNotif}/>
+            <NoMoreProfile />
+            <MatchModal isVisible={matchNotif} />
           </>
         )
       ) : (
         <>
-        <Skeleton />
-        <MatchModal isVisible ={matchNotif}/>
+          <Skeleton />
+          <MatchModal isVisible={matchNotif} />
         </>
       )}
     </View>

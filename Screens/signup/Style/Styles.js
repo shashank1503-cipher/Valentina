@@ -1,6 +1,31 @@
 import {StyleSheet,Platform, StatusBar} from 'react-native';
 
 const styles = StyleSheet.create({
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 0,
+        
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 10,
+        width:200,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        display: 'flex',
+        flexDirection: 'row',
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
     container: {
         paddingHorizontal:40,
         paddingTop:5,
