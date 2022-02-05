@@ -67,10 +67,16 @@ const Match = ({matchDetails}) => {
        
     let dt = new Date();
     const handleMatchPress = () => {
+      let batch = "";
+      if (matchedUserInfo.aboutStuff.filter(map => map.type ==="batch").length !== 0){
+        batch = matchedUserInfo.aboutStuff.filter(map => map.type ==="batch")[0]['value']
+      }
         navigation.navigate("DisplayMatchedDetails", {
+        mid:matchDetails.id,
+        id:matchedUserInfo.id,
         name: matchedUserInfo.name,
         age: dt.getFullYear() - matchedUserInfo.dob.slice(-4),
-        batch: matchedUserInfo.batch,
+        batch: batch,
         bio: matchedUserInfo.bio,
         aboutStuff: matchedUserInfo.aboutStuff,
         interests: matchedUserInfo.interest.main,
