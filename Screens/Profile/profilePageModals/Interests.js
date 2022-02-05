@@ -280,9 +280,3 @@ const Interests = ({styles , interests, setInterests, edit}) => {
 }
 
 export default Interests
-
-const style = StyleSheet.create({
-
-
-
-})

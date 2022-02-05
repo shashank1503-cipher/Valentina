@@ -4,7 +4,8 @@ import styles from './Style/Styles'
 import StyledButton from '../../components/Buttons/StyledButton'
 import Header from './Header' 
 import * as ImagePicker from 'expo-image-picker'
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import I from 'react-native-vector-icons/Feather'
 
 const Photo = () => {
   const [image, setImage] = useState('https://res.cloudinary.com/dsjzkocno/image/upload/v1643390487/valentina/dig_vwzdop.jpg')
@@ -90,13 +91,14 @@ const addImageCamera = async (text) => {
           style={{zIndex:10}}
           onPress={() => setBool(!bool)}
         >
-          <Icon name="camera" size={75} style={styles.icon}/>
+          <Icon name="camera-plus" size={75} style={styles.icon}/>
               
         </TouchableOpacity>
             
       </View>
       {bool? 
         <View style={styles.camcontainer}>
+
           <TouchableOpacity
             onPress={() => addImageCamera(image)}
             
@@ -110,10 +112,13 @@ const addImageCamera = async (text) => {
             onPress={() => addImageMedia(image)}
           >
           <View style={styles.subcamcontainer}>
-            <Icon name="images" size={30} style={styles.opicons}/>
+            <Icon name="upload" size={30} style={styles.opicons}/>
             <Text style={styles.optext}>UPLOAD FROM GALLERY</Text>
             </View>  
           </TouchableOpacity>
+
+          <Text style={{color:'red', marginTop:5, justifyContent:'center', alignItems: 'center'}}>Select atleast two images</Text>
+
         </View>
       : null }
 
