@@ -155,6 +155,13 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                                 title={interest} 
                                 key={interest}
                             />
+                        )) ||
+                        interests.new.map(interest => (
+                            <Item 
+                                outside={true}
+                                title={interest} 
+                                key={interest}
+                            />
                         ))
                         
                     }

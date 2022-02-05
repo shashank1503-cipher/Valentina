@@ -139,13 +139,20 @@ const Interests = () => {
         {
           Object.keys(interests).length !== 0
             &&
-            interests.main.map(interest => (
+            (interests.main.map(interest => (
               <Item 
                 outside={true}
                 title={interest} 
                 key={interest}
               />
-            ))           
+            ))  ||
+            interests.new.map(interest => (
+                <Item 
+                    outside={true}
+                    title={interest} 
+                    key={interest}
+                />
+            ))    )      
         }
 
       </View>
