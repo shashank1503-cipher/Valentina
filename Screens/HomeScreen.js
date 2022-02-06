@@ -241,9 +241,7 @@ const HomeScreen = () => {
             <FlatList
               data={Profiles}
               renderItem={({ item }) => (
-                <Post profUser={item} 
-                keyExtractor={(item) => item.id.toString()}
-                TotalProfiles={Profiles.length} />
+                <Post profUser={item} TotalProfiles={Profiles.length} />
               )}
               showsVerticalScrollIndicator={false}
               snapToInterval={Dimensions.get("screen").height}
