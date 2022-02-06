@@ -68,9 +68,13 @@ const Match = ({ matchDetails }) => {
   return (
     //console.log(matchedUserInfo)
     <View>
-      <TouchableOpacity style={{ marginLeft: "7%" }} onPress={handleMatchPress}>
+      <TouchableOpacity 
+        style={{ 
+          marginHorizontal: 10,
+        }} onPress={handleMatchPress}>
         <Image
-          style={{ width: 45, height: 45, borderRadius: 50 }}
+          style={{ width: 45, height: 45, borderRadius: 50,borderWidth: 1,
+            borderColor: '#aaa', }}
           source={{ uri: matchedUserInfo?.image.profile_1 }}
         />
       </TouchableOpacity>

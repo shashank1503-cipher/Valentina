@@ -8,9 +8,7 @@ const MatchList = ({matches}) => {
 
 //  matches = [...matches,...matches,...matches,...matches,...matches,...matches,...matches]
 
-  console.log(matches)
-
-  return  matches.length >= 0 ? (     
+  return  matches.length > 0 ? (     
     
 
     <ScrollView
@@ -22,14 +20,14 @@ const MatchList = ({matches}) => {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            width: "100%",
+            width: '100%',
             paddingHorizontal: 10,
+            position: 'relative'
           }}
         >
 
           {
             matches.map(match =>{
-              console.log(match)
               return (
                 <Match key={match.id.toString()} matchDetails={match}/>
               )

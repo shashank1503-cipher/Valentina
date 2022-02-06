@@ -69,9 +69,7 @@ const ChatScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: "5%",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    position: 'relative',
   },
   image: {
     marginLeft: "7%",

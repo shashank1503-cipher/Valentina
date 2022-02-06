@@ -88,8 +88,8 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: text === 'background'?false:true,
-            aspect: [9,16],
+            allowsEditing: true,
+            aspect: text === 'background'?[4,3]:[9,16],
             quality: 1,
             base64:true
         });
@@ -147,7 +147,7 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            aspect: [9,16],
+            aspect: text === 'background'?[4,3]:[9,16],
             quality:1, 
         })
 
@@ -415,35 +415,24 @@ const ProfilePage = () => {
     }, [])
 
 
+    //const [currentLength, setcurrentLength] = useState(Object.keys(profilePrompts).length) 
+
     useEffect(() => {
         
         const len = Object.keys(profilePrompts).length
 
-        if(textHeight > 120)
-            setContainerHeight(1700+(textHeight-120))
+        const inte = [...interests.main, ...interests.new].length;
         
-        else if(len === 0)
-            setContainerHeight(1700+(textHeight-120))
+        setContainerHeight(1650 + (textHeight - 120) + len*50 + (inte/3)*40);
 
-        else if(len === 1)
-            setContainerHeight(containerHeight+50)
-        
-        else if(len === 2)
-            setContainerHeight(containerHeight + 50)
-        
-        else
-            setContainerHeight(1700)
-
-        console.log(containerHeight)
-
-    }, [textHeight, profilePrompts])
+    }, [textHeight, profilePrompts, interests])
 
     return (
         <>
         <View></View>
         <ScrollView
             showsVerticalScrollIndicator={true}
-            ref={ref => {this.ScrollView = ref}}
+            // ref={ref => {this.ScrollView = ref}}
         >
 
             <View 

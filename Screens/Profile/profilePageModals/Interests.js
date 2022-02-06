@@ -187,17 +187,21 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                     
                     
                     {
-                        Object.keys(interests).length !== 0
-
-                        &&
-
+                        interests.main.length !== 0?
+                        
                         interests.main.map(interest => (
                             <Item 
                                 outside={true}
                                 title={interest} 
                                 key={interest}
                             />
-                        )) ||
+                        )):
+                        <></>
+
+                    }
+                    
+                    {
+                        interests.new.length !== 0?
                         interests.new.map(interest => (
                             <Item 
                                 outside={true}
@@ -205,6 +209,8 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                                 key={interest}
                             />
                         ))
+                        :
+                        <></>
                         
                     }
 
