@@ -25,7 +25,7 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { collection, deleteDoc, doc, getDoc, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
+import { collection, connectFirestoreEmulator, deleteDoc, doc, getDoc, getDocs, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
@@ -100,13 +100,38 @@ const ProfilePage = () => {
     }
 
 
-    const deleteAccount2 = () => {
+    const deleteAccount2 = async () => {
         
         console.log("Hello")
-        console.log(user.uid)
+        //console.log(user.uid)
+
+        const like = [];
         
-        deleteDoc(doc(db, 'users', user.uid))
-        .then(() => logout())
+        const data = await getDocs(
+            collection(db, 'users', user.uid, 'likes')
+        )
+
+        //console.log(data);
+
+        data.forEach(async (val) => {
+            like.push(val.id)
+        })
+
+        console.log(like);
+
+        if(like.length > 0)
+            for(let l of like)
+                await deleteDoc(doc(db, 'users', user.uid, 'likes', l))
+            
+
+        await deleteDoc(doc(db, 'users', user.uid))
+        
+        await logout()
+        
+        console.log("doneeeeeeeeeeeeeeeeeee")
+        
+        // .then(() => deleteDoc(doc(db, 'users', user.uid)))
+        // .then(() => logout())
     }
 
 
@@ -737,35 +762,35 @@ const ProfilePage = () => {
 
                        
                     {/* Logout Button */}
-                    <LinearGradient
-                        colors={colors}
-                        end={{ x: 0.75, y: 0.25 }}
-                        style={styles.updateButtonGrad}
+                    <TouchableOpacity
+                        onPress={logout}
                     >
-                        <TouchableOpacity
-                            onPress={logout}
+                        <LinearGradient
+                            colors={colors}
+                            end={{ x: 0.75, y: 0.25 }}
+                            style={styles.updateButtonGrad}
                         >
-                            <Text style={styles.updateButtonText}>LOGOUT</Text>
+                                <Text style={styles.updateButtonText}>LOGOUT</Text>
 
-                        </TouchableOpacity>
 
-                    </LinearGradient>
+                        </LinearGradient>
+                    </TouchableOpacity>
                     
                     {/* Delete Account Button */}
-                    <LinearGradient
-                        colors={colors}
-                        end={{ x: 0.75, y: 0.25 }}
-                        style={styles.updateButtonGrad}
-                        
+                    <TouchableOpacity 
+                        onPress={() => deleteAccount()}
                     >
-                        <TouchableOpacity 
-                            onPress={() => deleteAccount()}
+                        <LinearGradient
+                            colors={colors}
+                            end={{ x: 0.75, y: 0.25 }}
+                            style={styles.updateButtonGrad}
+                            
                         >
-                            <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
+                                <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
 
-                        </TouchableOpacity>
 
-                    </LinearGradient>
+                        </LinearGradient>
+                    </TouchableOpacity>
 
                 </View>
 
