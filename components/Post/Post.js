@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Modal,
+  Alert,
 } from "react-native";
 import styles from "./PostStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -173,12 +174,11 @@ const Post = ({ profUser, TotalProfiles }) => {
     religion: "🛐",
     dob: "📅",
     star_sign: "🔯",
-    looking_for: "🧑",
-    pronoun: "🏳️‍🌈",
     language: "🗣️",
+    batch:"🎓"
   };
   const [Age, setAge] = useState(0);
-  const [Batch, setBatch] = useState("");
+  const [Pronoun, setPronoun] = useState("");
   useEffect(() => {
     const getAge = () => {
       var parts = profUser.dob.split("/");
@@ -196,10 +196,10 @@ const Post = ({ profUser, TotalProfiles }) => {
       setAge(age);
     };
     getAge();
-    const getBatch = () => {
-      setBatch(profUser.aboutStuff.filter((map) => map.type === "batch"));
+    const getPronoun = () => {
+      setPronoun(profUser.aboutStuff.filter((map) => map.type === "pronoun"));
     };
-    getBatch();
+    getPronoun();
   }, [profUser.dob, profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
@@ -208,7 +208,6 @@ const Post = ({ profUser, TotalProfiles }) => {
     }
     
   });
-  console.log(Batch);
   return (
     <>
       {isVisible ? (
@@ -242,7 +241,7 @@ const Post = ({ profUser, TotalProfiles }) => {
                       {Age ? "," + Age : ""}
                     </Text>
                     <Text style={styles.text}>
-                      {Batch.length !== 0 ? Batch[0].value : ""}
+                      {Pronoun.length !== 0 ? Pronoun[0].value : ""}
                     </Text>
                     <View style={styles.rightContainer}>
                       <TouchableOpacity
@@ -296,10 +295,11 @@ const Post = ({ profUser, TotalProfiles }) => {
                     <View style={styles.uiContainer}>
                       <View style={styles.leftContainer}>
                         {profUser.aboutStuff.map((val) =>
-                          val.value ? (
+                          val.value && (val.type !=="looking_for" && val.type !=="pronoun") ? (
                             <Interest
                               value={val.value}
                               emoji={emojiMap[val.type]}
+                              type={val.type}
                             />
                           ) : (
                             <></>
@@ -652,7 +652,15 @@ const Post = ({ profUser, TotalProfiles }) => {
 
                   <ReportModal profUser={profUser} />
 
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{
+                     Alert.alert(
+                      "Email",
+                      profUser.email,
+                      [
+                        { text: "OK", onPress: () => console.log("OK Pressed") }
+                      ]
+                  );
+                  }}>
                     <Text style={styles.modalText}>Get Email Id</Text>
                   </TouchableOpacity>
                   <TouchableOpacity

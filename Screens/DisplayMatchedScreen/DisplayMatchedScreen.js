@@ -19,7 +19,6 @@ import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import ReportModal from "../../components/Post/Modals/ReportModal";
-import RNRestart from 'react-native-restart';
 const DisplayMatchedScreen = ({ route }) => {
   let { user } = useAuth();
   const navigation = useNavigation();
@@ -349,7 +348,15 @@ const DisplayMatchedScreen = ({ route }) => {
               </Text>
             </TouchableOpacity> */}
             <ReportModal profUser={props} />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+               Alert.alert(
+                "Email",
+                props.email,
+                [
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+            }}>
               <Text style={styles.modalText}>Get Email Id</Text>
             </TouchableOpacity>
             <TouchableOpacity

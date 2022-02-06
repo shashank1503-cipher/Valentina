@@ -28,6 +28,7 @@ const Names = () => {
     let data = {
       id:user.uid,
       name: name,
+      email:user.email,
       age: "",
       bio: "",
       image: {

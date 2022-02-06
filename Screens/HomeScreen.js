@@ -1,7 +1,14 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import Post from "../components/Post/Post";
-import { Alert, Dimensions, FlatList, StatusBar, Text, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
 import AppContext from "../context/AppContext";
 
 import useAuth from "../hooks/useAuth";
@@ -137,20 +144,18 @@ const HomeScreen = () => {
               ...doc.data(),
             }))
           );
-          console.log(matches)
+          console.log(matches);
           if (matches.length > 0) {
             let newMatches = matches.filter(
               (match) => match.isNewFor === user.uid
             );
             // console.log(newMatches)
-            if (newMatches.length!==0) {
+            if (newMatches.length !== 0) {
               Alert.alert(
                 "You Have Matches",
                 `Head Over to Match Screen to See them`,
-                [
-                  { text: "OK", onPress: () => console.log("OK Pressed") },
-                ]
-            );
+                [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+              );
               newMatches.forEach((match) => {
                 let data = { isNewFor: "" };
                 updateDoc(doc(db, "matches", match.id), {
@@ -184,12 +189,22 @@ const HomeScreen = () => {
         .get("aboutStuff")
         .filter((about) => about.type === "looking_for")[0]["value"];
       console.log(getPreference);
-      unsub = onSnapshot(
-        query(
+      let q;
+      if (getPreference == "both"){
+        q = query(
           collection(db, "users"),
-          where("id", "not-in", [...dislikesUserIds]),
-          where("gender", "==", getPreference),
-        ),
+          where("id", "not-in", [...dislikesUserIds])
+        )
+      }
+      else{
+      q = query(
+        collection(db, "users"),
+        where("id", "not-in", [...dislikesUserIds]),
+        where("gender", "==", getPreference)
+      );
+    }
+      unsub = onSnapshot(
+        q,
         (snapshot) => {
           setProfiles(
             snapshot.docs
@@ -241,18 +256,15 @@ const HomeScreen = () => {
               onScroll={handleVerticalScroll}
               extraData={Profiles}
             />
-            
           </>
         ) : (
           <>
             <NoMoreProfile />
-            
           </>
         )
       ) : (
         <>
           <Skeleton />
-         
         </>
       )}
     </View>

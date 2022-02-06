@@ -81,7 +81,8 @@ const Match = ({matchDetails}) => {
         aboutStuff: matchedUserInfo.aboutStuff,
         interests: matchedUserInfo.interest.main,
         img: matchedUserInfo.image,
-        profilePrompts:matchedUserInfo.profilePrompts
+        profilePrompts:matchedUserInfo.profilePrompts,
+        email:matchedUserInfo?.email,
         });
     };
 
