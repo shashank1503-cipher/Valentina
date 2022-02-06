@@ -88,7 +88,7 @@ const ProfilePage = () => {
 
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
+            allowsEditing: text === 'background'?false:true,
             aspect: [9,16],
             quality: 1,
             base64:true
@@ -439,7 +439,8 @@ const ProfilePage = () => {
     }, [textHeight, profilePrompts])
 
     return (
-
+        <>
+        <View></View>
         <ScrollView
             showsVerticalScrollIndicator={true}
             ref={ref => {this.ScrollView = ref}}
@@ -782,6 +783,7 @@ const ProfilePage = () => {
             </View>
 
         </ScrollView>
+        </>
 
     )
 }
@@ -796,8 +798,8 @@ const styles = StyleSheet.create({
     },
 
     profilePic: {
-        width: "110%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
         top:-1,
         resizeMode: 'cover',
         

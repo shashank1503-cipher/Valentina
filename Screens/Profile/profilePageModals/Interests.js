@@ -1,21 +1,29 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput,TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, TextInput,TouchableOpacity, Modal, Pressable, StyleSheet, ScrollView, Keyboard } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
 const Interests = ({styles , interests, setInterests, edit}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
 
     const [toAdd,setToAdd] = useState()
 
-    let interest = [
-        'traveling',
-        'exercise',
-        'dancing',
-        'cooking',
-        'sports'
-    ]
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [interest,setInterest] = useState([]);
+
+    let interest1 = [
+        'Outdoors', 'Working out', 'Dancing', 'Cooking', 'Sports', 'Running', 'Photography',
+        'Netflix & Chill', 'Coding', 
+      ]
+
+      let interest2 = [
+        'Singing', 'Music', 'Gaming', 'Reading', 'Shopping',
+        'Politics', 'Comedy', 'Potterhead', 'Writing',
+      ]
 
     const Item = ({title, outside}) => {
         
@@ -86,6 +94,40 @@ const Interests = ({styles , interests, setInterests, edit}) => {
         
     }
 
+
+    useEffect(() => {
+
+        setInterest([...interest1])
+
+        if(isOpen)
+            setInterest([...interest1, ...interest2])
+        else
+        setInterest([...interest1])
+
+        console.log(interest)
+
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+              setKeyboardVisible(true);
+              setInterest([...interest1])
+              setIsOpen(false);
+            }
+          );
+
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+              setKeyboardVisible(false); 
+            }
+          );
+      
+          return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+          };
+
+    }, [isOpen])
 
     return (
         <>
@@ -244,6 +286,14 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                                 ))
                             }
 
+                            <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
+                            {isOpen?
+                                <Text>Less</Text>
+                                :
+                                <Text>More</Text>
+                            }
+                            </TouchableOpacity>
+
                             {
                                 interests.new.map(interest => (
                                     <Item title={interest} key={interest}/>
@@ -261,7 +311,8 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                                 padding: 10,
                                 width: "50%",
                                 borderRadius: 20,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                display: isKeyboardVisible?'none':'flex',
                             }}
                         >
                             <Text
