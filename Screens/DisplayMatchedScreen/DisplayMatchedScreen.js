@@ -53,7 +53,6 @@ const DisplayMatchedScreen = ({ route }) => {
     looking_for: "🧑",
     pronouns: "🏳️‍🌈",
   };
-console.log(props.img)
   return (
     <View style={styles.container}>
       <ScrollView
@@ -67,7 +66,7 @@ console.log(props.img)
           <Image style={styles.image} source={{ uri: props.img.profile_1 }} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
-              {props.name}, {props.age}
+              {props.name.split(" ")[0]}, {props.age}
             </Text>
             <Text style={styles.text}>{props.batch}</Text>
             <View style={styles.rightContainer}>
