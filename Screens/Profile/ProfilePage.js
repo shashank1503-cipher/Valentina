@@ -747,35 +747,31 @@ const ProfilePage = () => {
 
                        
                     {/* Logout Button */}
-                    <LinearGradient
+                    
+                    <TouchableOpacity onPress={logout}>
+                        <LinearGradient
                         colors={colors}
                         end={{ x: 0.75, y: 0.25 }}
-                        style={styles.updateButtonGrad}
-                    >
-                        <TouchableOpacity
-                            onPress={logout}
-                        >
+                        style={styles.updateButtonGrad}>
                             <Text style={styles.updateButtonText}>LOGOUT</Text>
-
-                        </TouchableOpacity>
-
-                    </LinearGradient>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    
                     
                     {/* Delete Account Button */}
-                    <LinearGradient
-                        colors={colors}
-                        end={{ x: 0.75, y: 0.25 }}
-                        style={styles.updateButtonGrad}
-                        
-                    >
-                        <TouchableOpacity 
-                            onPress={() => deleteAccount()}
+                    
+                    <TouchableOpacity onPress={deleteAccount()}>
+                        <LinearGradient
+                            colors={colors}
+                            end={{ x: 0.75, y: 0.25 }}
+                            style={styles.updateButtonGrad}
+                            
                         >
                             <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
 
-                        </TouchableOpacity>
-
-                    </LinearGradient>
+                    
 
                 </View>
 

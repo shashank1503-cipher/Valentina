@@ -116,15 +116,17 @@ const Photo = () => {
         addImageCamera={addImageCamera}
         addImageMedia={addImageMedia}
       />
-      <LinearGradient
-        colors={colors}
-        end={{ x: 0.75, y: 0.25 }}
-        style={styles.updateButtonGrad}
-      >
-        <TouchableOpacity onPress={() => handleSubmit()}>
+      
+      <TouchableOpacity onPress={handleSubmit()}>   
+        <LinearGradient
+            colors={colors}
+            end={{ x: 0.75, y: 0.25 }}
+            style={styles.updateButtonGrad}
+          >     
           <Text style={styles.updateButtonText}>NEXT</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+          </LinearGradient>
+      </TouchableOpacity>
+      
     </View>
   );
 };
@@ -257,6 +259,7 @@ const styles = StyleSheet.create({
   },
 
   updateButtonText: {
+    textAlign: "center",
     color: "#fff",
     fontWeight: "bold",
     width:"100%",
@@ -264,7 +267,7 @@ const styles = StyleSheet.create({
 
   updateButtonGrad: {
     position: "absolute",
-    top: 500,
+    top: 400,
     justifyContent: "center",
     alignSelf: "center",
     width: "75%",
