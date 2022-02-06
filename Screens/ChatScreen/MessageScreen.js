@@ -55,7 +55,7 @@ const MessageScreen = () => {
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {
       let currentDate = new Date();
-      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes()+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
+      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       console.log(matchDetails)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: time,

@@ -53,7 +53,7 @@ const DisplayMatchedScreen = ({ route }) => {
     looking_for: "🧑",
     pronouns: "🏳️‍🌈",
   };
-
+console.log(props.img)
   return (
     <View style={styles.container}>
       <ScrollView
@@ -105,9 +105,20 @@ const DisplayMatchedScreen = ({ route }) => {
             <Text style={styles.aboutMeContent}>{props.bio}</Text>
             <View style={styles.uiContainer}>
               <View style={styles.leftContainer}>
-                {props.aboutStuff.map((val) => (
-                  <Interest value={val.value} emoji={emojiMap[val.type]} />
-                ))}
+              {props.aboutStuff.map((val) =>
+                          val.value && (val.type !=="looking_for" && val.type !=="pronoun") ? (
+                            <Interest
+                              value={val.value}
+                              emoji={emojiMap[val.type]}
+                              type={val.type}
+                            />
+                          ) : (
+                            <></>
+                          )
+                        )}
+                        {props.languages.map((val) => (
+                          <Interest value={val} emoji={emojiMap["language"]} />
+                        ))}
               </View>
               <View style={styles.rightContainer}>
                 <TouchableOpacity
@@ -347,7 +358,7 @@ const DisplayMatchedScreen = ({ route }) => {
                 Report
               </Text>
             </TouchableOpacity> */}
-            <ReportModal profUser={props} />
+            <ReportModal props={props} />
             <TouchableOpacity onPress={()=>{
                Alert.alert(
                 "Email",
