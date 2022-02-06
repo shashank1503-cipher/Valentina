@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import StyledButton from "../../components/Buttons/StyledButton";
@@ -20,7 +21,7 @@ import useAuth from "../../hooks/useAuth";
 
 const Photo = () => {
   const navigation = useNavigation();
-  let {user} = useAuth()
+  let { user } = useAuth();
   const [image, setImage] = useState({
     background: "null",
     profile_1: "null",
@@ -89,26 +90,34 @@ const Photo = () => {
 
     if (!_image.cancelled) formImage(_image, text);
   };
-  let handleSubmit= () =>{
-    let data = {image:image}
-    updateDoc(doc(db, "users", user.uid), {
-      ...data,
-    })
-      .then(() => {
-        console.log("done");
-        navigation.navigate("Home");
+  let handleSubmit = () => {
+    if (image.profile_1 === "null" || image.profile_2 === "null") {
+      Alert.alert(
+        "Invisible beings are not allowed",
+        `Add 2 profile photos to proceed furthur`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+      );
+    } else {
+      let data = { image: image };
+      updateDoc(doc(db, "users", user.uid), {
+        ...data,
       })
-      .catch((err) => {
-        alert(err.message);
-      });
-  }
+        .then(() => {
+          console.log("done");
+          navigation.navigate("Home");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+  };
   const colors = ["#FF9B7B", "#FF4E8C"];
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.heading}>Your Fake Candids</Text>
       </View>
-      
+
       <ImageUploadSignup
         colors={colors}
         edit={true}
@@ -130,11 +139,11 @@ const Photo = () => {
 };
 const styles = StyleSheet.create({
   heading: {
-    fontSize:28,
-    paddingLeft:25,
-    paddingTop:25,
-    fontWeight: 'bold',
-},
+    fontSize: 28,
+    paddingLeft: 25,
+    paddingTop: 25,
+    fontWeight: "bold",
+  },
   buttonNext: {
     position: "relative",
     alignItems: "center",
@@ -259,7 +268,7 @@ const styles = StyleSheet.create({
   updateButtonText: {
     color: "#fff",
     fontWeight: "bold",
-    width:"100%",
+    width: "100%",
   },
 
   updateButtonGrad: {
@@ -272,8 +281,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     overflow: "hidden",
-    zIndex:15,
-    elevation:15
+    zIndex: 15,
+    elevation: 15,
   },
 
   imageGrad: {

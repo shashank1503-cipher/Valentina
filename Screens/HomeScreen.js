@@ -190,34 +190,30 @@ const HomeScreen = () => {
         .filter((about) => about.type === "looking_for")[0]["value"];
       console.log(getPreference);
       let q;
-      if (getPreference == "both"){
+      if (getPreference == "both") {
         q = query(
           collection(db, "users"),
           where("id", "not-in", [...dislikesUserIds])
-        )
+        );
+      } else {
+        q = query(
+          collection(db, "users"),
+          where("id", "not-in", [...dislikesUserIds]),
+          where("gender", "==", getPreference)
+        );
       }
-      else{
-      q = query(
-        collection(db, "users"),
-        where("id", "not-in", [...dislikesUserIds]),
-        where("gender", "==", getPreference)
-      );
-    }
-      unsub = onSnapshot(
-        q,
-        (snapshot) => {
-          setProfiles(
-            snapshot.docs
-              .filter((doc) => doc.id !== user.uid)
-              .map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }))
-          );
-          setLoading(false);
-          setTotalProfiles(Profiles.length);
-        }
-      );
+      unsub = onSnapshot(q, (snapshot) => {
+        setProfiles(
+          snapshot.docs
+            .filter((doc) => doc.id !== user.uid)
+            .map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+        );
+        setLoading(false);
+        setTotalProfiles(Profiles.length);
+      });
     };
 
     fetchData();
@@ -241,7 +237,11 @@ const HomeScreen = () => {
             <FlatList
               data={Profiles}
               renderItem={({ item }) => (
-                <Post profUser={item} TotalProfiles={Profiles.length} />
+                <Post
+                  keyExtractor={(item) => item.id.toString()}
+                  profUser={item}
+                  TotalProfiles={Profiles.length}
+                />
               )}
               showsVerticalScrollIndicator={false}
               snapToInterval={Dimensions.get("screen").height}
