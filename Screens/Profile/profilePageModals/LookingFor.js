@@ -97,7 +97,7 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                             
                             <TouchableOpacity
                                 style={style.button}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => func('both')}
                             >
                                 <Icon name="male-female" size={30}/>
                                 <Text>Both</Text>

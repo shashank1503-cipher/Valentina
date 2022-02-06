@@ -54,6 +54,7 @@ const MessageScreen = () => {
 
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
   const sendMessage = () => {
+      
       let currentDate = new Date();
       let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       console.log(matchDetails)
@@ -65,23 +66,9 @@ const MessageScreen = () => {
         // imgURL: matchDetails.users[user.uid].image.profile_1, 
       });
 
-      setInput("");
-      //this.ScrollView.scrollToEnd();   
-    /*if(!input)
-      return;
-
-    const message = {
-      message: input,
-      userid: user.uid,
-      id: 'e',
-      timestamp: 'Today 12:30'
-    }
-    setMessages(m => [...m, message])
-    
-    setInput("")
-
-    this.ScrollView.scrollToEnd()*/
-
+      setInput("")
+      this.ScrollView.scrollToEnd()
+  
   };
 
   return (
@@ -103,7 +90,7 @@ const MessageScreen = () => {
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
         //keyboardVerticalOffset={10}
         showsVerticalScrollIndicator={true}
-        //ref={ref => {this.ScrollView = ref}}        
+        ref={ref => {this.ScrollView = ref}}        
       >
         <TouchableWithoutFeedback
           style={{
@@ -172,7 +159,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: "100%",
     shadowColor: '#000',
-    shadowOffset: { width: 10, height: 10},
+    shadowOffset: { width: 1, height: 1},
     shadowOpacity: 1,
     shadowRadius:2,
     elevation: 5,

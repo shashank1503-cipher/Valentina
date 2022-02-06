@@ -54,7 +54,7 @@ console.log(image)
         <View style={styles.smallt}>
           <Text style={{ textAlign: "left",width:"75%" }}>
             {lastMessage.message ?lastMessage.message.length > 10
-              ? lastMessage.message.slice(0,10)
+              ? lastMessage.message.slice(0,10)+"..."
               : lastMessage.message || "Say Hi!" : "Say Hi!"}
             
           </Text>
