@@ -29,7 +29,8 @@ const MessageScreen = () => {
   const {params} = useRoute();
   const [input, setInput] = useState("");
   const matchDetails = params.matchDetails;  
-  const name = getMatchedUserInfo(matchDetails.users, user.uid).name;  
+  const name = getMatchedUserInfo(matchDetails.users, user.uid).name; 
+  const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
   const [messages, setMessages] = useState([]);
   // static messages, will be replaced by realtime messages from firebase with the help message state
   
@@ -55,7 +56,7 @@ const MessageScreen = () => {
   const sendMessage = () => {
       
       let currentDate = new Date();
-      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes()+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
+      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       console.log(matchDetails)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: time,
@@ -80,10 +81,10 @@ const MessageScreen = () => {
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          style={{ marginLeft: "10%", width: 35, height: 35 }}
-          source={require("../../assets/matched1.png")}
+          style={{ marginLeft: "2%", width: 45, height: 45,borderRadius:50 }}
+          source={{uri:image}}
         />
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{name.split(" ")[0]}</Text>
       </View>
       <ScrollView
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}

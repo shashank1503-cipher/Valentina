@@ -197,6 +197,13 @@ const Interests = ({styles , interests, setInterests, edit}) => {
                                 title={interest} 
                                 key={interest}
                             />
+                        )) ||
+                        interests.new.map(interest => (
+                            <Item 
+                                outside={true}
+                                title={interest} 
+                                key={interest}
+                            />
                         ))
                         
                     }
@@ -331,9 +338,3 @@ const Interests = ({styles , interests, setInterests, edit}) => {
 }
 
 export default Interests
-
-const style = StyleSheet.create({
-
-
-
-})

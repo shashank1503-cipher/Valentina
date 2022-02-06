@@ -57,7 +57,7 @@ const ReportModal = ({profUser}) => {
 
                 //console.log("1 down")
 
-                // await setDoc(doc(db, "users", user.uid, "reports", props.uid),{
+                // await setDoc(doc(db, "users", user.uid, "reports", props.id),{
                 //     "report": {
                 //         name: props.name,
                 //         report: reportText

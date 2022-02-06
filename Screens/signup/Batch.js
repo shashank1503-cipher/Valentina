@@ -4,7 +4,7 @@ import Header from "./Header";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./Style/Styles";
 import useAuth from "../../hooks/useAuth";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 const Batch = () => {
   let { user } = useAuth();
@@ -20,7 +20,7 @@ const Batch = () => {
     },
   ];
   let handleFormData = (batch) => {
-    let data = { batch: batch };
+    let data = { aboutStuff: arrayUnion({ type: "batch", value: batch })  };
     updateDoc(doc(db, "users", user.uid), {
       ...data,
     })

@@ -38,27 +38,27 @@ const ChatRow = ({ matchDetails }) => {
     
     [matchDetails, user]
   );
-  // console.log(matchDetails)
-
+  const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
+console.log(image)
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate("Message", { matchDetails })}
     >
       <Image
-        style={{ left: 0 }}
-        source={require("../../assets/matched1.png")}
+        style={{ width: 45, height: 45,borderRadius:50 }}
+        source={{uri:image}}
       />
       <View>
         <Text style={styles.text}>{matchedUserInfo?.name}</Text>
         <View style={styles.smallt}>
-          <Text style={{ textAlign: "left" }}>
+          <Text style={{ textAlign: "left",width:"75%" }}>
             {lastMessage.message ?lastMessage.message.length > 10
               ? lastMessage.message.slice(0,10)+"..."
               : lastMessage.message || "Say Hi!" : "Say Hi!"}
             
           </Text>
-          <Text style={{ left: 200, textAlign: "right" }}>
+          <Text style={{ textAlign: "right" }}>
             {lastMessage.timestamp}
           </Text>
         </View>
@@ -92,10 +92,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     fontFamily: "Roboto",
     color: "black",
-    //width: "100%",
+    // width: "65%",
     //fitWidth: true,
-    left: 7,
+    marginLeft: 7,
     fontSize: 10,
+    // justifyContent:"space-between"
   },
 });
 

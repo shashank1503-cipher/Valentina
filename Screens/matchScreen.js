@@ -36,7 +36,7 @@ const MatchScreen = () => {
             <Image source={{uri: matchedUser.image.profile_1}} style={styles.image2}></Image>
             <View style={{top:"55%"}}>
             
-            <TouchableHighlight {...touchProps} onPress={()=>navigation.navigate('ChatScreen')}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>
+            <TouchableHighlight {...touchProps} onPress={()=>navigation.navigate('Chat')}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>
             <View style={{height:20}}></View>
             <TouchableHighlight {...touchProps} onPress={()=>navigation.goBack()}><Text>Keep Swiping</Text></TouchableHighlight>
             </View>

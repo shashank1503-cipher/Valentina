@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Modal,
+  Alert,
 } from "react-native";
 import styles from "./PostStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -19,7 +20,7 @@ import useAuth from "../../hooks/useAuth";
 import {
   deleteDoc,
   doc,
-  DocumentSnapshot,
+  onSnapshot,
   getDoc,
   setDoc,
   addDoc,
@@ -43,6 +44,22 @@ const Post = ({ profUser, TotalProfiles }) => {
   console.log(totalProfiles);
   const [isLiked, setIsLiked] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  
+  useEffect(() => {
+    let fetchLiked = () => {
+      console.log("called")
+      let personUID = profUser.id;
+      console.log(personUID)
+      getDoc(doc(db,"users",user.uid,"likes",personUID)).then((snapshot)=>{
+        if(snapshot.exists()){
+          setIsLiked(true)
+        }
+      })
+    };
+    fetchLiked();
+  }, [user]);
+  
+
   const onLikePress = () => {
     let personUID = profUser.id;
     if (!isLiked) {
@@ -84,6 +101,8 @@ const Post = ({ profUser, TotalProfiles }) => {
       );
     } else {
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
+      const mid = generateId(user.uid, personUID); 
+      deleteDoc(doc(db, "matches", mid));
     }
     setIsLiked(isLiked ? false : true);
   };
@@ -136,8 +155,11 @@ const Post = ({ profUser, TotalProfiles }) => {
     setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
       id: personUID,
     });
-    if (!isLiked) {
+    if (isLiked) {
+     
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
+      const mid = generateId(user.uid, personUID); 
+      deleteDoc(doc(db, "matches", mid));
       setIsLiked(false);
     }
   };
@@ -152,12 +174,11 @@ const Post = ({ profUser, TotalProfiles }) => {
     religion: "🛐",
     dob: "📅",
     star_sign: "🔯",
-    looking_for: "🧑",
-    pronoun: "🏳️‍🌈",
     language: "🗣️",
+    batch:"🎓"
   };
   const [Age, setAge] = useState(0);
-  const [Batch,setBatch] = useState("")
+  const [Pronoun, setPronoun] = useState("");
   useEffect(() => {
     const getAge = () => {
       var parts = profUser.dob.split("/");
@@ -175,18 +196,18 @@ const Post = ({ profUser, TotalProfiles }) => {
       setAge(age);
     };
     getAge();
-    const getBatch=()=>{
-      setBatch(profUser.aboutStuff.filter(map => map.type ==="batch"))
-    }
-    getBatch();
-  }, [profUser.dob,profUser.aboutStuff]);
+    const getPronoun = () => {
+      setPronoun(profUser.aboutStuff.filter((map) => map.type === "pronoun"));
+    };
+    getPronoun();
+  }, [profUser.dob, profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
       console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
     }
+    
   });
-  console.log(Batch);
   return (
     <>
       {isVisible ? (
@@ -216,12 +237,11 @@ const Post = ({ profUser, TotalProfiles }) => {
                   />
                   <View style={styles.uiContainer}>
                     <Text style={styles.textH}>
-                      {profUser.name.split(" ")[0]}{Age ? "," + Age : ""}
+                      {profUser.name.split(" ")[0]}
+                      {Age ? "," + Age : ""}
                     </Text>
                     <Text style={styles.text}>
-                      {Batch.length !==0
-                        ? Batch[0].value
-                        : ""}
+                      {Pronoun.length !== 0 ? Pronoun[0].value : ""}
                     </Text>
                     <View style={styles.rightContainer}>
                       <TouchableOpacity
@@ -275,10 +295,11 @@ const Post = ({ profUser, TotalProfiles }) => {
                     <View style={styles.uiContainer}>
                       <View style={styles.leftContainer}>
                         {profUser.aboutStuff.map((val) =>
-                          val.value ? (
+                          val.value && (val.type !=="looking_for" && val.type !=="pronoun") ? (
                             <Interest
                               value={val.value}
                               emoji={emojiMap[val.type]}
+                              type={val.type}
                             />
                           ) : (
                             <></>
@@ -631,7 +652,15 @@ const Post = ({ profUser, TotalProfiles }) => {
 
                   <ReportModal profUser={profUser} />
 
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{
+                     Alert.alert(
+                      "Email",
+                      profUser.email,
+                      [
+                        { text: "OK", onPress: () => console.log("OK Pressed") }
+                      ]
+                  );
+                  }}>
                     <Text style={styles.modalText}>Get Email Id</Text>
                   </TouchableOpacity>
                   <TouchableOpacity

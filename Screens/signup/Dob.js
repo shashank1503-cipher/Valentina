@@ -19,7 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 const Dob = () => {
   let { user } = useAuth();
   const navigation = useNavigation();
-  const [date, setDate] = useState("15-01-2022");
+  const [date, setDate] = useState("15-01-2000");
   let handleFormData = () => {
     let data = { dob: date };
     updateDoc(doc(db, "users", user.uid), {
