@@ -7,22 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:311128380415:android:9834e5dda07ecdd4618dca",
+        "mobilesdk_app_id": "1:311128380415:android:0024e8c00664ad1c618dca",
         "android_client_info": {
-          "package_name": "host.exp.exponent"
+          "package_name": "com.betalabs.valentina"
         }
       },
       "oauth_client": [
         {
           "client_id": "311128380415-1n97a7l9i4lbsbni46r469ohb9egra6d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "host.exp.exponent",
-            "certificate_hash": "d5e196823e15cdb232345c6c19f7014194fa3424"
-          }
-        },
-        {
-          "client_id": "311128380415-2ti5hndg6b5ibi52nfr68s7jo48jim4l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -42,7 +34,7 @@
               "client_id": "311128380415-5dh787597b9j93t9klig0oj58t8tv619.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "host.exp.exponent"
+                "bundle_id": "com.betalabs.valentina"
               }
             }
           ]

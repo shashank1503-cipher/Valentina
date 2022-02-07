@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "host.exp.exponent"
+      "package": "com.betalabs.valentina"
     },
     "web": {
       "favicon": "./assets/favicon.png"
