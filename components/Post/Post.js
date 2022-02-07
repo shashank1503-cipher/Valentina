@@ -20,10 +20,8 @@ import useAuth from "../../hooks/useAuth";
 import {
   deleteDoc,
   doc,
-  onSnapshot,
   getDoc,
   setDoc,
-  addDoc,
   serverTimestamp,
 } from "@firebase/firestore";
 import { db } from "../../firebase";

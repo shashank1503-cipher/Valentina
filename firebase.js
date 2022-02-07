@@ -14,7 +14,7 @@ const firebaseConfig = {
   projectId: "valentina-834fa",
   storageBucket: "valentina-834fa.appspot.com",
   messagingSenderId: "311128380415",
-  appId: "1:311128380415:web:4e71403b5cd98ba9618dca",
+  appId: "1:311128380415:web:34ad80892e46062a618dca"
 };
 
 
