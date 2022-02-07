@@ -66,7 +66,7 @@ const DisplayMatchedScreen = ({ route }) => {
           <Image style={styles.image} source={{ uri: props.img.profile_1 }} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
-              {props.name.split(" ")[0]}, {props.age}
+              {props.name.split(" ")[0]}, {props?.age}
             </Text>
             <Text style={styles.text}>{props.batch}</Text>
             <View style={styles.rightContainer}>
