@@ -72,8 +72,7 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
                                 backgroundColor: '#efefef',
                                 borderRadius: 10,
                                 borderColor: '#dddddd',
-                                borderWidth: 1,
-                                marginVertical: 5,
+                                borderWidth: 1
                             }}
                             key={key}
                         >
@@ -82,7 +81,6 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    width: 300,
                                 }}
                             >
 
