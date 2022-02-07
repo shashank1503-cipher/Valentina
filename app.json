@@ -24,7 +24,13 @@
         "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.betalabs.valentina"
+      "package": "com.betalabs.valentina",      
+      "config":{
+        "googleSignIn":{
+          "apiKey": "AIzaSyD1Pthy9QhSEMTmLVEWvvIqJWFWf03cdp8",
+          "certificateHash": "d5e196823e15cdb232345c6c19f7014194fa3424"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
