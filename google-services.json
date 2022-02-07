@@ -15,6 +15,14 @@
       "oauth_client": [
         {
           "client_id": "311128380415-1n97a7l9i4lbsbni46r469ohb9egra6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.betalabs.valentina",
+            "certificate_hash": "d5e196823e15cdb232345c6c19f7014194fa3424"
+          }
+        },
+        {
+          "client_id": "311128380415-2ti5hndg6b5ibi52nfr68s7jo48jim4l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
