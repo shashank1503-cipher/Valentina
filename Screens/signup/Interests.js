@@ -97,11 +97,11 @@ const Interests = () => {
   } 
   let handleSubmit  = ()=>{
     let data={interest:interests}
-    console.log(data)
+    // console.log(data)
     updateDoc(doc(db, "users", user.uid), {
       ...data,
     }).then(() => {
-      console.log("done");
+      // console.log("done");
       updateUserData()
       navigation.navigate("Photo");
     })

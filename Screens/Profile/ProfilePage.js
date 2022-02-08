@@ -129,7 +129,7 @@ const ProfilePage = () => {
             like.push(val.id)
         })
 
-        console.log(like);
+        // console.log(like);
 
         if(like.length > 0)
             for(let l of like)
@@ -202,7 +202,7 @@ const ProfilePage = () => {
 
         if(!textField)
         {
-            console.log("Bio")
+            // console.log("Bio")
             Alert.alert(
                 "Empty fields",
                 `Add Bio`,
@@ -293,7 +293,7 @@ const ProfilePage = () => {
         if(JSON.stringify(data) === JSON.stringify(userData))
             return;
 
-        console.log("Not Working...")
+        // console.log("Not Working...")
 
         setDoc(doc(db, 'users', user.uid), {
             ...data

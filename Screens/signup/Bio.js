@@ -33,7 +33,7 @@ const Bio = () => {
           ...data,
         })
           .then(() => {
-            console.log("done");
+            // console.log("done");
             navigation.navigate("Interests");
             updateUserData()
           })

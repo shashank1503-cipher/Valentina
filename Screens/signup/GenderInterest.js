@@ -33,7 +33,7 @@ const GenderInterest = () => {
       ...data,
     })
       .then(() => {
-        console.log("done");
+        // console.log("done");
         updateUserData()
         navigation.navigate("Batch");
       })

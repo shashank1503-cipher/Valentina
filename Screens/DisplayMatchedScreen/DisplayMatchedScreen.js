@@ -26,9 +26,9 @@ const DisplayMatchedScreen = ({ route }) => {
   const navigation = useNavigation();
   const props = route.params;
   
-  console.log(props.img)
+  // console.log(props.img)
 
-  console.log(typeof props.img.profile_1)
+  // console.log(typeof props.img.profile_1)
 
   const onDisLikePress = () => {
   
