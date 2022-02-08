@@ -57,12 +57,12 @@ const Batch = ({edit, styles, batch, setBatch}) => {
                 }}>
 
 
-                <MaterialCommunityIcons
+                <Icon
                     style={{
                         marginRight:10,
                         marginTop:4,
                     }}
-                name="human" color="#222" size={25} />
+                name="school" color="#222" size={20} />
                 
                 <Text style={styles.basicText}>Batch</Text>
 
