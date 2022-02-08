@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import getMatchedUserInfo from "../../libs/getMatchedUserInfo";
 import { collection, onSnapshot, query, orderBy } from "@firebase/firestore";
 import { db } from "../../firebase";
+var CryptoJS = require("crypto-js");
 
 const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation();
@@ -32,8 +33,10 @@ const ChatRow = ({ matchDetails }) => {
           if (snapshot.docs.length>0){
             var myDate = new Date(snapshot.docs[0]?.data()?.timestamp.seconds*1000);
             let time = myDate.toString().split(' ')[4]?.slice(0,5) 
+            var decrypted = CryptoJS.AES.decrypt(snapshot.docs[0]?.data()?.message, matchDetails.id); 
+            var msg = decrypted.toString(CryptoJS.enc.Utf8);
             setLastMessage({
-              message: snapshot.docs[0]?.data()?.message,
+              message: msg,
               timestamp: time,
             });
           }
