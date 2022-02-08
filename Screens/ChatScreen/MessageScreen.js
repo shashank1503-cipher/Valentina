@@ -59,7 +59,8 @@ const MessageScreen = () => {
       let currentDate = new Date();
       //let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       //console.log(TS)
-      //setTimeout(1);      
+      //setTimeout(1); 
+           
       var encrypted = AES.encrypt(input, matchDetails.id).toString();
       //console.log("input ",encrypted)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
@@ -70,7 +71,7 @@ const MessageScreen = () => {
         // imgURL: matchDetails.users[user.uid].image.profile_1, 
       });      
       setInput("")
-      this.ScrollView.scrollToEnd()  
+      // this.ScrollView.scrollToEnd()  
   };
 
   return (
@@ -92,7 +93,7 @@ const MessageScreen = () => {
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
         //keyboardVerticalOffset={10}
         showsVerticalScrollIndicator={true}
-        ref={ref => {this.ScrollView = ref}}        
+        // ref={ref => {this.ScrollView = ref}}        
       >
         <TouchableWithoutFeedback
           style={{

@@ -29,7 +29,7 @@ const Batch = () => {
       ...data,
     })
       .then(() => {
-        console.log("done");
+        // console.log("done");
         updateUserData();
         navigation.navigate("Bio", { batch: batch });
       })

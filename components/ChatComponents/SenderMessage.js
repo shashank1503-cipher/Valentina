@@ -13,7 +13,7 @@ const SenderMessage = ({ message, secretkey }) => {
      <>
         <Text style={{textAlign:"center",paddingBottom: "5%", color: "#B9B9B9"}}>{time}</Text>
         <View style={styles.container}>        
-            <Text style={{color:"white"}}>{msg}</Text>
+            <Text style={{color:"white"}}>{msg.trim()}</Text>
         </View>
      </> 
     

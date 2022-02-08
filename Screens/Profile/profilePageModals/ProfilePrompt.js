@@ -12,7 +12,7 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
 
     const items = [
         {label: "If you laugh at this, we'll get along...", value: "If you laugh at this, we'll get along..."},
-        {label: 'Perfect fist date...', value: 'Perfect fist date...'},
+        {label: 'Perfect first date...', value: 'Perfect fist date...'},
         {label: 'A pro and a con of dating me...', value: 'A pro and a con of dating me...'},
         {label: 'Something I learned way later than I should have...', value: 'Something I learned way later than I should have...'},
         {label: "When no one's watching I...", value: "When no one's watching I..."}
@@ -23,7 +23,7 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
        
         if(size === 2)
         {
-            console.log(size)
+            // console.log(size)
             return
         }
 
@@ -33,7 +33,7 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
             ...e
         }))
         
-        console.log(profilePrompts)
+        // console.log(profilePrompts)
 
         setSize(Object.keys(profilePrompts).length)
 

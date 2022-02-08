@@ -43,11 +43,7 @@ const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
         )
     }
 
-    useEffect(() => {
-
-        console.log(loading)
-
-    }, [loading])
+   
 
 
     return (

@@ -26,9 +26,9 @@ const DisplayMatchedScreen = ({ route }) => {
   const navigation = useNavigation();
   const props = route.params;
   
-  console.log(props.img)
+  // console.log(props.img)
 
-  console.log(typeof props.img.profile_1)
+  // console.log(typeof props.img.profile_1)
 
   const onDisLikePress = () => {
   
@@ -330,10 +330,10 @@ const DisplayMatchedScreen = ({ route }) => {
               style={{ height: "100%" }}
             >
               <Text style={[styles.promptType, { color: "#292C6D" }]}>
-                {Object.keys(props.profilePrompts)[0]}
+                {Object.keys(props.profilePrompts)[1]}
               </Text>
               <Text style={[styles.promptText, { color: "#292C6D" }]}>
-                {Object.values(props.profilePrompts)[0]}
+                {Object.values(props.profilePrompts)[1]}
               </Text>
               <View style={styles.uiContainer}>
                 <View style={[styles.rightContainer,{

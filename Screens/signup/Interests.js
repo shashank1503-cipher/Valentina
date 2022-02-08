@@ -11,9 +11,9 @@ import useAuth from '../../hooks/useAuth';
 import AppContext from '../../context/AppContext';
 
 let interest = [
-  'Outdoors', 'Working out', 'Dancing', 'Cooking', 'Sports', 'Running', 'Photography',
-  'Netflix & Chill', 'Coding', 'Singing', 'Music', 'Gaming', 'Reading', 'Shopping',
-  'Politics', 'Comedy', 'Potterhead', 'Writing',
+  'Working out', 'Dancing', 'Cooking', 'Sports', 'Photography',
+  'Netflix & Chill', 'Coding', 'Music', 'Gaming', 'Reading',
+  'Comedy', 'Potterhead', 'Writing'
 ]
 
 const Interests = () => {
@@ -97,11 +97,11 @@ const Interests = () => {
   } 
   let handleSubmit  = ()=>{
     let data={interest:interests}
-    console.log(data)
+    // console.log(data)
     updateDoc(doc(db, "users", user.uid), {
       ...data,
     }).then(() => {
-      console.log("done");
+      // console.log("done");
       updateUserData()
       navigation.navigate("Photo");
     })
