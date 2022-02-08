@@ -28,11 +28,16 @@ const ChatRow = ({ matchDetails }) => {
           orderBy("timestamp", "desc")
         ),
         (snapshot) => {
-          // console.log(snapshot.docs[0].data());
-          setLastMessage({
-            message: snapshot.docs[0]?.data()?.message,
-            timestamp: snapshot.docs[0]?.data()?.timestamp.split("-")[1],
-          });
+          //console.log(snapshot.docs[0].data());
+          if (snapshot.docs.length>0){
+            var myDate = new Date(snapshot.docs[0]?.data()?.timestamp.seconds*1000);
+            let time = myDate.toString().split(' ')[4].slice(0,5)
+            setLastMessage({
+              message: snapshot.docs[0]?.data()?.message,
+              timestamp: time,
+            });
+          }
+          
         }
       ),
     
