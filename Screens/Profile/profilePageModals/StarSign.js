@@ -140,6 +140,7 @@ const StarSign = ({styles, edit, starSign, setStarSign}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

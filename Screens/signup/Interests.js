@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Modal, Pressable, TextInput } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './Style/Styles'
 import Header from './Header'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -8,6 +8,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import useAuth from '../../hooks/useAuth';
+import AppContext from '../../context/AppContext';
 
 let interest = [
   'Outdoors', 'Working out', 'Dancing', 'Cooking', 'Sports', 'Running', 'Photography',
@@ -17,6 +18,9 @@ let interest = [
 
 const Interests = () => {
   let {user} = useAuth()
+
+  const { updateUserData } = useContext(AppContext)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [toAdd, setToAdd] = useState()
   const navigation = useNavigation();
@@ -93,11 +97,12 @@ const Interests = () => {
   } 
   let handleSubmit  = ()=>{
     let data={interest:interests}
-    console.log(data)
+    // console.log(data)
     updateDoc(doc(db, "users", user.uid), {
       ...data,
     }).then(() => {
-      console.log("done");
+      // console.log("done");
+      updateUserData()
       navigation.navigate("Photo");
     })
     .catch((err) => {

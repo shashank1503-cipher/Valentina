@@ -99,6 +99,7 @@ const Sexuality = ({styles, sexuality, setSexuality, edit}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

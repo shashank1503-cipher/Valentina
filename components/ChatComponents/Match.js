@@ -39,6 +39,7 @@ const Match = ({ matchDetails }) => {
     var age = Math.abs(year - 1970);
     return age;
   };
+  
   const handleMatchPress = () => {
     let batch = "";
     if (

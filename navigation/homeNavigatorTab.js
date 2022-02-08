@@ -2,7 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
-
 import ChatScreen from "../Screens/ChatScreen/ChatScreen";
 import ProfilePage from "../Screens/Profile/ProfilePage";
 import HomeScreen from "../Screens/HomeScreen";

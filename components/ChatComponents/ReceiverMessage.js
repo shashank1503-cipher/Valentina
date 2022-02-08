@@ -10,7 +10,7 @@ const ReceiverMessage = ({ message, secretkey }) => {
   return (
     <View style={styles.recieve}>
       <View style={styles.container}>      
-        <Text>{msg}</Text>      
+        <Text>{msg.trim()}</Text>      
       </View>
     </View>      
     

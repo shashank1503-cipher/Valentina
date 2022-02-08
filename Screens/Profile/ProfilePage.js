@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { 
     View, 
     Text, 
@@ -10,6 +10,7 @@ import {
     TouchableOpacity, 
     ScrollView,
     Alert,
+    ActivityIndicator,
     
 } from 'react-native'
 
@@ -25,16 +26,26 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { collection, connectFirestoreEmulator, deleteDoc, doc, getDoc, getDocs, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
 import Sexuality from './profilePageModals/Sexuality'
 import Gender from './profilePageModals/Gender'
+import AppContext from '../../context/AppContext'
+import { useNavigation } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Draggable from 'react-native-draggable';
+import Skeleton from '../../components/Skeleton/Skeleton'
 
 const ProfilePage = () => {
     
     const {user, logout} = useAuth()
+    const {updateUserData, userData, setUserData} = useContext(AppContext)
+
+    const navigation = useNavigation();
+
+    const [loader, setLoader] = useState(false)
 
     const [name, setName] = useState(user.displayName)
     const [mnumber, setmnumber] = useState(user.phoneNumber || "")
@@ -53,7 +64,7 @@ const ProfilePage = () => {
     })
    
 
-    const [email, setEmail] = useState(user.email.replace('@iiitkottayam.ac.in', ''))
+    const [email, setEmail] = useState(user.email)
     const [look, setLook] = useState()
     const [lang, setLang] = useState([])
     const [height, setHeight] = useState({
@@ -96,13 +107,14 @@ const ProfilePage = () => {
 
         if(!_image.cancelled)
             formImage(_image, text)
+        
                 
     }
 
 
     const deleteAccount2 = async () => {
         
-        console.log("Hello")
+        //console.log("Hello")
         //console.log(user.uid)
 
         const like = [];
@@ -117,7 +129,7 @@ const ProfilePage = () => {
             like.push(val.id)
         })
 
-        console.log(like);
+        // console.log(like);
 
         if(like.length > 0)
             for(let l of like)
@@ -127,8 +139,10 @@ const ProfilePage = () => {
         await deleteDoc(doc(db, 'users', user.uid))
         
         await logout()
+
+        setUserData(null);
         
-        console.log("doneeeeeeeeeeeeeeeeeee")
+        //console.log("doneeeeeeeeeeeeeeeeeee")
         
         // .then(() => deleteDoc(doc(db, 'users', user.uid)))
         // .then(() => logout())
@@ -137,7 +151,7 @@ const ProfilePage = () => {
 
     const deleteAccount = async () => {
 
-        console.log("Delete")
+        //console.log("Delete")
 
         const q = query(
             collection(db, 'matches'),
@@ -177,75 +191,18 @@ const ProfilePage = () => {
         })
 
         if(!_image.cancelled)
-            formImage(_image, text)
+           formImage(_image, text)
 
-    }
-
-    const [oldData, setOldData] = useState({});
-
-    const formData = () => {
-        
-        const data = {
-            id: user.uid,
-            name: name,
-            bio: textField || '',
-            phoneNumber: mnumber,
-            image: image,
-            profilePrompts: profilePrompts,
-            interest: interests,
-            languages: lang,
-            dob: date,
-            gender: gender,
-            
-            "aboutStuff":[
-                {
-                    "type": 'looking_for',
-                    "value": look || ''
-                },
-                {
-                    "type": 'height',
-                    "value": height,
-                },
-                {
-                    "type": 'star_sign',
-                    "value": starSign || '',
-                },
-                {
-                    "type": 'pronoun',
-                    "value": pronoun || '',
-                },
-                {
-                    "type": 'religion',
-                    "value": religion || '',
-                },
-                {
-                    "type": 'location',
-                    "value": location
-                },
-                {
-                    "type": 'batch',
-                    "value": batch
-                },
-                {
-                    "type": "sexuality",
-                    "value": sexuality,
-                }
-            ]
-        }
-
-        console.log(data)
-
-        setOldData(data)
     }
 
 
     const checkForm = () => {
 
-        console.log(!textField)
+        //console.log(!textField)
 
         if(!textField)
         {
-            console.log("Bio")
+            // console.log("Bio")
             Alert.alert(
                 "Empty fields",
                 `Add Bio`,
@@ -284,7 +241,6 @@ const ProfilePage = () => {
             return;
         }
 
-        
         const data = {
             id: user.uid,
             name: name,
@@ -296,6 +252,7 @@ const ProfilePage = () => {
             languages: lang,
             dob: date,
             gender: gender,
+            email: email,
             
             "aboutStuff":[
                 {
@@ -333,14 +290,17 @@ const ProfilePage = () => {
             ]
         }
 
-        if(JSON.stringify(data) == JSON.stringify(oldData))
+        if(JSON.stringify(data) === JSON.stringify(userData))
             return;
+
+        // console.log("Not Working...")
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
         })
         .then(() => {
-            console.log("done")
+            //console.log("done")
+            updateUserData();
         })
         .catch(err => {
             alert(err.message)
@@ -349,6 +309,8 @@ const ProfilePage = () => {
     }
 
     const formImage = async (image, text) => {
+
+        setLoader(true);
 
         let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dsjzkocno/upload"
 
@@ -368,12 +330,14 @@ const ProfilePage = () => {
         })
         .then(async r => r.json())
         .then(data => {
-            console.log(data)
+            //console.log(data)
             
             setImage(i => ({
                 ...i,
                 [text]:data.secure_url.toString()
             }))
+
+            setLoader(false);
 
         })
 
@@ -382,62 +346,90 @@ const ProfilePage = () => {
 
     useEffect(() => {
 
-        const getData = () => {
+        if(!userData)
+            return
+        
+        const data = {...userData.data()}
 
-            console.log('started ...')
+        if(!data)
+            return;
 
-            getDoc(doc(db, 'users', user.uid))
-            .then(data => data.data())
-            .then(data => {
-                console.log(data)     
-                setTextField(data.bio || '')
-                setName(data.name || '')
-                setmnumber(data.phoneNumber || '')
-                setInterests(data.interest || interests)
-                setImage(data.image || image)
-                setGender(data.gender || gender)
-                setDate(data.dob || date)
-                setLang(data.languages || lang)
-                setProfilePrompts(data.profilePrompts || profilePrompts)
+        setTextField(data.bio || '')
+        setName(data.name || '')
+        setmnumber(data.phoneNumber || '')
+        setInterests(data.interest || interests)
+        setImage(data.image || image)
+        setGender(data.gender || gender)
+        setDate(data.dob || date)
+        setLang(data.languages || lang)
+        setProfilePrompts(data.profilePrompts || profilePrompts)
 
-                data.aboutStuff.map( about => {
-                    if(about.type === "sexuality")
-                        setSexuality(about.value)
-                    
-                    if(about.type === "looking_for")
-                        setLook(about.value || look)
-                    
-                    if(about.type === "height")
-                        setHeight(about.value)
-             
-                    if(about.type === "star_sign")
-                        setStarSign(about.value)
-             
-                    if(about.type === "pronoun")
-                        setPronoun(about.value)
-     
-                    if(about.type === "religion")
-                        setReligion(about.value)
-     
-                    if(about.type === "location")
-                        setLocation(about.value)
-     
-                    if(about.type === "batch")
-                        setBatch(about.value)
-                         
-                })
+        data.aboutStuff.map( about => {
+            if(about.type === "sexuality")
+                setSexuality(about.value)
+            
+            if(about.type === "looking_for")
+                setLook(about.value || look)
+            
+            if(about.type === "height")
+                setHeight(about.value)
+        
+            if(about.type === "star_sign")
+                setStarSign(about.value)
+        
+            if(about.type === "pronoun")
+                setPronoun(about.value)
 
-            })
-            .catch(e => console.log(e))
-            .finally(()=>{
-                console.log("done")
-            })
+            if(about.type === "religion")
+                setReligion(about.value)
+
+            if(about.type === "location")
+                setLocation(about.value)
+
+            if(about.type === "batch")
+                setBatch(about.value)      
+        })
                         
-        }
+    }, [userData])
 
-        getData()
 
-    }, [])
+    const getProfile = () => {
+
+        const data = {...userData.data()};
+        
+        const getAge = () => {
+            var parts = data.dob.split("/");
+            var dob = new Date(parts[2], parts[1] - 1, parts[0]);
+            var month_diff = Date.now() - dob.getTime();
+        
+            //convert the calculated difference in date format
+            var age_dt = new Date(month_diff);
+        
+            //extract year from date
+            var year = age_dt.getUTCFullYear();
+        
+            //now calculate the age of the user
+            var age = Math.abs(year - 1970);
+            return age;
+        };
+
+        
+        navigation.navigate("DisplayMatchedDetails", {
+            mid: data.uid,
+            name: data.name,
+            age: getAge(),
+            batch: batch,
+            bio: data.bio,
+            aboutStuff: data.aboutStuff,
+            interests: data.interest.main,
+            img: data.image,
+            profilePrompts: data.profilePrompts,
+            email: data?.email,
+            languages: data?.languages,
+            isUserProfile: true
+        });
+    };
+    
 
 
     //const [currentLength, setcurrentLength] = useState(Object.keys(profilePrompts).length) 
@@ -452,9 +444,66 @@ const ProfilePage = () => {
 
     }, [textHeight, profilePrompts, interests])
 
+    const [xcord, setXCord] = useState(10)
+
     return (
         <>
-        <View></View>
+
+        {loader?
+            <ActivityIndicator size={100} color="#FF4E8C" style={{
+                zIndex: 10000,
+                elevation: 10,
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                position: 'absolute',
+                width: '100%',
+                height: Dimensions.get("screen").height
+            }}/>
+            :
+            <>
+            </>
+        }
+        <Draggable
+            x={xcord} 
+            y={100}
+            minX={10}
+            maxX={370}
+            minY={100}
+            maxY={750}
+            renderSize={56} 
+            renderColor='black' 
+            renderText="P"
+            isCircle
+            shouldReverse={true}
+            onShortPressRelease={() => getProfile()}
+        >
+
+            {/* <LinearGradient
+                colors={colors}
+                end={{ x: 0.75, y: 0.25 }}
+                style={styles.imageGrad}
+            >
+                <Icon
+                style={{
+                    position: 'absolute',
+                    top: 14,
+                    left: 14
+                }} name="image" size={30} color="#eee" />
+
+            </LinearGradient> */}
+
+            <Image
+                source={{uri:image.profile_1}} 
+                style={{
+                    height: 60,
+                    width: 60,
+                    borderRadius: 50,
+                    borderWidth: 1,
+                    borderColor: '#FF4E8C',
+                }}
+            />
+
+        </Draggable>
+
         <ScrollView
             showsVerticalScrollIndicator={true}
             // ref={ref => {this.ScrollView = ref}}
@@ -498,7 +547,7 @@ const ProfilePage = () => {
                         <Text style={styles.accountHeader}>Account Settings</Text>
                         
                         {!edit?
-                            <TouchableOpacity onPress={() =>{setEdit(true); formData()}}>
+                            <TouchableOpacity onPress={() =>{setEdit(true)}}>
                                 <Text style={styles.editButton}>Edit</Text>
                             </TouchableOpacity>
                             :
@@ -560,7 +609,7 @@ const ProfilePage = () => {
                                 textAlign: 'right',
                                 paddingRight: 20
                             }]}
-                            value={email}
+                            value={email.replace('@iiitkottayam.ac.in', '')}
                             selectionColor="#FF4E8C"                    
                             editable={false}
         
@@ -786,8 +835,7 @@ const ProfilePage = () => {
                             style={styles.updateButtonGrad}
                             
                         >
-                                <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
-
+                            <Text style={styles.updateButtonText}>DELETE ACCOUNT</Text>
 
                         </LinearGradient>
                     </TouchableOpacity>

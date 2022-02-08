@@ -65,6 +65,7 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                 <Modal
                     animationType="fade"
                     transparent={true}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     visible={modalVisible}
                     style={{
                         zIndex: 10
