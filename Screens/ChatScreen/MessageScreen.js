@@ -34,7 +34,7 @@ const MessageScreen = () => {
   const name = getMatchedUserInfo(matchDetails.users, user.uid).name; 
   const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
   const [messages, setMessages] = useState([]);
-  // static messages, will be replaced by realtime messages from firebase with the help message state
+  
   useEffect(
     ()=>
     onSnapshot(
@@ -61,7 +61,7 @@ const MessageScreen = () => {
       //console.log(TS)
       //setTimeout(1);      
       var encrypted = AES.encrypt(input, matchDetails.id).toString();
-      console.log("input ",encrypted)
+      //console.log("input ",encrypted)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: currentDate,
         userid: user.uid,

@@ -5,8 +5,8 @@ var CryptoJS = require("crypto-js");
 const ReceiverMessage = ({ message, secretkey }) => {
   var decrypted = CryptoJS.AES.decrypt(message.message, secretkey); 
   var msg = decrypted.toString(CryptoJS.enc.Utf8);
-  console.log(msg)
-  //console.log(message);
+  //console.log(msg)
+  
   return (
     <View style={styles.recieve}>
       <View style={styles.container}>      

@@ -9,7 +9,7 @@ const Match = ({ matchDetails }) => {
   const navigation = useNavigation();
   const { user } = useAuth();
 
-  console.log(matchDetails)
+  //console.log(matchDetails)
 
   //matchDetails = JSON.parse(matchDetails);
 
@@ -17,7 +17,7 @@ const Match = ({ matchDetails }) => {
 
   useEffect(() => {
     setMatchedUserInfo((getMatchedUserInfo(matchDetails.users, user.uid)));
-    console.log(matchedUserInfo);
+    //console.log(matchedUserInfo);
   }, [matchDetails, user]);
 
   //let keys = Object.keys(matchedUserInfo)

@@ -8,7 +8,7 @@ const SenderMessage = ({ message, secretkey }) => {
   let time = myDate.toString().split(' ')[4]?.slice(0,5)
   var decrypted = CryptoJS.AES.decrypt(message.message, secretkey); 
   var msg = decrypted.toString(CryptoJS.enc.Utf8);
-  console.log(msg)
+  //console.log(msg)
   return (
      <>
         <Text style={{textAlign:"center",paddingBottom: "5%", color: "#B9B9B9"}}>{time}</Text>
