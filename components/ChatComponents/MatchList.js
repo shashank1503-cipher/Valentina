@@ -4,7 +4,7 @@ import Match from './Match';
 
 const MatchList = ({matches}) => {   
 
-  console.log("Matches Lenght: ",matches.length)
+  //console.log("Matches Lenght: ",matches.length)
 
 //  matches = [...matches,...matches,...matches,...matches,...matches,...matches,...matches]
 
@@ -48,7 +48,7 @@ const MatchList = ({matches}) => {
     // />                              
   ) :(
   <View>
-    <Text>No match yet :( </Text>
+    <Text>No match yet T-T </Text>
   </View>);
 };
 
