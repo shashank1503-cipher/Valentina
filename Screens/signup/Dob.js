@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -15,11 +15,15 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import AppContext from "../../context/AppContext";
 
 const Dob = () => {
   let { user } = useAuth();
   const navigation = useNavigation();
   const [date, setDate] = useState("15-01-2000");
+
+  const { updateUserData } = useContext(AppContext)
+
   let handleFormData = () => {
     let data = { dob: date };
     updateDoc(doc(db, "users", user.uid), {
@@ -27,6 +31,7 @@ const Dob = () => {
     })
       .then(() => {
         console.log("done");
+        updateUserData()
         navigation.navigate("Gender");
       })
       .catch((err) => {

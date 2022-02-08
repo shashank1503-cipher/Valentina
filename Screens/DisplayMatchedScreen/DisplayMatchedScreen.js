@@ -20,17 +20,29 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import ReportModal from "../../components/Post/Modals/ReportModal";
 const DisplayMatchedScreen = ({ route }) => {
+  
   let { user } = useAuth();
+  
   const navigation = useNavigation();
   const props = route.params;
+  
+  console.log(props.img)
+
+  console.log(typeof props.img.profile_1)
+
   const onDisLikePress = () => {
+  
     let personUID = props.id;
+  
     setDoc(doc(db, "users", user.uid, "dislikes", personUID), {
       id: personUID,
     });
+  
     deleteDoc(doc(db, "users", user.uid, "likes", personUID));
     deleteDoc(doc(db, "matches", props.mid));
+  
     navigation.navigate("Chat");
+  
     Alert.alert(
       "We'll never show you him again",
       `Next time you open the app the profile will not be shown to you`,
@@ -63,13 +75,15 @@ const DisplayMatchedScreen = ({ route }) => {
         decelerationRate={"fast"}
       >
         <View style={styles.firstPage}>
-          <Image style={styles.image} source={{ uri: props.img.profile_1 }} />
+          <Image style={styles.image} source={{ uri: props.img["profile_1"] }} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
               {props.name.split(" ")[0]}, {props?.age}
             </Text>
             <Text style={styles.text}>{props.batch}</Text>
-            <View style={styles.rightContainer}>
+            <View style={[styles.rightContainer,{
+              display: props.isUserProfile?'none':'flex'
+            }]}>
               <TouchableOpacity
                 style={styles.iconContainer}
                 onPress={onDisLikePress}
@@ -119,7 +133,9 @@ const DisplayMatchedScreen = ({ route }) => {
                           <Interest value={val} emoji={emojiMap["language"]} />
                         ))}
               </View>
-              <View style={styles.rightContainer}>
+              <View style={[styles.rightContainer,{
+                display: props.isUserProfile?'none':'flex'
+              }]}>
                 <TouchableOpacity
                   style={styles.iconContainer}
                   onPress={onDisLikePress}
@@ -153,7 +169,9 @@ const DisplayMatchedScreen = ({ route }) => {
                     {props.name}, {props.age}
                   </Text>
                   <Text style={styles.text}>{props.batch}</Text> */}
-            <View style={styles.rightContainer}>
+            <View style={[styles.rightContainer, {
+              display: props.isUserProfile?'none':'flex'
+            }]}>
               <TouchableOpacity
                 style={styles.iconContainer}
                 onPress={onDisLikePress}
@@ -191,7 +209,9 @@ const DisplayMatchedScreen = ({ route }) => {
                   <Interest value={val} />
                 ))}
               </View>
-              <View style={styles.rightContainer}>
+              <View style={[styles.rightContainer, {
+                display: props.isUserProfile?'none':'flex'
+              }]}>
                 <TouchableOpacity
                   style={styles.iconContainer}
                   onPress={onDisLikePress}
@@ -231,7 +251,9 @@ const DisplayMatchedScreen = ({ route }) => {
                 <Text style={styles.promptText}>
                   {Object.values(props.profilePrompts)[0]}
                 </Text>
-                <View style={styles.rightContainer}>
+                <View style={[styles.rightContainer,{
+                  display: props.isUserProfile?'none':'flex'
+                }]}>
                   <TouchableOpacity
                     style={styles.iconContainer}
                     onPress={onDisLikePress}
@@ -269,7 +291,9 @@ const DisplayMatchedScreen = ({ route }) => {
                   {Object.values(props.profilePrompts)[0]}
                 </Text>
                 <View style={styles.uiContainer}>
-                  <View style={styles.rightContainer}>
+                  <View style={[styles.rightContainer, {
+                    display: props.isUserProfile?'none':'flex'
+                  }]}>
                     <TouchableOpacity
                       style={styles.iconContainer}
                       onPress={onDisLikePress}
@@ -312,7 +336,9 @@ const DisplayMatchedScreen = ({ route }) => {
                 {Object.values(props.profilePrompts)[0]}
               </Text>
               <View style={styles.uiContainer}>
-                <View style={styles.rightContainer}>
+                <View style={[styles.rightContainer,{
+                  display: props.isUserProfile?'none':'flex'
+                }]}>
                   <TouchableOpacity
                     style={styles.iconContainer}
                     onPress={onDisLikePress}

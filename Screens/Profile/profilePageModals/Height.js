@@ -67,6 +67,7 @@ const Height = ({styles, height, setHeight, edit}) => {
             <Modal
                 animationType="fade"
                 transparent={true}
+                onRequestClose={() => setModalVisible(!modalVisible)}
                 visible={modalVisible}
                 style={{
                     zIndex: 10

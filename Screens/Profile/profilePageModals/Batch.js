@@ -100,6 +100,7 @@ const Batch = ({edit, styles, batch, setBatch}) => {
                 <Modal
                     animationType="fade"
                     transparent={true}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     visible={modalVisible}
                     style={{
                         zIndex: 10

@@ -28,6 +28,7 @@ const MatchList = ({matches}) => {
 
           {
             matches.map(match =>{
+
               return (
                 <Match key={match.id.toString()} matchDetails={match}/>
               )

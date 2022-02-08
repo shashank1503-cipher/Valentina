@@ -100,6 +100,7 @@ const Religion = ({styles, edit, religion, setReligion}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

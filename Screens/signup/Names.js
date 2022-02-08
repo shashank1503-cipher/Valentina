@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import styles from "./Style/Styles";
 //import StyledButton from '../../components/Buttons/StyledButton';
@@ -11,10 +11,14 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import AppContext from "../../context/AppContext";
 const Names = () => {
   const navigation = useNavigation();
   let { user } = useAuth();
   const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
+
+  const { updateUserData } = useContext(AppContext)
+
   const validateSchema = Yup.object().shape({
     first: Yup.string()
       .min(4)
@@ -85,6 +89,7 @@ const Names = () => {
     })
       .then(() => {
         console.log("done");
+        updateUserData();
         navigation.navigate("Are you old enough?");
       })
       .catch((err) => {
