@@ -1,11 +1,17 @@
+import { doc, getDoc } from "firebase/firestore";
 import { createContext, useState } from "react";
 import { Dimensions } from "react-native";
+import { db } from "../firebase";
+import useAuth from "../hooks/useAuth";
 
 const AppContext = createContext();
 
 export default AppContext;
 
 export const AppProvider = ({ children }) => {
+
+  const {user} = useAuth();
+
   const [HeaderState, setHeaderState] = useState(0);
   const changeHeader = (e) => {
     let scrollX = e.nativeEvent.contentOffset.x;
@@ -18,6 +24,19 @@ export const AppProvider = ({ children }) => {
   const [scrollViewRef, setScrollViewRef] = useState(null);
   const [horizontalScrollRef, setHorizontalScrollRef] = useState(null);
   const [totalProfiles,setTotalProfiles]= useState(-1)
+
+  const [userData, setUserData] = useState(null);
+
+  const getData = async () => {
+    
+    const data = await getDoc(doc(db, 'users', user.uid));
+    //console.log(data);
+    setUserData(data)
+  }
+
+  if(!userData)
+    getData();
+
   let contextData = {
     headerState: HeaderState,
     SetHeaderState: setHeaderState,
@@ -27,8 +46,13 @@ export const AppProvider = ({ children }) => {
     HorizontalScrollViewRef: horizontalScrollRef,
     SetHorizontalScrollViewRef: setHorizontalScrollRef,
     totalProfiles:totalProfiles,
-    setTotalProfiles:setTotalProfiles
+    setTotalProfiles:setTotalProfiles,
+    updateUserData: getData,
+    userData: userData,
+    setUserData: setUserData
   };
+
+
   return (
     <AppContext.Provider value={contextData}>{children}</AppContext.Provider>
   );

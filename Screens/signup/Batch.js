@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, Pressable, Button, TouchableOpacity } from "react-native";
 import Header from "./Header";
 import { useNavigation } from "@react-navigation/native";
@@ -6,9 +6,13 @@ import styles from "./Style/Styles";
 import useAuth from "../../hooks/useAuth";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import AppContext from "../../context/AppContext";
 const Batch = () => {
   let { user } = useAuth();
   const navigation = useNavigation();
+
+  const { updateUserData } = useContext(AppContext)
+
   const batches = [
     {
       batchOptions: [
@@ -26,6 +30,7 @@ const Batch = () => {
     })
       .then(() => {
         console.log("done");
+        updateUserData();
         navigation.navigate("Bio", { batch: batch });
       })
       .catch((err) => {

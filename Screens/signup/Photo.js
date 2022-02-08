@@ -6,7 +6,7 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import StyledButton from "../../components/Buttons/StyledButton";
 import Header from "./Header";
 import * as ImagePicker from "expo-image-picker";
@@ -18,10 +18,14 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../../hooks/useAuth";
+import AppContext from "../../context/AppContext";
 
 const Photo = () => {
   const navigation = useNavigation();
   let { user } = useAuth();
+
+  const { updateUserData } = useContext(AppContext)
+
   const [image, setImage] = useState({
     background: "null",
     profile_1: "null",
@@ -104,6 +108,7 @@ const Photo = () => {
       })
         .then(() => {
           console.log("done");
+          updateUserData();
           navigation.navigate("Home");
         })
         .catch((err) => {

@@ -1,41 +1,53 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [image, setImage] = useState('')
+    
+    const [loading, setLoading] = useState(true);
 
     const onPressHandler = (text) => {
         setImage(text)
     }
 
-    const Select = ({title}) => (
-        <TouchableOpacity
-            style={[style.button],{
-                backgroundColor: title === image?'#eee':'',
-                alignItems: 'center',
-                display: 'flex',
-                justifyContent: 'center',
-                padding: 10,
-                borderRadius: 10,
-                width: 110,
-            }}
-            onPress={() => onPressHandler(title)}
-        >
-            {   
-                title === image?
-                    <Icon name="image" size={30}/>
-                    :
-                    <Icon name="image-outline" size={30}/>
-            }
-                
-            <Text>{title.replace('_',' ')}</Text>
+    const Select = ({title}) => {
+
+        return (
+            <TouchableOpacity
+                style={[style.button],{
+                    backgroundColor: title === image?'#eee':'',
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    padding: 10,
+                    borderRadius: 10,
+                    width: 110,
+                }}
+                onPress={() => onPressHandler(title)}
+            >
+                {
+                    title === image?
+                        <Icon name="image" size={30}/>
+                        :
+                        <Icon name="image-outline" size={30}/>
         
-        </TouchableOpacity>
-    )
+                }
+                    
+                <Text>{title.replace('_',' ')}</Text>
+
+            </TouchableOpacity>
+        )
+    }
+
+    useEffect(() => {
+
+        console.log(loading)
+
+    }, [loading])
 
 
     return (
@@ -69,6 +81,7 @@ const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}
@@ -94,22 +107,24 @@ const ImageUpload = ({colors, edit, styles, addImageCamera, addImageMedia}) => {
                             display: image?'flex': 'none' 
                         }]}>
 
-                            <TouchableOpacity
-                                style={style.button}
-                                onPress={() => addImageCamera(image)}
-                            >
-                                <Icon name="camera" size={30}/>
-                                <Text>Camera</Text>
-                                
-                            </TouchableOpacity>
+                       
+                        <TouchableOpacity
+                            style={style.button}
+                            onPress={() => addImageCamera(image)}
+                        >
+                            <Icon name="camera" size={30}/>
+                            <Text>Camera</Text>
+                            
+                        </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={style.button}
-                                onPress={() => addImageMedia(image)}
-                            >
-                                <Icon name="images" size={30}/>
-                                <Text>Gallery</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity
+                            style={style.button}
+                            onPress={() => addImageMedia(image)}
+                        >
+                            <Icon name="images" size={30}/>
+                            <Text>Gallery</Text>
+                        </TouchableOpacity>
+                           
 
                         </View>
                            
