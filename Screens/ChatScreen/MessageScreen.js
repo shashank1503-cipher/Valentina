@@ -53,22 +53,21 @@ const MessageScreen = () => {
   );
 
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
-  const sendMessage = () => {
+  const sendMessage = () => {     
       
       let currentDate = new Date();
-      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
-      console.log(matchDetails)
+      //let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
+      //console.log(TS)
+      //setTimeout(1);
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
-        timestamp: time,
+        timestamp: currentDate,
         userid: user.uid,
         displayName: user.displayName,
         message: input,
         // imgURL: matchDetails.users[user.uid].image.profile_1, 
-      });
-
+      });      
       setInput("")
-      this.ScrollView.scrollToEnd()
-  
+      this.ScrollView.scrollToEnd()  
   };
 
   return (

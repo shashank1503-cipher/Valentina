@@ -38,7 +38,7 @@ const ReportModal = ({profUser}) => {
 
     const onPressHandler = (option) => {
 
-        console.log(option)
+        //console.log(option)
 
         if(option === '0')
         {
