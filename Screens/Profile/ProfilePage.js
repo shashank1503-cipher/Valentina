@@ -26,7 +26,7 @@ import Location from './profilePageModals/Location'
 import Pronouns from './profilePageModals/Pronouns'
 import { db } from '../../firebase'
 import useAuth from '../../hooks/useAuth'
-import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, onSnapshotsInSync, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore'
 import Religion from './profilePageModals/Religion'
 import DatePicker from 'react-native-datepicker'
 import Batch from './profilePageModals/Batch'
@@ -34,9 +34,8 @@ import Sexuality from './profilePageModals/Sexuality'
 import Gender from './profilePageModals/Gender'
 import AppContext from '../../context/AppContext'
 import { useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-vector-icons/Ionicons'
 import Draggable from 'react-native-draggable';
-import Skeleton from '../../components/Skeleton/Skeleton'
+import DisLikesList from './profilePageModals/DisLikesList'
 
 const ProfilePage = () => {
     
@@ -62,7 +61,6 @@ const ProfilePage = () => {
         main:[],
         new:[]
     })
-   
 
     const [email, setEmail] = useState(user.email)
     const [look, setLook] = useState()
@@ -83,7 +81,7 @@ const ProfilePage = () => {
     const [religion, setReligion] = useState('')
 
     const [date, setDate] = useState('15-01-2022');
-    
+
     const [batch, setBatch] = useState('')
 
     const [gender, setGender] = useState('')
@@ -440,7 +438,7 @@ const ProfilePage = () => {
 
         const inte = [...interests.main, ...interests.new].length;
         
-        setContainerHeight(1650 + (textHeight - 120) + len*50 + (inte/3)*40);
+        setContainerHeight(1700 + (textHeight - 120) + len*50 + (inte/3)*40);
 
     }, [textHeight, profilePrompts, interests])
 
@@ -477,19 +475,6 @@ const ProfilePage = () => {
             onShortPressRelease={() => getProfile()}
         >
 
-            {/* <LinearGradient
-                colors={colors}
-                end={{ x: 0.75, y: 0.25 }}
-                style={styles.imageGrad}
-            >
-                <Icon
-                style={{
-                    position: 'absolute',
-                    top: 14,
-                    left: 14
-                }} name="image" size={30} color="#eee" />
-
-            </LinearGradient> */}
 
             <Image
                 source={{uri:image.profile_1}} 
@@ -506,7 +491,6 @@ const ProfilePage = () => {
 
         <ScrollView
             showsVerticalScrollIndicator={true}
-            // ref={ref => {this.ScrollView = ref}}
         >
 
             <View 
@@ -516,7 +500,8 @@ const ProfilePage = () => {
                 }]}
                 
             >
-            
+
+                
             {/* Profile Picture */}
                 <View style={styles.picCont}>
 
@@ -612,7 +597,6 @@ const ProfilePage = () => {
                             value={email.replace('@iiitkottayam.ac.in', '')}
                             selectionColor="#FF4E8C"                    
                             editable={false}
-        
                         />
                         
                     </View>
@@ -798,6 +782,11 @@ const ProfilePage = () => {
                         edit={edit}
                         pronoun={pronoun}
                         setPronoun={setPronoun}
+                    />
+
+                    <DisLikesList 
+                        styles={styles} 
+                        edit={edit}
                     />
 
 
