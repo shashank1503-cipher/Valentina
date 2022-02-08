@@ -65,6 +65,7 @@ const Gender = ({styles, gender, setGender, edit}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

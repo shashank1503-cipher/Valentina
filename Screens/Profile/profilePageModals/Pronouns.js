@@ -102,6 +102,7 @@ const Pronouns = ({styles, setPronoun, pronoun, edit}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

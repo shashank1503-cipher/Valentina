@@ -5,6 +5,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: Dimensions.get("screen").height,
     justifyContent:"center",
-    alignContent:"center"
+    alignContent:"center",
   },})
   export default styles;

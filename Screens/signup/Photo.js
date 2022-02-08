@@ -5,31 +5,35 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import StyledButton from "../../components/Buttons/StyledButton";
-import Header from "./Header";
+import React, { useContext, useState } from "react";
+
 import * as ImagePicker from "expo-image-picker";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import I from "react-native-vector-icons/Feather";
 import ImageUploadSignup from "./Modals/ImageUploadSignup";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../../hooks/useAuth";
+import AppContext from "../../context/AppContext";
 
 const Photo = () => {
   const navigation = useNavigation();
   let { user } = useAuth();
+
+  const { updateUserData } = useContext(AppContext);
+  const [loader, setLoader] = useState(false);
   const [image, setImage] = useState({
     background: "null",
     profile_1: "null",
     profile_2: "null",
   });
-  console.log(image);
+  // console.log(image);
 
   const formImage = async (image, text) => {
+    setLoader(true);
+
     let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dsjzkocno/upload";
 
     let base64Img = `data:image/jpg;base64,${image.base64}`;
@@ -48,12 +52,14 @@ const Photo = () => {
     })
       .then(async (r) => r.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data)
 
         setImage((i) => ({
           ...i,
           [text]: data.secure_url.toString(),
         }));
+
+        setLoader(false);
       });
   };
 
@@ -103,7 +109,8 @@ const Photo = () => {
         ...data,
       })
         .then(() => {
-          console.log("done");
+          // console.log("done");
+          updateUserData();
           navigation.navigate("Home");
         })
         .catch((err) => {
@@ -117,27 +124,68 @@ const Photo = () => {
       <View>
         <Text style={styles.heading}>Your Fake Candids</Text>
       </View>
-
-      <ImageUploadSignup
-        colors={colors}
-        edit={true}
-        styles={styles}
-        addImageCamera={addImageCamera}
-        addImageMedia={addImageMedia}
-      />
-      <LinearGradient
-        colors={colors}
-        end={{ x: 0.75, y: 0.25 }}
-        style={styles.updateButtonGrad}
-      >
-        <TouchableOpacity onPress={() => handleSubmit()}>
-          <Text style={styles.updateButtonText}>NEXT</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      {!loader ? (
+        <>
+          <ImageUploadSignup
+            colors={colors}
+            edit={true}
+            styles={styles}
+            addImageCamera={addImageCamera}
+            addImageMedia={addImageMedia}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              handleSubmit();
+            }}
+            style={styles.buttonNew}
+          >
+            <LinearGradient
+              colors={colors}
+              style={styles.backgroundNew}
+              end={{ x: 0.85, y: 0.15 }}
+            >
+              <Text style={styles.textNew}>NEXT</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <ActivityIndicator size={100} color="#FF4E8C" style={{
+          zIndex: 10000,
+          backgroundColor: 'rgba(256,256,256,0.2)',
+          position: 'absolute',
+          width: '100%',
+          height: Dimensions.get("screen").height
+      }}/>
+      )}
     </View>
   );
 };
 const styles = StyleSheet.create({
+  textNew: {
+    fontWeight: "500",
+    fontSize: 15,
+    lineHeight: 18,
+    textAlign: "center",
+    textTransform: "uppercase",
+    color: "#fff",
+    marginTop: "5%",
+  },
+  backgroundNew: {
+    width: 300,
+    height: 50,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    elevation: 3,
+  },
+  buttonNew: {
+    position: "relative",
+    alignItems: "center",
+    top: 400,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   heading: {
     fontSize: 28,
     paddingLeft: 25,
@@ -158,13 +206,6 @@ const styles = StyleSheet.create({
     top: 0,
   },
 
-  profilePic: {
-    width: "110%",
-    height: "100%",
-    top: -1,
-    resizeMode: "cover",
-  },
-
   changeBut: {
     width: "60%",
     height: 50,
@@ -179,64 +220,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 10,
     elevation: 10,
-  },
-
-  detailBox: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
-
-  accountHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-
-  editButton: {
-    fontSize: 16,
-    color: "#FF4E8C",
-    width: 60,
-    textAlign: "center",
-    borderRadius: 10,
-    marginTop: 20,
-  },
-
-  account: {
-    width: "100%",
-    top: -680,
-    position: "relative",
-    marginTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    display: "flex",
-    flexDirection: "column",
-  },
-
-  picCont: {
-    position: "relative",
-    width: 1000,
-    height: 1000,
-    top: -680,
-    left: -340,
-    right: 0,
-    overflow: "hidden",
-    borderRadius:
-      Math.round(
-        Dimensions.get("window").width + Dimensions.get("window").height
-      ) / 2,
-    borderWidth: 1,
-    borderColor: "#ededed",
-    backgroundColor: "#ededed",
-  },
-
-  mainPicCont: {
-    position: "absolute",
-    top: 680,
-    left: 0,
-    right: 0,
-    height: 320,
-    width: "100%",
   },
 
   button: {
@@ -254,21 +237,11 @@ const styles = StyleSheet.create({
     // elevation: 8,
   },
 
-  input: {
-    width: "100%",
-    backgroundColor: "rgb(240,240,240)",
-    height: 50,
-    marginVertical: 10,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#ddd",
-    textAlign: "center",
-  },
-
   updateButtonText: {
     color: "#fff",
     fontWeight: "bold",
     width: "100%",
+    textAlign: "center",
   },
 
   updateButtonGrad: {
@@ -319,6 +292,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   modalView: {
+    position: "relative",
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,

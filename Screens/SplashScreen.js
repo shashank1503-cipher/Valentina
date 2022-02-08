@@ -9,7 +9,7 @@ const SplashScreen = () => {
   const colors = ["#F9D7D5", "#FF9B7B", "#FF4E8C"];
   const navigation = useNavigation();
   const {user,logout} = useAuth();
-  console.log(user);
+  // console.log(user);
 
   return (     
     <View style={styles.container}>

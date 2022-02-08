@@ -38,7 +38,10 @@ const HomeScreen = () => {
     SetHeaderState,
     totalProfiles,
     setTotalProfiles,
+    userData
   } = useContext(AppContext);
+
+
   let style = headerState ? "dark-content" : "light-content";
   StatusBar.setBarStyle(style, true);
   const [Profiles, setProfiles] = useState([]);
@@ -51,83 +54,98 @@ const HomeScreen = () => {
     // console.log(HorizontalScrollViewRef)
     // HorizontalScrollViewRef.current.scrollTo({x:0,animated:true})
   };
-  useLayoutEffect(
-    () =>
-      onSnapshot(doc(db, "users", user.uid), (snapshot) => {
-        if (!snapshot.exists()) {
-          navigation.navigate("What's in the name tho?");
-        } else {
-          let dob = snapshot.get("dob");
-          if (!dob) {
-            navigation.navigate("Are You Old Enough?");
-          } else {
-            let gender = snapshot.get("gender");
-            if (!gender) {
-              navigation.navigate("Gender");
-            } else {
-              let sexuality = snapshot
-                .get("aboutStuff")
-                .filter((about) => about.type === "sexuality");
-              if (sexuality.length !== 0) {
-                if (!sexuality[0]["value"]) {
-                  navigation.navigate("Sexuality");
-                } else {
-                  let lookingFor = snapshot
-                    .get("aboutStuff")
-                    .filter((about) => about.type === "looking_for");
-                  if (lookingFor.length !== 0) {
-                    if (!lookingFor[0]["value"]) {
-                      navigation.navigate("Gender Interest");
-                    } else {
-                      let batch = snapshot
-                        .get("aboutStuff")
-                        .filter((about) => about.type === "batch");
-                      if (batch.length !== 0) {
-                        if (!batch[0]["value"]) {
-                          navigation.navigate("Batch");
-                        } else {
-                          let bio = snapshot.get("bio");
-                          if (!bio) {
-                            navigation.navigate("Bio");
-                          } else {
-                            let interest = snapshot.get("interest");
-                            if (
-                              interest.main.length === 0 &&
-                              interest.new.length === 0
-                            ) {
-                              navigation.navigate("Interests");
-                            } else {
-                              let image = snapshot.get("image");
-                              if (image) {
-                                if (
-                                  image["profile_1"] === "null" ||
-                                  image["profile_2"] === "null" ||
-                                  image["profile_1"] === "" ||
-                                  image["profile_2"] === ""
-                                ) {
-                                  navigation.navigate("Photo");
-                                }
-                              }
-                            }
-                          }
-                        }
-                      } else {
-                        navigation.navigate("Batch");
-                      }
-                    }
-                  } else {
-                    navigation.navigate("Gender Interest");
-                  }
-                }
-              } else {
-                navigation.navigate("Sexuality");
-              }
-            }
-          }
-        }
-      }),
-    []
-  );
+
+  const getData = () => {
+
+    console.log("APP CONTEXT DATA : ", userData);
+
+    let snapshot = userData
+
+    // onSnapshot(doc(db, "users", user.uid), (snapshot) => {
+
+    if(snapshot){
+      console.log("snapshot : ",snapshot.data())
+
+      if (!snapshot.data())
+         navigation.navigate("What's in the name tho?");
+
+    }
+      // } else {
+      //   let dob = snapshot.get("dob");
+      //   if (!dob) {
+      //     navigation.navigate("Are You Old Enough?");
+      //   } else {
+      //     let gender = snapshot.get("gender");
+      //     if (!gender) {
+      //       navigation.navigate("Gender");
+      //     } else {
+      //       let sexuality = snapshot
+      //         .get("aboutStuff")
+      //         .filter((about) => about.type === "sexuality");
+      //       if (sexuality.length !== 0) {
+      //         if (!sexuality[0]["value"]) {
+      //           navigation.navigate("Sexuality");
+      //         } else {
+      //           let lookingFor = snapshot
+      //             .get("aboutStuff")
+      //             .filter((about) => about.type === "looking_for");
+      //           if (lookingFor.length !== 0) {
+      //             if (!lookingFor[0]["value"]) {
+      //               navigation.navigate("Gender Interest");
+      //             } else {
+      //               let batch = snapshot
+      //                 .get("aboutStuff")
+      //                 .filter((about) => about.type === "batch");
+      //               if (batch.length !== 0) {
+      //                 if (!batch[0]["value"]) {
+      //                   navigation.navigate("Batch");
+      //                 } else {
+      //                   let bio = snapshot.get("bio");
+      //                   if (!bio) {
+      //                     navigation.navigate("Bio");
+      //                   } else {
+      //                     let interest = snapshot.get("interest");
+      //                     if (
+      //                       interest.main.length === 0 &&
+      //                       interest.new.length === 0
+      //                     ) {
+      //                       navigation.navigate("Interests");
+      //                     } else {
+      //                       let image = snapshot.get("image");
+      //                       if (image) {
+      //                         if (
+      //                           image["profile_1"] === "null" ||
+      //                           image["profile_2"] === "null" ||
+      //                           image["profile_1"] === "" ||
+      //                           image["profile_2"] === ""
+      //                         ) {
+      //                           navigation.navigate("Photo");
+      //                         }
+      //                       }
+      //                     }
+      //                   }
+      //                 }
+      //               } else {
+      //                 navigation.navigate("Batch");
+      //               }
+      //             }
+      //           } else {
+      //             navigation.navigate("Gender Interest");
+      //           }
+      //         }
+      //       } else {
+      //         navigation.navigate("Sexuality");
+      //       }
+      //     }
+      //   }
+      // }
+    // })
+  }
+
+
+  useLayoutEffect(() => 
+    getData(),
+  [userData]);
   // useLayoutEffect()
   useEffect(
     //code to fetch matches from firebase
@@ -182,7 +200,12 @@ const HomeScreen = () => {
       });
       let dislikesUserIds = dislikes.length > 0 ? dislikes : ["test"];
       //console.log(Profiles.forEach((profile) => console.log(profile.id)));
-      const userDetails = await getDoc(doc(db, "users", user.uid));
+      
+      //const userDetails = await getDoc(doc(db, "users", user.uid));
+      //console.log(userDetails)
+      const userDetails = userData
+      console.log(userDetails)
+
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
       const getPreference = userDetails
@@ -219,7 +242,7 @@ const HomeScreen = () => {
     fetchData();
     // console.log(Profiles);
     return unsub;
-  }, []);
+  }, [userData]);
   useLayoutEffect(() => {
     if (Profiles.length === 0) {
       SetHeaderState(1);
