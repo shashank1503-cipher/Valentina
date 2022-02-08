@@ -2,7 +2,6 @@
   "expo": {
     "name": "Valentina",
     "slug": "Valentina",
-    "owner": "BetaLabs",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/ico.png",
@@ -19,10 +18,7 @@
       "**/*"
     ],
     "ios": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/ico.png",
-        "backgroundColor": "#FF4E8C"
-      },
+      "icon": "./assets/ico.png",       
       "bundleIdentifier": "com.betalabs.valentina",
       "supportsTablet": true
     },
