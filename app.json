@@ -17,6 +17,11 @@
       "**/*"
     ],
     "ios": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/ico.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "bundleIdentifier": "com.betalabs.valentina",
       "supportsTablet": true
     },
     "android": {
