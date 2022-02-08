@@ -125,15 +125,15 @@ const Photo = () => {
         addImageCamera={addImageCamera}
         addImageMedia={addImageMedia}
       />
-      <LinearGradient
-        colors={colors}
-        end={{ x: 0.75, y: 0.25 }}
-        style={styles.updateButtonGrad}
-      >
-        <TouchableOpacity onPress={() => handleSubmit()}>
+      <TouchableOpacity onPress={() => handleSubmit()}>
+        <LinearGradient
+          colors={colors}
+          end={{ x: 0.75, y: 0.25 }}
+          style={styles.updateButtonGrad}
+        >
           <Text style={styles.updateButtonText}>NEXT</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
