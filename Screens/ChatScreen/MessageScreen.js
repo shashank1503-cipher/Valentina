@@ -23,6 +23,8 @@ import useAuth from "../../hooks/useAuth";
 import { addDoc, collection, onSnapshot, serverTimestamp, query, orderBy} from "@firebase/firestore";
 import {db} from "../../firebase";
 import getMatchedUserInfo from "../../libs/getMatchedUserInfo";
+var AES = require("crypto-js/aes");
+
 const MessageScreen = () => {
   const navigation = useNavigation();
   const {user} = useAuth();
@@ -32,7 +34,6 @@ const MessageScreen = () => {
   const name = getMatchedUserInfo(matchDetails.users, user.uid).name; 
   const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
   const [messages, setMessages] = useState([]);
-  // static messages, will be replaced by realtime messages from firebase with the help message state
   
   useEffect(
     ()=>
@@ -58,12 +59,14 @@ const MessageScreen = () => {
       let currentDate = new Date();
       //let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
       //console.log(TS)
-      //setTimeout(1);
+      //setTimeout(1);      
+      var encrypted = AES.encrypt(input, matchDetails.id).toString();
+      //console.log("input ",encrypted)
       addDoc(collection(db,"matches",matchDetails.id,"messages"),{
         timestamp: currentDate,
         userid: user.uid,
         displayName: user.displayName,
-        message: input,
+        message: encrypted,
         // imgURL: matchDetails.users[user.uid].image.profile_1, 
       });      
       setInput("")
@@ -102,8 +105,8 @@ const MessageScreen = () => {
             // inverted={-1}
             renderItem={({ item: message }) =>
               message.userid == user.uid ? (
-              <SenderMessage key={message.id} message={message}/>):
-              (<ReceiverMessage key={message.id} message={message}/>)                
+              <SenderMessage key={message.id} message={message} secretkey={matchDetails.id}/>):
+              (<ReceiverMessage key={message.id} message={message} secretkey={matchDetails.id}/>)                
             }
           />
         </TouchableWithoutFeedback>

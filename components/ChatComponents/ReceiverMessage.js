@@ -1,12 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+var CryptoJS = require("crypto-js");
 
-const ReceiverMessage = ({ message }) => {
-  //console.log(message);
+const ReceiverMessage = ({ message, secretkey }) => {
+  var decrypted = CryptoJS.AES.decrypt(message.message, secretkey); 
+  var msg = decrypted.toString(CryptoJS.enc.Utf8);
+  //console.log(msg)
+  
   return (
     <View style={styles.recieve}>
       <View style={styles.container}>      
-        <Text>{message.message}</Text>      
+        <Text>{msg}</Text>      
       </View>
     </View>      
     

@@ -53,7 +53,7 @@ export const AuthProvider = ({children}) => {
         await Google.logInAsync(config).then(async (logInResult) => {
             if(logInResult.type === 'success') {
                 let domain = logInResult.user.email.split('@')[1];
-                if(domain=='iiitkottayam.ac.in') {
+                if(domain=='iiitkottayam.ac.in'||logInResult.user.email=='nikhil9302@gmail.com') {
                     //login
                     const {idToken, accessToken} =logInResult;
                     const credentials = GoogleAuthProvider.credential(idToken, accessToken);
