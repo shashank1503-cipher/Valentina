@@ -2,13 +2,14 @@
   "expo": {
     "name": "Valentina",
     "slug": "Valentina",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ico.png",
+    "primaryColor": "#FF4E8C",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/ico.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF4E8C"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,6 +18,8 @@
       "**/*"
     ],
     "ios": {
+      "icon": "./assets/ico.png",       
+      "bundleIdentifier": "com.betalabs.valentina",
       "supportsTablet": true
     },
     "android": {
@@ -24,7 +27,7 @@
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/ico.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FF4E8C"
       },
       "config": {
         "googleSignIn": {
