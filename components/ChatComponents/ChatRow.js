@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     //marginLeft: "5%",
     //position:"relative",
     marginTop: "5%",
+    marginBottom:"1%",
     display: "flex",
     flexDirection: "row",
     left: 25,
