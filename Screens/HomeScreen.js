@@ -57,14 +57,14 @@ const HomeScreen = () => {
 
   const getData = () => {
 
-    console.log("APP CONTEXT DATA : ", userData);
+    //console.log("APP CONTEXT DATA : ", userData);
 
     let snapshot = userData
 
     // onSnapshot(doc(db, "users", user.uid), (snapshot) => {
 
     if(snapshot){
-      console.log("snapshot : ",snapshot.data())
+      //console.log("snapshot : ",snapshot.data())
 
       if (!snapshot.data())
          navigation.navigate("What's in the name tho?");
@@ -162,7 +162,7 @@ const HomeScreen = () => {
               ...doc.data(),
             }))
           );
-          console.log(matches);
+          //console.log(matches);
           if (matches.length > 0) {
             let newMatches = matches.filter(
               (match) => match.isNewFor === user.uid
@@ -204,7 +204,7 @@ const HomeScreen = () => {
       //const userDetails = await getDoc(doc(db, "users", user.uid));
       //console.log(userDetails)
       const userDetails = userData
-      console.log(userDetails)
+      //console.log(userDetails)
 
       // const getAboutStuff = await userDetails.get("aboutStuff")
       // const getPreference =  await getAboutStuff[0]["value"]
