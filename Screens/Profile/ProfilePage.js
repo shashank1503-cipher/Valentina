@@ -34,9 +34,9 @@ import Sexuality from './profilePageModals/Sexuality'
 import Gender from './profilePageModals/Gender'
 import AppContext from '../../context/AppContext'
 import { useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-vector-icons/Ionicons'
+
 import Draggable from 'react-native-draggable';
-import Skeleton from '../../components/Skeleton/Skeleton'
+
 
 const ProfilePage = () => {
     

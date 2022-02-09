@@ -39,15 +39,15 @@ const Post = ({ profUser, TotalProfiles }) => {
     totalProfiles,
     setTotalProfiles,
   } = useContext(AppContext);
-  console.log(totalProfiles);
+  // console.log(totalProfiles);
   const [isLiked, setIsLiked] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   
   useEffect(() => {
     let fetchLiked = () => {
-      console.log("called")
+      // console.log("called")
       let personUID = profUser.id;
-      console.log(personUID)
+      // console.log(personUID)
       getDoc(doc(db,"users",user.uid,"likes",personUID)).then((snapshot)=>{
         if(snapshot.exists()){
           setIsLiked(true)
@@ -201,7 +201,7 @@ const Post = ({ profUser, TotalProfiles }) => {
   }, [profUser.dob, profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
-      console.log("called", TotalProfiles);
+      // console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
     }
     

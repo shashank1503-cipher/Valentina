@@ -58,9 +58,9 @@ export const AuthProvider = ({children}) => {
                     const {idToken, accessToken} =logInResult;
                     const credentials = GoogleAuthProvider.credential(idToken, accessToken);
                     await signInWithCredential(auth,credentials);
-                    console.log('Successfully logged in!'); 
+                    // console.log('Successfully logged in!'); 
                 }else{
-                    console.log('Sign in using kottayam account only');     
+                    // console.log('Sign in using kottayam account only');     
                     return Promise.reject();                 
                 }                
             }
