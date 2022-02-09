@@ -41,7 +41,7 @@ const MatchScreen = () => {
                 <Text style={{fontWeight: 'bold'}}>
                     Disclaimer
                 </Text>
-                : Since this app serves both as a socializing and a dating app, Valentina suggests y'all communicate your intentions clearly, and respectfully, so that no one party is led on.
+                : Since this app serves as a socializing app, Valentina suggests y'all communicate your intentions clearly, and respectfully, so that no one party is led on.
             </Text>
             
             <View style={{top:"55%"}}>
