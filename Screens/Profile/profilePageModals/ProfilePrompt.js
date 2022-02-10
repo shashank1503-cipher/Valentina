@@ -12,7 +12,7 @@ const ProfilePrompt = ({ styles , profilePrompts , setProfilePrompts , edit }) =
 
     const items = [
         {label: "If you laugh at this, we'll get along...", value: "If you laugh at this, we'll get along..."},
-        {label: 'Perfect first date...', value: 'Perfect fist date...'},
+        {label: 'Perfect first date...', value: 'Perfect first date...'},
         {label: 'A pro and a con of dating me...', value: 'A pro and a con of dating me...'},
         {label: 'Something I learned way later than I should have...', value: 'Something I learned way later than I should have...'},
         {label: "When no one's watching I...", value: "When no one's watching I..."}
