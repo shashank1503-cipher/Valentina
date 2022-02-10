@@ -456,8 +456,11 @@ const ProfilePage = () => {
                 elevation: 10,
                 backgroundColor: 'rgba(0,0,0,0.2)',
                 position: 'absolute',
-                width: '100%',
-                height: Dimensions.get("screen").height
+                width: Dimensions.get("screen").width,
+                height: Dimensions.get("screen").height,
+                transform: [{
+                    scale: 1.2
+                }],
             }}/>
             :
             <>
