@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import getMatchedUserInfo from "../../libs/getMatchedUserInfo";
 import { collection, onSnapshot, query, orderBy } from "@firebase/firestore";
 import { db } from "../../firebase";
+var CryptoJS = require("crypto-js");
 
 const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation();
@@ -28,37 +29,44 @@ const ChatRow = ({ matchDetails }) => {
           orderBy("timestamp", "desc")
         ),
         (snapshot) => {
-          // console.log(snapshot.docs[0].data());
-          setLastMessage({
-            message: snapshot.docs[0]?.data()?.message,
-            timestamp: snapshot.docs[0]?.data()?.timestamp.split("-")[1],
-          });
+          //console.log(snapshot.docs[0].data());
+          if (snapshot.docs.length>0){
+            var myDate = new Date(snapshot.docs[0]?.data()?.timestamp.seconds*1000);
+            let time = myDate.toString().split(' ')[4]?.slice(0,5) 
+            var decrypted = CryptoJS.AES.decrypt(snapshot.docs[0]?.data()?.message, matchDetails.id); 
+            var msg = decrypted.toString(CryptoJS.enc.Utf8);
+            setLastMessage({
+              message: msg,
+              timestamp: time,
+            });
+          }
+          
         }
       ),
     
     [matchDetails, user]
   );
-  // console.log(matchDetails)
-
+  const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
+//console.log(image)
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate("Message", { matchDetails })}
     >
       <Image
-        style={{ left: 0 }}
-        source={require("../../assets/matched1.png")}
+        style={{ width: 45, height: 45,borderRadius:50 }}
+        source={{uri:image}}
       />
       <View>
         <Text style={styles.text}>{matchedUserInfo?.name}</Text>
         <View style={styles.smallt}>
-          <Text style={{ textAlign: "left" }}>
+          <Text style={{ textAlign: "left",width:"75%" }}>
             {lastMessage.message ?lastMessage.message.length > 10
-              ? lastMessage.message.slice(0,10)
+              ? lastMessage.message.slice(0,10)+"..."
               : lastMessage.message || "Say Hi!" : "Say Hi!"}
             
           </Text>
-          <Text style={{ left: 200, textAlign: "right" }}>
+          <Text style={{ textAlign: "right" }}>
             {lastMessage.timestamp}
           </Text>
         </View>
@@ -72,6 +80,7 @@ const styles = StyleSheet.create({
     //marginLeft: "5%",
     //position:"relative",
     marginTop: "5%",
+    marginBottom:"1%",
     display: "flex",
     flexDirection: "row",
     left: 25,
@@ -92,10 +101,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     fontFamily: "Roboto",
     color: "black",
-    //width: "100%",
+    // width: "65%",
     //fitWidth: true,
-    left: 7,
+    marginLeft: 7,
     fontSize: 10,
+    // justifyContent:"space-between"
   },
 });
 

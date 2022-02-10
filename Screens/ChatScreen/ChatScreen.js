@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
+  ScrollView,
   SafeAreaView,
   View,
   Text,
@@ -45,7 +46,7 @@ const ChatScreen = () => {
   );
   //console.log(matches);
   return (
-    <SafeAreaView>
+    <ScrollView>
       {matches.length ? (
         <>
           <ChatScreenHeader title="Matches" />
@@ -62,16 +63,14 @@ const ChatScreen = () => {
           <Text>No Matches Found T_T</Text>
         </View>
       )}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     marginTop: "5%",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    position: 'relative',
   },
   image: {
     marginLeft: "7%",

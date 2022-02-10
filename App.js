@@ -20,12 +20,12 @@ if (message.indexOf('Setting a timer') <= -1) {
 export default function App() {
   return (
     <NavigationContainer style={styles.root}>      
-      <AppProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <AppProvider>
            {/*Passes down the user auth to the children*/}
           <StackNavigator />
-        </AuthProvider>
-      </AppProvider>     
+        </AppProvider>     
+      </AuthProvider>
     </NavigationContainer>
   );
 }

@@ -11,7 +11,9 @@ const Sexuality = ({styles, sexuality, setSexuality, edit}) => {
         "Lesbian",
         "Gay",
         "Bisexual",
-        "Pansexual"
+        "Pansexual",
+        "Questioning",
+        "Asexual",
     ]
 
     const Item = ({ title }) => (
@@ -99,6 +101,7 @@ const Sexuality = ({styles, sexuality, setSexuality, edit}) => {
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     style={{
                         zIndex: 10
                     }}

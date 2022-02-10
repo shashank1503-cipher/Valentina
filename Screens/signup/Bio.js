@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput} from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "./Header";
@@ -10,11 +10,14 @@ import styles from "./Style/Styles";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
+import AppContext from '../../context/AppContext';
 
 const Bio = () => {
     const navigation = useNavigation();
     let {user} = useAuth()
     const colors = ["#FF4E8C", "#FF9B7B", "#F9D7D5"];
+
+    const { updateUserData } = useContext(AppContext)
 
     const validateSchema = Yup.object().shape({
         bio: Yup.string()
@@ -30,8 +33,9 @@ const Bio = () => {
           ...data,
         })
           .then(() => {
-            console.log("done");
+            // console.log("done");
             navigation.navigate("Interests");
+            updateUserData()
           })
           .catch((err) => {
             alert(err.message);

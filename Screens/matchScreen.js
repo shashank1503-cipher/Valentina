@@ -23,6 +23,7 @@ const MatchScreen = () => {
             <LinearGradient colors={colors} 
             style = {styles.background} 
             end={{ x: 0.90, y: 0.10 }}>
+            
 
             <Text style = {styles.text1}>
                 It's A Match!
@@ -34,6 +35,15 @@ const MatchScreen = () => {
                 
             </Image>
             <Image source={{uri: matchedUser.image.profile_1}} style={styles.image2}></Image>
+            
+            
+            <Text style={{top:"50%", color:"white", margin:"3%", textAlign:"center"}}>
+                <Text style={{fontWeight: 'bold'}}>
+                    Disclaimer
+                </Text>
+                : Since this app serves as a socializing app, Valentina suggests y'all communicate your intentions clearly, and respectfully, so that no one party is led on.
+            </Text>
+            
             <View style={{top:"55%"}}>
             
             <TouchableHighlight {...touchProps} onPress={()=>navigation.navigate('Chat')}><Text style={{color:"white"}}>Send a Message</Text></TouchableHighlight>

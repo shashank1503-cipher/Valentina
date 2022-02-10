@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import styles from "./Style/Styles";
 import StyledButton from "../../components/Buttons/StyledButton";
@@ -7,10 +7,13 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import AppContext from "../../context/AppContext";
 
 const Sexuality = () => {
   let { user } = useAuth();
   const navigation = useNavigation();
+
+  const { updateUserData } = useContext(AppContext)
   const sexuality = [
     {
       Options: [
@@ -19,6 +22,8 @@ const Sexuality = () => {
         { optionText: "Gay", value: "gay" },
         { optionText: "Bisexual", value: "bisexual" },
         { optionText: "Pansexual", value: "pansexual" },
+        { optionText: "Questioning", value: "questioning" },
+        { optionText: "Asexual", value: "asexual" },
       ],
     },
   ];
@@ -28,7 +33,8 @@ const Sexuality = () => {
       ...data,
     })
       .then(() => {
-        console.log("done");
+        // console.log("done");
+        updateUserData();
         navigation.navigate("Gender Interest");
       })
       .catch((err) => {

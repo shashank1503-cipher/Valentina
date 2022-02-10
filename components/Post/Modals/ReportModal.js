@@ -6,7 +6,9 @@ import { db } from '../../../firebase'
 import { setDoc, doc, getDoc, getDocFromCache } from 'firebase/firestore'
 
 
-const ReportModal = ({props}) => {
+const ReportModal = ({profUser}) => {
+
+    // console.log(profUser)
 
     const [reportModal, setReportModal] = useState(false)
     const [reportText, setReportText] = useState('')
@@ -18,22 +20,25 @@ const ReportModal = ({props}) => {
 
     useEffect( async () => {
 
-        const docRef = doc(db, 'users', props.uid, 'reports', user.uid)
+            const docRef = doc(db, 'users', profUser.id, 'reports', user.uid)
+            // console.log(profUser.id)
+            // console.log(user.uid)
+        
+            const d = await getDoc(docRef)
 
-        try{
-            const doc = await getDoc(docRef)
-            console.log(doc.data())
+            // console.log("DOC DATA: ",d.data())
 
-            setIsreported(true)
-        }
-        catch(e) {
-            setIsreported(false)
-        }
+            if(d.data())
+                setIsreported(true)
+            else    
+                setIsreported(false)
 
     }, [])
 
 
     const onPressHandler = (option) => {
+
+        //console.log(option)
 
         if(option === '0')
         {
@@ -46,16 +51,20 @@ const ReportModal = ({props}) => {
 
             const setData = async () => {
                 
-                await setDoc(doc(db, "users", props.uid, "reports", user.uid),{"report":reportText})
+                const data = await setDoc(doc(db, "users", profUser.id, "reports", user.uid),{"report":reportText})
+
+                // console.log(data);
 
                 //console.log("1 down")
 
-                // await setDoc(doc(db, "users", user.uid, "reports", props.uid),{
+                // await setDoc(doc(db, "users", user.uid, "reports", props.id),{
                 //     "report": {
                 //         name: props.name,
                 //         report: reportText
                 //     }
                 // })
+
+                // console.log("working")
 
                 setReportModal(!reportModal)
                 setReportText('')
@@ -67,7 +76,7 @@ const ReportModal = ({props}) => {
     }
 
 
-    const func =async () => {
+    const func = async () => {
 
         setReportModal(true)
         setTimeout(()=>{

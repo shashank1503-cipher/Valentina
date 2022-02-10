@@ -2,13 +2,15 @@
   "expo": {
     "name": "Valentina",
     "slug": "Valentina",
-    "version": "1.0.0",
+    "owner": "betalabs",
+    "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ico.png",
+    "primaryColor": "#FF4E8C",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF4E8C"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,17 +19,27 @@
       "**/*"
     ],
     "ios": {
+      "icon": "./assets/ico.png",       
+      "bundleIdentifier": "com.betalabs.valentina",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.betalabs.valentina",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/ico.png",
+        "backgroundColor": "#FF4E8C"
       },
-      "package": "host.exp.exponent"
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyD1Pthy9QhSEMTmLVEWvvIqJWFWf03cdp8",
+          "certificateHash": "d5e196823e15cdb232345c6c19f7014194fa3424"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }

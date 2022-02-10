@@ -65,6 +65,7 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                 <Modal
                     animationType="fade"
                     transparent={true}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                     visible={modalVisible}
                     style={{
                         zIndex: 10
@@ -97,7 +98,7 @@ const LookingFor = ({styles, setLook, edit, look}) => {
                             
                             <TouchableOpacity
                                 style={style.button}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => func('both')}
                             >
                                 <Icon name="male-female" size={30}/>
                                 <Text>Both</Text>

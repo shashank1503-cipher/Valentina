@@ -23,22 +23,24 @@ import useAuth from "../../hooks/useAuth";
 import { addDoc, collection, onSnapshot, serverTimestamp, query, orderBy} from "@firebase/firestore";
 import {db} from "../../firebase";
 import getMatchedUserInfo from "../../libs/getMatchedUserInfo";
+var AES = require("crypto-js/aes");
+
 const MessageScreen = () => {
   const navigation = useNavigation();
   const {user} = useAuth();
   const {params} = useRoute();
   const [input, setInput] = useState("");
   const matchDetails = params.matchDetails;  
-  const name = getMatchedUserInfo(matchDetails.users, user.uid).name;  
+  const name = getMatchedUserInfo(matchDetails.users, user.uid).name; 
+  const image = getMatchedUserInfo(matchDetails.users,user.uid).image.profile_1 
   const [messages, setMessages] = useState([]);
-  // static messages, will be replaced by realtime messages from firebase with the help message state
   
   useEffect(
     ()=>
     onSnapshot(
       query(
         collection(db, 'matches', matchDetails.id, 'messages'), 
-        orderBy('timestamp','desc')
+        orderBy('timestamp','asc')
       ), 
       (snapshot) => 
         setMessages(
@@ -52,35 +54,29 @@ const MessageScreen = () => {
   );
 
   //adding messages of matched users of the current logged in user to the firebase and updating the messages state
-  const sendMessage = () => {
+  const sendMessage = () => {     
+      
       let currentDate = new Date();
-      let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" + currentDate.getMinutes()+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
-      console.log(matchDetails)
-      addDoc(collection(db,"matches",matchDetails.id,"messages"),{
-        timestamp: time,
-        userid: user.uid,
-        displayName: user.displayName,
-        message: input,
-        // imgURL: matchDetails.users[user.uid].image.profile_1, 
-      });
-
-      setInput("");
-      //this.ScrollView.scrollToEnd();   
-    /*if(!input)
-      return;
-
-    const message = {
-      message: input,
-      userid: user.uid,
-      id: 'e',
-      timestamp: 'Today 12:30'
-    }
-    setMessages(m => [...m, message])
-    
-    setInput("")
-
-    this.ScrollView.scrollToEnd()*/
-
+      //let time = currentDate.getDate()+"/"+currentDate.getMonth()+"/"+currentDate.getFullYear() +"-"+currentDate.getHours() + ":" +((currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes())+"-"+currentDate.getSeconds()+"-"+currentDate.getMilliseconds();
+      //console.log(TS)
+      //setTimeout(1); 
+           
+      var encrypted = AES.encrypt(input, matchDetails.id).toString();
+      //console.log("input ",encrypted)
+      if(input!=""){
+        addDoc(collection(db,"matches",matchDetails.id,"messages"),{
+          timestamp: currentDate,
+          userid: user.uid,
+          displayName: user.displayName,
+          message: encrypted,
+          // imgURL: matchDetails.users[user.uid].image.profile_1, 
+        }); 
+      }else{
+        alert("Please enter a message")
+      }
+           
+      setInput("")
+      // this.ScrollView.scrollToEnd()  
   };
 
   return (
@@ -93,16 +89,16 @@ const MessageScreen = () => {
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          style={{ marginLeft: "10%", width: 35, height: 35 }}
-          source={require("../../assets/matched1.png")}
+          style={{ marginLeft: "2%", width: 45, height: 45,borderRadius:50 }}
+          source={{uri:image}}
         />
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{name.split(" ")[0]}</Text>
       </View>
       <ScrollView
         // behaviour={Platform.OS === "ios" ? "padding" : "height"}
         //keyboardVerticalOffset={10}
         showsVerticalScrollIndicator={true}
-        //ref={ref => {this.ScrollView = ref}}        
+        // ref={ref => {this.ScrollView = ref}}        
       >
         <TouchableWithoutFeedback
           style={{
@@ -112,11 +108,11 @@ const MessageScreen = () => {
           <FlatList
             style={{ paddingHorizontal: 10, bottom: 0 }}     
             data={messages}
-            inverted={-1}
+            // inverted={-1}
             renderItem={({ item: message }) =>
               message.userid == user.uid ? (
-              <SenderMessage key={message.id} message={message}/>):
-              (<ReceiverMessage key={message.id} message={message}/>)                
+              <SenderMessage key={message.id} message={message} secretkey={matchDetails.id}/>):
+              (<ReceiverMessage key={message.id} message={message} secretkey={matchDetails.id}/>)                
             }
           />
         </TouchableWithoutFeedback>
@@ -171,7 +167,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: "100%",
     shadowColor: '#000',
-    shadowOffset: { width: 10, height: 10},
+    shadowOffset: { width: 1, height: 1},
     shadowOpacity: 1,
     shadowRadius:2,
     elevation: 5,

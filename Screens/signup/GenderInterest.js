@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,14 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../../hooks/useAuth";
+import AppContext from "../../context/AppContext";
 
 const GenderInterest = () => {
     let { user } = useAuth();
   const navigation = useNavigation();
+
+  const { updateUserData } = useContext(AppContext)
+
   const Interests = [
     {
       Options: [
@@ -29,7 +33,8 @@ const GenderInterest = () => {
       ...data,
     })
       .then(() => {
-        console.log("done");
+        // console.log("done");
+        updateUserData()
         navigation.navigate("Batch");
       })
       .catch((err) => {
