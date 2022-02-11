@@ -136,9 +136,12 @@ const ProfilePage = () => {
 
         await deleteDoc(doc(db, 'users', user.uid))
         
+        setUserData(null);
+        
         await logout()
 
-        setUserData(null);
+        setLoader(false)
+
         
         //console.log("doneeeeeeeeeeeeeeeeeee")
         
@@ -150,6 +153,7 @@ const ProfilePage = () => {
     const deleteAccount = async () => {
 
         //console.log("Delete")
+        setLoader(true);
 
         const q = query(
             collection(db, 'matches'),
@@ -231,6 +235,57 @@ const ProfilePage = () => {
     }
 
 
+    const formData = {
+
+        id: user.uid,
+        name: name,
+        bio: textField || '',
+        phoneNumber: mnumber,
+        image: image,
+        profilePrompts: profilePrompts,
+        interest: interests,
+        languages: lang,
+        dob: date,
+        gender: gender,
+        email: email,
+        
+        "aboutStuff":[
+            {
+                "type": 'looking_for',
+                "value": look || ''
+            },
+            {
+                "type": 'height',
+                "value": height,
+            },
+            {
+                "type": 'star_sign',
+                "value": starSign || '',
+            },
+            {
+                "type": 'pronoun',
+                "value": pronoun || '',
+            },
+            {
+                "type": 'religion',
+                "value": religion || '',
+            },
+            {
+                "type": 'location',
+                "value": location
+            },
+            {
+                "type": 'batch',
+                "value": batch
+            },
+            {
+                "type": "sexuality",
+                "value": sexuality,
+            }
+        ]
+
+    }
+
     const exportData = () => {
 
         if(checkForm())
@@ -239,59 +294,7 @@ const ProfilePage = () => {
             return;
         }
 
-        const data = {
-            id: user.uid,
-            name: name,
-            bio: textField || '',
-            phoneNumber: mnumber,
-            image: image,
-            profilePrompts: profilePrompts,
-            interest: interests,
-            languages: lang,
-            dob: date,
-            gender: gender,
-            email: email,
-            
-            "aboutStuff":[
-                {
-                    "type": 'looking_for',
-                    "value": look || ''
-                },
-                {
-                    "type": 'height',
-                    "value": height,
-                },
-                {
-                    "type": 'star_sign',
-                    "value": starSign || '',
-                },
-                {
-                    "type": 'pronoun',
-                    "value": pronoun || '',
-                },
-                {
-                    "type": 'religion',
-                    "value": religion || '',
-                },
-                {
-                    "type": 'location',
-                    "value": location
-                },
-                {
-                    "type": 'batch',
-                    "value": batch
-                },
-                {
-                    "type": "sexuality",
-                    "value": sexuality,
-                }
-            ]
-        }
-
-        if(JSON.stringify(data) === JSON.stringify(userData))
-            return;
-
-        // console.log("Not Working...")
+        const data = {...formData}
 
         setDoc(doc(db, 'users', user.uid), {
             ...data
@@ -393,7 +396,7 @@ const ProfilePage = () => {
 
     const getProfile = () => {
 
-        const data = {...userData.data()};
+        const data = {...formData};
         
         const getAge = () => {
             var parts = data.dob.split("/");
@@ -453,8 +456,11 @@ const ProfilePage = () => {
                 elevation: 10,
                 backgroundColor: 'rgba(0,0,0,0.2)',
                 position: 'absolute',
-                width: '100%',
-                height: Dimensions.get("screen").height
+                width: Dimensions.get("screen").width,
+                height: Dimensions.get("screen").height,
+                transform: [{
+                    scale: 1.2
+                }],
             }}/>
             :
             <>
@@ -801,7 +807,7 @@ const ProfilePage = () => {
                        
                     {/* Logout Button */}
                     <TouchableOpacity
-                        onPress={logout}
+                        onPress={() => {setUserData(null);logout()}}
                     >
                         <LinearGradient
                             colors={colors}
@@ -888,7 +894,7 @@ const styles = StyleSheet.create({
     editButton: {
         fontSize: 16,
         color: '#FF4E8C',
-        width: 60,
+        width: 70,
         textAlign: 'center',
         borderRadius: 10,
         marginTop: 20
@@ -899,8 +905,7 @@ const styles = StyleSheet.create({
         top: -680,
         position: 'relative',
         marginTop: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingHorizontal: 16,
         display: 'flex',
         flexDirection: 'column',
     },  
