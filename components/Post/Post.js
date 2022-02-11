@@ -30,6 +30,7 @@ import generateId from "../../libs/generateId";
 import { useNavigation } from "@react-navigation/native";
 import NoMoreProfile from "../../Screens/LikeScreen/NoMoreProfile";
 const Post = ({ profUser, TotalProfiles }) => {
+  
   let { user } = useAuth();
   let navigation = useNavigation();
   const {
@@ -39,24 +40,25 @@ const Post = ({ profUser, TotalProfiles }) => {
     totalProfiles,
     setTotalProfiles,
   } = useContext(AppContext);
-  console.log(totalProfiles);
+  // console.log(totalProfiles);
   const [isLiked, setIsLiked] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  
+
   useEffect(() => {
     let fetchLiked = () => {
-      console.log("called")
+      // console.log("called")
       let personUID = profUser.id;
-      console.log(personUID)
-      getDoc(doc(db,"users",user.uid,"likes",personUID)).then((snapshot)=>{
-        if(snapshot.exists()){
-          setIsLiked(true)
+      // console.log(personUID)
+      getDoc(doc(db, "users", user.uid, "likes", personUID)).then(
+        (snapshot) => {
+          if (snapshot.exists()) {
+            setIsLiked(true);
+          }
         }
-      })
+      );
     };
     fetchLiked();
   }, [user]);
-  
 
   const onLikePress = () => {
     let personUID = profUser.id;
@@ -99,7 +101,7 @@ const Post = ({ profUser, TotalProfiles }) => {
       );
     } else {
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
-      const mid = generateId(user.uid, personUID); 
+      const mid = generateId(user.uid, personUID);
       deleteDoc(doc(db, "matches", mid));
     }
     setIsLiked(isLiked ? false : true);
@@ -154,9 +156,8 @@ const Post = ({ profUser, TotalProfiles }) => {
       id: personUID,
     });
     if (isLiked) {
-     
       deleteDoc(doc(db, "users", user.uid, "likes", personUID));
-      const mid = generateId(user.uid, personUID); 
+      const mid = generateId(user.uid, personUID);
       deleteDoc(doc(db, "matches", mid));
       setIsLiked(false);
     }
@@ -173,7 +174,7 @@ const Post = ({ profUser, TotalProfiles }) => {
     dob: "📅",
     star_sign: "🔯",
     language: "🗣️",
-    batch:"🎓"
+    batch: "🎓",
   };
   const [Age, setAge] = useState(0);
   const [Pronoun, setPronoun] = useState("");
@@ -201,11 +202,11 @@ const Post = ({ profUser, TotalProfiles }) => {
   }, [profUser.dob, profUser.aboutStuff]);
   useEffect(() => {
     if (totalProfiles === -1) {
-      console.log("called", TotalProfiles);
+      // console.log("called", TotalProfiles);
       setTotalProfiles(TotalProfiles);
     }
-    
   });
+
   return (
     <>
       {isVisible ? (
@@ -293,7 +294,9 @@ const Post = ({ profUser, TotalProfiles }) => {
                     <View style={styles.uiContainer}>
                       <View style={styles.leftContainer}>
                         {profUser.aboutStuff.map((val) =>
-                          val.value && (val.type !=="looking_for" && val.type !=="pronoun") ? (
+                          val.value &&
+                          val.type !== "looking_for" &&
+                          val.type !== "pronoun" ? (
                             <Interest
                               value={val.value}
                               emoji={emojiMap[val.type]}
@@ -650,15 +653,16 @@ const Post = ({ profUser, TotalProfiles }) => {
 
                   <ReportModal profUser={profUser} />
 
-                  <TouchableOpacity onPress={()=>{
-                     Alert.alert(
-                      "Email",
-                      profUser.email,
-                      [
-                        { text: "OK", onPress: () => console.log("OK Pressed") }
-                      ]
-                  );
-                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert("Email", profUser.email, [
+                        {
+                          text: "OK",
+                          onPress: () => console.log("OK Pressed"),
+                        },
+                      ]);
+                    }}
+                  >
                     <Text style={styles.modalText}>Get Email Id</Text>
                   </TouchableOpacity>
                   <TouchableOpacity

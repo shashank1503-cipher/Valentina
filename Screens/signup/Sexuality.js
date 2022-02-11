@@ -22,6 +22,8 @@ const Sexuality = () => {
         { optionText: "Gay", value: "gay" },
         { optionText: "Bisexual", value: "bisexual" },
         { optionText: "Pansexual", value: "pansexual" },
+        { optionText: "Questioning", value: "questioning" },
+        { optionText: "Asexual", value: "asexual" },
       ],
     },
   ];
