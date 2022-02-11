@@ -206,14 +206,7 @@ const Post = ({ profUser, TotalProfiles }) => {
       setTotalProfiles(TotalProfiles);
     }
   });
-  let getCloudinaryUrlForOptimization = (url) => {
-    let urlArr = url.split("upload");
-    let newUrl = urlArr.join("upload/q_auto");
-    return newUrl
-  };
-  profUser.image.profile_1 = getCloudinaryUrlForOptimization(profUser.image.profile_1)
-  profUser.image.profile_2 = getCloudinaryUrlForOptimization(profUser.image.profile_2)
-  profUser.image.background = getCloudinaryUrlForOptimization(profUser.image.background)
+
   return (
     <>
       {isVisible ? (
