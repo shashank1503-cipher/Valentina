@@ -11,7 +11,9 @@ const Sexuality = ({styles, sexuality, setSexuality, edit}) => {
         "Lesbian",
         "Gay",
         "Bisexual",
-        "Pansexual"
+        "Pansexual",
+        "Questioning",
+        "Asexual",
     ]
 
     const Item = ({ title }) => (

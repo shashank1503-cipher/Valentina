@@ -20,16 +20,24 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import ReportModal from "../../components/Post/Modals/ReportModal";
 const DisplayMatchedScreen = ({ route }) => {
-  
+ 
   let { user } = useAuth();
   
   const navigation = useNavigation();
   const props = route.params;
+ 
   
   // console.log(props.img)
 
   // console.log(typeof props.img.profile_1)
-
+  let getCloudinaryUrlForOptimization = (url) => {
+    let urlArr = url.split("upload");
+    let newUrl = urlArr.join("upload/q_auto");
+    return newUrl
+  };
+  props.img.profile_1 = getCloudinaryUrlForOptimization(props.img.profile_1)
+  props.img.profile_2 = getCloudinaryUrlForOptimization(props.img.profile_2)
+  props.img.background = getCloudinaryUrlForOptimization(props.img.background)
   const onDisLikePress = () => {
   
     let personUID = props.id;
@@ -75,7 +83,7 @@ const DisplayMatchedScreen = ({ route }) => {
         decelerationRate={"fast"}
       >
         <View style={styles.firstPage}>
-          <Image style={styles.image} source={{ uri: props.img["profile_1"] }} />
+          <Image style={styles.img} source={{ uri: props.img["profile_1"] }} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
               {props.name.split(" ")[0]}, {props?.age}
@@ -163,7 +171,7 @@ const DisplayMatchedScreen = ({ route }) => {
         </View>
 
         <View style={styles.firstPage}>
-          <Image style={styles.image} source={{ uri: props.img.profile_2 }} />
+          <Image style={styles.img} source={{ uri: props.img.profile_2 }} />
           <View style={styles.uiContainer}>
             {/* <Text style={styles.textH}>
                     {props.name}, {props.age}
@@ -241,7 +249,7 @@ const DisplayMatchedScreen = ({ route }) => {
           props.img.background ? (
             <View style={styles.firstPage}>
               <Image
-                style={styles.image}
+                style={styles.img}
                 source={{ uri: props.img.background }}
               />
               <View style={styles.overlay}>

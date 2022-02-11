@@ -63,13 +63,18 @@ const MessageScreen = () => {
            
       var encrypted = AES.encrypt(input, matchDetails.id).toString();
       //console.log("input ",encrypted)
-      addDoc(collection(db,"matches",matchDetails.id,"messages"),{
-        timestamp: currentDate,
-        userid: user.uid,
-        displayName: user.displayName,
-        message: encrypted,
-        // imgURL: matchDetails.users[user.uid].image.profile_1, 
-      });      
+      if(input!=""){
+        addDoc(collection(db,"matches",matchDetails.id,"messages"),{
+          timestamp: currentDate,
+          userid: user.uid,
+          displayName: user.displayName,
+          message: encrypted,
+          // imgURL: matchDetails.users[user.uid].image.profile_1, 
+        }); 
+      }else{
+        alert("Please enter a message")
+      }
+           
       setInput("")
       // this.ScrollView.scrollToEnd()  
   };
