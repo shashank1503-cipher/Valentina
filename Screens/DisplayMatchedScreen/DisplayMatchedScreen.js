@@ -27,9 +27,9 @@ const DisplayMatchedScreen = ({ route }) => {
   const props = route.params;
  
   
-  // console.log(props.img)
+  //console.log(props.img)
 
-  // console.log(typeof props.img.profile_1)
+  //console.log(props.img.profile_1)
   const onDisLikePress = () => {
   
     let personUID = props.id;
@@ -68,6 +68,7 @@ const DisplayMatchedScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <ScrollView
+        key={props.id}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator
@@ -75,7 +76,7 @@ const DisplayMatchedScreen = ({ route }) => {
         decelerationRate={"fast"}
       >
         <View style={styles.firstPage}>
-          <Image style={styles.img} source={{ uri: props.img["profile_1"] }} />
+          <Image style={styles.image} source={{ uri: props.img.profile_1}} />
           <View style={styles.uiContainer}>
             <Text style={styles.textH}>
               {props.name.split(" ")[0]}, {props?.age}
@@ -163,12 +164,8 @@ const DisplayMatchedScreen = ({ route }) => {
         </View>
 
         <View style={styles.firstPage}>
-          <Image style={styles.img} source={{ uri: props.img.profile_2 }} />
-          <View style={styles.uiContainer}>
-            {/* <Text style={styles.textH}>
-                    {props.name}, {props.age}
-                  </Text>
-                  <Text style={styles.text}>{props.batch}</Text> */}
+          <Image style={styles.image} source={{ uri: props.img.profile_2 }} />
+          <View style={styles.uiContainer}>            
             <View style={[styles.rightContainer, {
               display: props.isUserProfile?'none':'flex'
             }]}>
@@ -377,12 +374,7 @@ const DisplayMatchedScreen = ({ route }) => {
         }}
       >
         <View style={styles.endView}>
-          <View style={styles.modalView}>
-            {/* <TouchableOpacity>
-              <Text style={[styles.modalText, { color: "#FF0000" }]}>
-                Report
-              </Text>
-            </TouchableOpacity> */}
+          <View style={styles.modalView}>            
             <ReportModal props={props} />
             <TouchableOpacity onPress={()=>{
                Alert.alert(
