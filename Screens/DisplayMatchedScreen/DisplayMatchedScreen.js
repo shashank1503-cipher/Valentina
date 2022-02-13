@@ -30,14 +30,6 @@ const DisplayMatchedScreen = ({ route }) => {
   // console.log(props.img)
 
   // console.log(typeof props.img.profile_1)
-  let getCloudinaryUrlForOptimization = (url) => {
-    let urlArr = url.split("upload");
-    let newUrl = urlArr.join("upload/q_auto");
-    return newUrl
-  };
-  props.img.profile_1 = getCloudinaryUrlForOptimization(props.img.profile_1)
-  props.img.profile_2 = getCloudinaryUrlForOptimization(props.img.profile_2)
-  props.img.background = getCloudinaryUrlForOptimization(props.img.background)
   const onDisLikePress = () => {
   
     let personUID = props.id;
