@@ -213,6 +213,7 @@ const Post = ({ profUser, TotalProfiles }) => {
         <>
           <View style={styles.container}>
             <ScrollView
+              key={profUser.id}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator
