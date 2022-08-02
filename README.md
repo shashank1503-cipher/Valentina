@@ -68,7 +68,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Shashank Kumar Srivastava - [@Shashan87956421](https://twitter.com/Shashan87956421) - [Linkedin](https://www.linkedin.com/in/shashank-srivastava-a72899201/) - shashank.srivastava25sks@gmail.com
 
-Project Link: [https://github.com/shashank1503-cipher/partners-in-crime](https://github.com/shashank1503-cipher/Valentina)
+Project Link: [https://github.com/shashank1503-cipher/Valentina](https://github.com/shashank1503-cipher/Valentina)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
