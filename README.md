@@ -19,9 +19,9 @@
    IIIT Kottayam's In-House Socializing App
    </p>
    <p align="center">
-    <a href="https://github.com/shashank1503-cipher/partners-in-crime-backend/issues">Report Bug</a>
+    <a href="https://github.com/shashank1503-cipher/Valentina/issues">Report Bug</a>
     ·
-    <a href="https://github.com/shashank1503-cipher/partners-in-crime-backend/issues">Request Feature</a>
+    <a href="https://github.com/shashank1503-cipher/Valentina/issues">Request Feature</a>
   </p>
 </div>
 
